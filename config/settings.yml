@@ -1,0 +1,9 @@
+---
+home: https://www.zold.io
+network: zold
+node_alias: 94.232.57.6:4096
+host: 94.232.57.6
+invoice: 66Yodh14@1142c2d008235bbe
+port: 4096
+redis:
+  url: redis://localhost
