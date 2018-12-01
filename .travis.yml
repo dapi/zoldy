@@ -1,0 +1,8 @@
+language: ruby
+services:
+  - redis-server
+rvm:
+  - 2.4.5
+  - 2.5.3
+env:
+  - RACK_ENV=test

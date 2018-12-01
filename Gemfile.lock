@@ -1,0 +1,279 @@
+GIT
+  remote: git://github.com/BrandyMint/rack-swagger-ui.git
+  revision: f50647f255097b494f7a76d9d4622427cbee6196
+  specs:
+    rack-swagger-ui (1.0.0)
+      rack
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    actionpack (5.2.2)
+      actionview (= 5.2.2)
+      activesupport (= 5.2.2)
+      rack (~> 2.0)
+      rack-test (>= 0.6.3)
+      rails-dom-testing (~> 2.0)
+      rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    actionview (5.2.2)
+      activesupport (= 5.2.2)
+      builder (~> 3.1)
+      erubi (~> 1.4)
+      rails-dom-testing (~> 2.0)
+      rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    activesupport (5.2.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    ast (2.4.0)
+    auto_logger (0.1.4)
+      activesupport
+      beautiful-log
+    awesome_print (1.8.0)
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
+    beautiful-log (0.2.2)
+      awesome_print (~> 1.8.0)
+      colorize (~> 0.8.1)
+    bugsnag (6.10.0)
+      concurrent-ruby (~> 1.0)
+    builder (3.2.3)
+    byebug (10.0.2)
+    coderay (1.1.2)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
+    colorize (0.8.1)
+    concurrent-ruby (1.1.3)
+    connection_pool (2.2.2)
+    crass (1.0.4)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
+    diff-lcs (1.3)
+    equalizer (0.0.11)
+    erubi (1.7.1)
+    et-orbi (1.1.6)
+      tzinfo
+    ethon (0.11.0)
+      ffi (>= 1.3.0)
+    factory_bot (4.11.1)
+      activesupport (>= 3.0.0)
+    ffi (1.9.25)
+    foreman (0.85.0)
+      thor (~> 0.19.1)
+    formatador (0.2.5)
+    fugit (1.1.6)
+      et-orbi (~> 1.1, >= 1.1.6)
+      raabro (~> 1.1)
+    get_process_mem (0.2.3)
+    grape (1.2.2)
+      activesupport
+      builder
+      mustermann-grape (~> 1.0.0)
+      rack (>= 1.3.0)
+      rack-accept
+      virtus (>= 1.0.0)
+    grape-swagger (0.32.1)
+      grape (>= 0.16.2)
+    guard (2.15.0)
+      formatador (>= 0.2.4)
+      listen (>= 2.7, < 4.0)
+      lumberjack (>= 1.0.12, < 2.0)
+      nenv (~> 0.1)
+      notiffany (~> 0.0)
+      pry (>= 0.9.12)
+      shellany (~> 0.0)
+      thor (>= 0.18.1)
+    guard-bundler (2.1.0)
+      bundler (~> 1.0)
+      guard (~> 2.2)
+      guard-compat (~> 1.1)
+    guard-compat (1.2.1)
+    guard-ctags-bundler (1.4.0)
+      guard (>= 2.0)
+      guard-compat (>= 0.1.0)
+    guard-foreman (0.0.4)
+      guard (~> 2.6)
+      spoon (~> 0.0, >= 0.0.4)
+    guard-rack (2.2.0)
+      ffi
+      guard (~> 2.3)
+      spoon
+    guard-rspec (4.7.3)
+      guard (~> 2.1)
+      guard-compat (~> 1.1)
+      rspec (>= 2.99.0, < 4.0)
+    guard-rubocop (1.3.0)
+      guard (~> 2.0)
+      rubocop (~> 0.20)
+    hiredis (0.6.3)
+    i18n (1.1.1)
+      concurrent-ruby (~> 1.0)
+    ice_nine (0.11.2)
+    jaro_winkler (1.5.1)
+    listen (3.1.5)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
+      ruby_dep (~> 1.2)
+    logger (1.3.0)
+    loofah (2.2.3)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.5.9)
+    lumberjack (1.0.13)
+    method_source (0.9.2)
+    mini_portile2 (2.3.0)
+    minitest (5.11.3)
+    msgpack (1.2.4)
+    mustermann (1.0.3)
+    mustermann-grape (1.0.0)
+      mustermann (~> 1.0.0)
+    nenv (0.3.0)
+    nokogiri (1.8.5)
+      mini_portile2 (~> 2.3.0)
+    notiffany (0.1.1)
+      nenv (~> 0.1)
+      shellany (~> 0.0)
+    openssl (2.1.2)
+    optimist (3.0.0)
+    parallel (1.12.1)
+    parser (2.5.3.0)
+      ast (~> 2.4.0)
+    powerpack (0.1.2)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
+    pry-byebug (3.6.0)
+      byebug (~> 10.0)
+      pry (~> 0.10)
+    puma (3.12.0)
+    raabro (1.1.6)
+    rack (2.0.6)
+    rack-accept (0.4.5)
+      rack (>= 0.4)
+    rack-cors (1.0.2)
+    rack-protection (2.0.4)
+      rack
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
+    rails-dom-testing (2.0.3)
+      activesupport (>= 4.2.0)
+      nokogiri (>= 1.6)
+    rails-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
+    rainbow (3.0.0)
+    rake (12.3.2)
+    rb-fsevent (0.10.3)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
+    rbtrace (0.4.11)
+      ffi (>= 1.0.6)
+      msgpack (>= 0.4.3)
+      optimist (>= 3.0.0)
+    redis (4.0.3)
+    redis-namespace (1.6.0)
+      redis (>= 3.0.4)
+    rspec (3.8.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
+    rubocop (0.61.1)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.5, != 2.5.1.1)
+      powerpack (~> 0.1)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.4.0)
+    rubocop-rspec (1.30.1)
+      rubocop (>= 0.60.0)
+    ruby-progressbar (1.10.0)
+    ruby_dep (1.5.0)
+    semver2 (3.4.2)
+    settingslogic (2.0.9)
+    shellany (0.0.1)
+    sidekiq (5.2.3)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
+    sidekiq-cron (1.0.4)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
+    spoon (0.0.6)
+      ffi
+    thor (0.19.4)
+    thread_safe (0.3.6)
+    timecop (0.9.1)
+    typhoeus (1.3.1)
+      ethon (>= 0.9.0)
+    tzinfo (1.2.5)
+      thread_safe (~> 0.1)
+    unicode-display_width (1.4.0)
+    usagewatch (0.0.7)
+    usagewatch_ext (0.2.1)
+      usagewatch (~> 0.0.6)
+    virtus (1.0.5)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
+      equalizer (~> 0.0, >= 0.0.9)
+    zold-score (0.4.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  actionpack
+  activesupport
+  auto_logger (~> 0.1.3)
+  bugsnag (~> 6.9)
+  factory_bot
+  foreman
+  get_process_mem
+  grape (~> 1.2.2)
+  grape-swagger
+  guard
+  guard-bundler
+  guard-ctags-bundler
+  guard-foreman
+  guard-rack
+  guard-rspec
+  guard-rubocop
+  hiredis (~> 0.6.0)
+  logger
+  openssl (>= 2.1.2)
+  pry
+  pry-byebug
+  puma
+  rack
+  rack-cors
+  rack-swagger-ui!
+  rack-test
+  rake
+  rbtrace
+  redis (~> 4.0)
+  redis-namespace
+  rspec
+  rubocop
+  rubocop-rspec
+  semver2
+  settingslogic
+  sidekiq
+  sidekiq-cron
+  timecop
+  typhoeus
+  usagewatch_ext
+  zold-score
+
+BUNDLED WITH
+   1.17.1

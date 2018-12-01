@@ -1,0 +1,51 @@
+---
+defaults: &defaults
+  home: https://www.zold.io
+  network: zold
+
+  host: <%= ENV['ZOLD_HOST'] || `hostname -f` %>
+  port: <%= ENV['ZOLD_POST'] || 4096 %>
+
+  secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>
+
+  # @dapi`s invoice
+  #
+  invoice: <%= ENV['ZOLD_INVOICE'] || '66Yodh14@1142c2d008235bbe' %>
+
+  sidekiq_web:
+    username: <%= ENV['SIDEKIQ_USERNAME'] %>
+    password: <%= ENV['SIDEKIQ_PASSWORD'] %>
+
+  sidekiq_redis:
+    # You can use a namespace if you have no empty dbs
+    # namespace: zold
+    url: redis://localhost:6379/8
+
+  # Default remote nodes
+  default_remotes:
+    - b1.zold.io:80
+    - b2.zold.io:4096
+    - 159.203.63.90:4096
+    - 167.99.77.100:4096
+    - 159.203.19.189:4096
+    - 138.197.140.42:4096
+    - 88.198.13.175:4096
+    - 138.201.231.23:4096
+    - 78.26.142.131:4096
+    - 35.180.30.97:4096
+    - 159.69.220.146:4096
+    - 92.60.176.47:4096
+    - 92.60.176.47:4097
+    - db2.kiiiosk.ru:4096
+
+production:
+  <<: *defaults
+  stores_dir: ./.zoldy/prod
+
+development:
+  <<: *defaults
+  stores_dir: ./.zoldy/dev
+
+test:
+  <<: *defaults
+  stores_dir: ./.zoldy/test

@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# Copyright (c) 2018 Danil Pismenny <danil@brandymint.ru>
+# frozen_string_literal: true
+
+require File.expand_path('../config/environment', __dir__)
+
+at_exit do
+  Bugsnag.notify($ERROR_INFO) if $ERROR_INFO
+end
+
+puts "Zoldy environment: #{Zoldy.env}"
+
+if ARGV.empty?
+  Pry.start
+else
+  p eval(ARGV.join(' '))
+end
