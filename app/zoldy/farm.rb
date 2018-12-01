@@ -1,28 +1,18 @@
+require 'json'
+
 module Zoldy
-  class Farm
-    def dump
-      IO.write scores_file, generate
-    end
+  # Scores generator
+  #
+  class ScoresFarm
 
-    def scores
-      @scores ||= load
-    end
-
-    def load
-      IO.read(scores_file).split(/\n/).map do |t|
-        Score.parse(t)
-      end.compact
+    # @param [Zoldy::Entity::Score] score - current (best) score
+    #
+    def initialize(score: nil)
+      @score = score || Zoldy.app.score || Zold::Score.new( host: Settings.host, port: Settings.port, invoice: Settings.invoice )
     end
 
     def generate(times = 60)
-      score = Zoldy.app.score
-      times.times.map { prev = score; score = score.next; prev.to_s }.join("\n")
-    end
-
-    private
-
-    def scores_file
-      'scores_file'
+      times.times.map { prev = score; score = score.next; prev.to_s }
     end
   end
 end

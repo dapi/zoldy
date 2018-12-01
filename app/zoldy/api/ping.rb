@@ -13,13 +13,11 @@ module Zoldy
     desc 'ping node'
     get '/' do
       present(
-        protocol:    Zoldy::Middleware::PROTOCOL,
         version:     Zoldy.version,
-        score:       Zoldy.app.score.to_h,
-
-        # debug info
         alias:       Settings.node_alias,
         network:     Settings.network,
+        protocol:    Zoldy::Middleware::PROTOCOL,
+        score:       Zoldy.app.score.to_h,
         pid:         Process.pid,
         processes:   0,
         cpus:        Concurrent.processor_count,
@@ -29,7 +27,7 @@ module Zoldy
         threads:     detailed_threads_count,
         wallets:     Zoldy.app.wallets.count,
         remotes:     Zoldy.app.remotes.count,
-        #nscore: all_remotes.map { |r| r[:score] }.inject(&:+) || 0,
+        nscore:      Zoldy.app.remotes.nscore,
         #farm: Zoldy.Settings.farm.to_json,
         #entrance: Zoldy.Settings.entrance.to_json,
         date:        Time.now.utc.iso8601,

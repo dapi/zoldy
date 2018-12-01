@@ -18,6 +18,8 @@ gem 'semver2'
 
 gem 'bootsnap'
 
+gem 'virtus'
+
 gem 'get_process_mem'
 gem 'usagewatch_ext'
 

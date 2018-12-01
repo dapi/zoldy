@@ -1,9 +1,15 @@
 ---
 home: https://www.zold.io
 network: zold
-node_alias: 94.232.57.6:4096
-host: 94.232.57.6
-invoice: 66Yodh14@1142c2d008235bbe
-port: 4096
+
+host: <%= ENV['ZOLD_HOST'] || `hostname -f` %>
+port: <%= ENV['ZOLD_POST'] || 4096 %>
+
+# @dapi`s invoice
+#
+invoice: <%= ENV['ZOLD_INVOICE'] || '66Yodh14@1142c2d008235bbe' %>
+strength: 7
 redis:
   url: redis://localhost
+
+scores_file: ./tmp/scores

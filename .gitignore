@@ -52,3 +52,4 @@ build-iPhoneSimulator/
 gems.tags
 tags
 *.bak
+.envrc

@@ -2,7 +2,7 @@
 
 module Zoldy
   class Middleware
-    PROTOCOL = 2.to_s
+    PROTOCOL = 2
 
     # HTTP header we add to each HTTP request, in order to inform
     # the other node about the score. If the score is big enough,
@@ -36,7 +36,9 @@ module Zoldy
       headers[NETWORK_HEADER]         = Settings.network
       headers[VERSION_HEADER]         = Zoldy.version
       headers[PROTOCOL_HEADER]        = PROTOCOL
-      headers[SCORE_HEADER]           = Zoldy.app.score.reduced(16).to_s
+      # Was, what for?
+      # headers[SCORE_HEADER]           = Zoldy.app.score.reduced(16).to_s
+      headers[SCORE_HEADER]           = Zoldy.app.score.to_s
 
       [status, headers, body]
     end

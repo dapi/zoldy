@@ -28,8 +28,20 @@ module Zoldy
       @remotes ||= RemotesRepository.new
     end
 
+    def scores
+      @scores ||= scores_store.load
+    end
+
     def score
-      @score ||= Zold::Score.new host: Settings.host, port: Settings.port, invoice: Settings.invoice
+      scores.best_one
+    end
+
+    def scores_store
+      @scores_store ||= Zoldy::Stores::ScoresStore.new(scores_file: Settings.scores_file)
+    end
+
+    def threads
+      Thread.list
     end
 
     def uptime

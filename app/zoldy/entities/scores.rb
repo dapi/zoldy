@@ -7,48 +7,37 @@ module Zoldy
 
       LIFETIME = 24.hours
 
-      delegate :each, to: :scores
+      delegate :each, to: :list
+      delegate :new, to: :class
 
-      def initialize(scores=[])
-        @scores = Array(scores)
+      def initialize(list=[])
+        @list = Array(list)
       end
 
       def valid
-        select(&:valid?)
+        new select(&:valid?)
           .reject(&:expired?)
           .reject { |s| s.strength < Settings.strength }
       end
 
-      def sort
-        sort_by(&:value)
-          .reverse
-      end
-
-      def unique
-        uniq(&:time)
+      def uniq
+        new sort_by(&:value).reverse.uniq(&:time)
         # TODO WTF? .uniq { |s| (s.age / period).round }
         # .map(&:to_s).uniq # TODO implement uniq in Zold::Score
       end
 
       def best
-        self.class.new(
-          valid
-          .sort
+        valid
           .uniq
-        )
       end
 
-      def parse(multiline_string)
-        self.class.new split("\n").map { |s| Score.parse s }
-      end
-
-      def dump
-        join("\n")
+      def best_one
+        best.first
       end
 
       private
 
-      attr_reader :scores
+      attr_reader :list
     end
   end
 end

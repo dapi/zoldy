@@ -149,6 +149,7 @@ DEPENDENCIES
   semver2
   settingslogic
   usagewatch_ext
+  virtus
   zold-score
 
 RUBY VERSION
