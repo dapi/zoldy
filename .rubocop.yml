@@ -23,12 +23,6 @@ Style/Documentation:
     - 'app/workers/reconnect_worker.rb'
     - 'app/workers/score_farm_worker.rb'
 
-# Offense count: 2
-# Configuration parameters: .
-# SupportedStyles: annotated, template, unannotated
-Style/FormatStringToken:
-  EnforcedStyle: unannotated
-
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:

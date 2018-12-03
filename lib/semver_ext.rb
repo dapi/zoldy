@@ -5,7 +5,7 @@ module XSemVer
   #
   class SemVer
     def to_s
-      format('%M.%m.%p%s')
+      format('%M.%m.%p%s') # rubocop:disable Style/FormatStringToken
     end
   end
 end
