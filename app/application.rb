@@ -5,12 +5,8 @@ class Application
     @started_at = Time.now
   end
 
-  def lock_manager
-    @lock_manager ||= Redlock::Client.new([ Settings.redlock_redis.symbolize_keys ]).freeze
-  end
-
-  def protocol
-    @protocol ||= Protocol.new.freeze
+  def uptime
+    (Time.now - started_at).freeze
   end
 
   def wallets
@@ -35,9 +31,5 @@ class Application
 
   def scores_store
     @scores_store ||= ::ScoresStore.new(file: Settings.scores_file).freeze
-  end
-
-  def uptime
-    (Time.now - started_at).freeze
   end
 end

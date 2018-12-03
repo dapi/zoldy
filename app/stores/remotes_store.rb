@@ -11,7 +11,7 @@ class RemotesStore
   end
 
   def add(remote)
-    Zoldy.app.lock_manager.lock! self.class.name, LOCK_TIMEOUT do
+    Zoldy.lock_manager.lock! self.class.name, LOCK_TIMEOUT do
       remotes = restore
       if remotes.include? remote
         logger.debug "Remote #{remote} already exists in list"

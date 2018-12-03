@@ -9,8 +9,9 @@ class HttpClient
   MIN_SCORE_VALUE = 3
   private_constant :MIN_SCORE_VALUE
 
-  def initialize(root_url)
+  def initialize(root_url, protocol: )
     @root_url = root_url.is_a?(URI) ? root_url : URI(root_url)
+    @protocol = protocol
   end
 
   def get(path, timeout: READ_TIMEOUT)
@@ -36,7 +37,7 @@ class HttpClient
 
   private
 
-  attr_reader :root_url
+  attr_reader :root_url, :protocol
 
   def build_uri(path)
     uri = root_url.clone
@@ -45,7 +46,7 @@ class HttpClient
   end
 
   def headers
-    Zoldy.app.protocol.add_request_headers(
+    protocol.add_request_headers(
       'User-Agent'      => "Zoldy #{Zoldy::VERSION}",
       'Connection'      => 'close',
       'Accept-Encoding' => 'gzip'

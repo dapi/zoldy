@@ -37,6 +37,7 @@ gem 'grape'
 gem 'grape-swagger'
 
 gem 'activesupport'
+gem 'actionpack'
 gem 'settingslogic'
 
 gem 'rack'
@@ -51,9 +52,11 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-ctags-bundler'
   gem 'guard-rack'
+  gem 'guard-rspec'
   gem 'rubocop'
 end
 
 group :test do
   gem 'rack-test'
+  gem 'rspec'
 end

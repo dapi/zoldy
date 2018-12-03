@@ -28,7 +28,7 @@ class Remote
   end
 
   def client
-    HttpClient.new uri
+    HttpClient.new uri, protocol: Zoldy.protocol
   end
 
   def uri

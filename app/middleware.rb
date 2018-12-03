@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'action_dispatch'
+
 # Middleware pay attention and validate request HTTP headers and
 # add response HTTP headers
 #
@@ -9,7 +11,7 @@ class Middleware
   end
 
   def call(env)
-    Zoldy.app.protocol.add_remote_by_score_header(
+    Zoldy.protocol.add_remote_by_score_header(
       ActionDispatch::Http::Headers.from_hash(env)[Protocol::SCORE_HEADER]
     )
 
@@ -18,7 +20,7 @@ class Middleware
     headers['Cache-Control']               = 'no-cache'
     headers['Access-Control-Allow-Origin'] = '*'
 
-    Zoldy.app.add_response_headers headers
+    Zoldy.protocol.add_response_headers headers
 
     [status, headers, body]
   end

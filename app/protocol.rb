@@ -5,6 +5,10 @@ class Protocol
   include HTTP_Headers
 
   VERSION = 2
+  MIN_SCORE_VALUE = Zold::Score::STRENGTH
+
+  # Reduce publicated score for http headers
+  SCORE_REDUCING = 4
 
   Error = Class.new StandardError
 
@@ -33,16 +37,19 @@ class Protocol
 
   # @param [Hash] of HTTP response headers
   def add_response_headers headers
-    add_http_headers
+    add_http_headers headers
   end
 
   private
 
   def add_http_headers(headers)
+    score = Zoldy.app.score
+
     headers[PROTOCOL_HEADER] = VERSION.to_s
-    headers[NETWORK_HEADER]  = Settings.network
-    headers[SCORE_HEADER]    = Zoldy.app.score.reduced(4).to_text if score.valid? && !score.expired? && score.value > MIN_SCORE_VALUE
     headers[VERSION_HEADER]  = Zoldy::VERSION.to_s
+
+    headers[NETWORK_HEADER]  = Settings.network
+    headers[SCORE_HEADER]    = score.reduced(SCORE_REDUCING).to_text if score.valid? && !score.expired? && score.value >= MIN_SCORE_VALUE
 
     headers
   end
