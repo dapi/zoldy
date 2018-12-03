@@ -46,11 +46,11 @@ module Zoldy
     end
 
     def remotes_store
-      @remotes_store ||= Zoldy::Stores::RemotesStore.new(file: Settings.remotes_file)
+      @remotes_store ||= ::RemotesStore.new(file: Settings.remotes_file)
     end
 
     def scores_store
-      @scores_store ||= Zoldy::Stores::ScoresStore.new(file: Settings.scores_file)
+      @scores_store ||= ::ScoresStore.new(file: Settings.scores_file)
     end
 
     def threads
