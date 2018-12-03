@@ -1,0 +1,71 @@
+require: rubocop-rspec
+
+# Offense count: 1
+Lint/HandleExceptions:
+  Exclude:
+    - 'Rakefile'
+
+# Offense count: 1
+# Configuration parameters: EnforcedStyleForLeadingUnderscores.
+# SupportedStylesForLeadingUnderscores: disallowed, required, optional
+Naming/MemoizedInstanceVariableName:
+  Exclude:
+    - 'config/application.rb'
+
+# Offense count: 1
+# Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist, MethodDefinitionMacros.
+# NamePrefix: is_, has_, have_
+# NamePrefixBlacklist: is_, has_, have_
+# NameWhitelist: is_a?
+# MethodDefinitionMacros: define_method, define_singleton_method
+Naming/PredicateName:
+  Exclude:
+    - 'spec/**/*'
+    - 'app/entities/remote.rb'
+
+# Offense count: 2
+# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
+# AllowedNames: io, id, to, by, on, in, at, ip, db
+Naming/UncommunicativeMethodParamName:
+  Exclude:
+    - 'app/stores/remotes_store.rb'
+    - 'app/stores/scores_store.rb'
+
+# Offense count: 1
+Security/Eval:
+  Exclude:
+    - 'bin/console'
+
+Style/AsciiComments:
+  Enabled: false
+
+# Offense count: 13
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - 'app/api/not_found_api.rb'
+    - 'app/api/ping_api.rb'
+    - 'app/api/remotes_api.rb'
+    - 'app/api/root_api.rb'
+    - 'app/api/version_api.rb'
+    - 'app/application.rb'
+    - 'app/settings.rb'
+    - 'app/workers/add_remote_worker.rb'
+    - 'app/workers/reconnect_worker.rb'
+    - 'app/workers/score_farm_worker.rb'
+    - 'config/application.rb'
+    - 'lib/pretty_json_formatter.rb'
+    - 'lib/semver_ext.rb'
+
+# Offense count: 2
+# Configuration parameters: .
+# SupportedStyles: annotated, template, unannotated
+Style/FormatStringToken:
+  EnforcedStyle: unannotated
+
+# Offense count: 12
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 137

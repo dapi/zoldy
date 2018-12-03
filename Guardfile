@@ -35,7 +35,7 @@ end
 # end
 
 guard 'ctags-bundler', src_path: %w[app lib] do
-  watch(/^(app|lib)\/.*\.rb$/)
+  watch(%r{^(app|lib)\/.*\.rb$})
   watch('Gemfile.lock')
 end
 
@@ -51,9 +51,9 @@ end
 if ENV['FOREMAN']
   guard :foreman, procfile: 'Procfile.dev' do
     # Rails example - Watch controllers, models, helpers, lib, and config files
-    watch(/^app\/.+\/.+\.rb$/)
-    watch(/^lib\/.+\.rb$/)
-    watch(/^config\/*/)
+    watch(%r{^app\/.+\/.+\.rb$})
+    watch(%r{^lib\/.+\.rb$})
+    watch(%r{^config\/*})
   end
 end
 

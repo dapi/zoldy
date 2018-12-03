@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Remote do
-  subject { build :remote }
+  subject(:remote) { build :remote }
 
-  specify { expect(subject.home).to be_present }
+  specify { expect(remote.home).to be_present }
 end

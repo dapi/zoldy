@@ -17,9 +17,11 @@ class Scores
   end
 
   def valid
-    new select(&:valid?)
+    new(
+      select(&:valid?)
       .reject(&:expired?)
       .reject { |s| s.strength < Zold::Score::STRENGTH }
+    )
   end
 
   def uniq

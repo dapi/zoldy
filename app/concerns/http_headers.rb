@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module HTTP_Headers
+module HttpHeaders
   # HTTP header we add to each HTTP request, in order to inform
   # the other node about the score. If the score is big enough,
   # the remote node will add us to its list of remote nodes.

@@ -4,7 +4,7 @@
 #
 class Protocol
   include AutoLogger
-  include HTTP_Headers
+  include HttpHeaders
 
   VERSION = 2
   MIN_SCORE_VALUE = Zold::Score::STRENGTH
