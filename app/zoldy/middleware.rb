@@ -2,7 +2,7 @@
 
 module Zoldy
   class Middleware
-    PROTOCOL = 2
+    PROTOCOL = Zoldy::Protocol::VERSION
 
     # HTTP header we add to each HTTP request, in order to inform
     # the other node about the score. If the score is big enough,

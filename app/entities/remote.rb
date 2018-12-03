@@ -28,7 +28,7 @@ class Remote
   end
 
   def client
-    HttpClient.new uri: uri
+    HttpClient.new uri
   end
 
   def uri
