@@ -5,11 +5,16 @@ network: zold
 host: <%= ENV['ZOLD_HOST'] || `hostname -f` %>
 port: <%= ENV['ZOLD_POST'] || 4096 %>
 
+secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>
+
 # @dapi`s invoice
 #
 invoice: <%= ENV['ZOLD_INVOICE'] || '66Yodh14@1142c2d008235bbe' %>
-strength: 7
-redis:
-  url: redis://localhost
+
+sidekiq_redis:
+  # You can use a namespace if you have no empty dbs
+  # namespace: zold
+  url: redis://localhost:6379/8
 
 scores_file: ./tmp/scores
+remotes_file: ./tmp/remotes

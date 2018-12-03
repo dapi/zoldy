@@ -23,6 +23,8 @@ module Zoldy
     # protocol.
     PROTOCOL_HEADER = 'X-Zold-Protocol'
 
+    HEADERS = [SCORE_HEADER, VERSION_HEADER, NETWORK_HEADER, PROTOCOL_HEADER]
+
     def initialize(app)
       @app = app
     end
@@ -33,12 +35,18 @@ module Zoldy
       headers['Cache-Control']               = 'no-cache'
       headers['Access-Control-Allow-Origin'] = '*'
 
-      headers[NETWORK_HEADER]         = Settings.network
-      headers[VERSION_HEADER]         = Zoldy.version
-      headers[PROTOCOL_HEADER]        = PROTOCOL
-      headers[SCORE_HEADER]           = Zoldy.app.score.to_s
+      add_zold_headers headers
 
       [status, headers, body]
+    end
+
+    private
+
+    def add_zold_headers headers
+      headers[NETWORK_HEADER]         = Settings.network
+      headers[VERSION_HEADER]         = Zoldy::VERSION.to_s
+      headers[PROTOCOL_HEADER]        = PROTOCOL.to_s
+      headers[SCORE_HEADER]           = Zoldy.app.score.to_s
     end
   end
 end

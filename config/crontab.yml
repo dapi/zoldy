@@ -1,0 +1,4 @@
+ReconnectWorker:
+  cron: '1/* * * * *'
+  class: ReconnectWorker
+  queue: default

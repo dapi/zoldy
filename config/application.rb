@@ -8,7 +8,8 @@ require 'active_support'
 require 'active_support/dependencies'
 require 'semver'
 
-ActiveSupport::Dependencies.autoload_paths += %w[app]
+ActiveSupport::Dependencies.mechanism = :require
+ActiveSupport::Dependencies.autoload_paths += %w[app app/workers]
 
 module Zoldy
   VERSION = SemVer.find
@@ -20,24 +21,32 @@ module Zoldy
       @started_at = Time.now
     end
 
+    def protocol
+      @protocol ||= Zoldy::Protocol.new self
+    end
+
     def wallets
-      @wallets ||= WalletsRepository.new
+      @wallets ||= [] # wallets_store.restore
     end
 
     def remotes
-      @remotes ||= RemotesRepository.new
+      RequestStore.store[:remotes] ||= remotes_store.restore.presence || Zoldy::Stores::RemotesStore.new(file: './resources/remotes').restore
     end
 
     def scores
-      @scores ||= scores_store.load
+      RequestStore.store[:scores] ||= scores_store.restore
     end
 
     def score
       scores.best_one
     end
 
+    def remotes_store
+      @remotes_store ||= Zoldy::Stores::RemotesStore.new(file: Settings.remotes_file)
+    end
+
     def scores_store
-      @scores_store ||= Zoldy::Stores::ScoresStore.new(scores_file: Settings.scores_file)
+      @scores_store ||= Zoldy::Stores::ScoresStore.new(file: Settings.scores_file)
     end
 
     def threads
@@ -49,15 +58,7 @@ module Zoldy
     end
   end
 
-  def self.version
-    VERSION.format("%M.%m.%p%s")
-  end
-
   def self.app
     @application ||= Application.new
-  end
-
-  def self.redis
-    @redis ||= Redis.new Settings.redis.symbolize_keys
   end
 end

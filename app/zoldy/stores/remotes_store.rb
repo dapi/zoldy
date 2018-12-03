@@ -1,20 +1,16 @@
 module Zoldy
   module Stores
-    class ScoresStore
+    class RemotesStore
       LINE_SPLITTER = "\n"
 
       def initialize(file: nil)
         @file = file || raise('Must be a file path')
       end
 
-      # @param [Zoldy::Entities::Scores] scores
-      #
-      def store(scores)
-        IO.write file, dump(scores)
+      def store(remotes)
+        raise 'not impelmeneted'
       end
 
-      # @return Zoldy::Entities::Scores
-      #
       def restore
         parse read
       end
@@ -29,14 +25,13 @@ module Zoldy
         ''
       end
 
-      def dump(scores)
-        scores.join LINE_SPLITTER
-      end
-
       def parse(ms)
-        list = ms.split(LINE_SPLITTER).map { |s| Zold::Score.parse s }
+        list = ms.split(LINE_SPLITTER).map do |r|
+          host, port = r.split(',')
+          Zoldy::Entities::Remote.new(host: host, port: port)
+        end
 
-        Zoldy::Entities::Scores.new(list)
+        Zoldy::Entities::Remotes.new list
       end
     end
   end

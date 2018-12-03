@@ -10,11 +10,17 @@ gem 'zold-score'
 gem "hiredis", "~> 0.6.0"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0", :require => ["redis", "redis/connection/hiredis"]
-#gem 'redis-namespace'
-#gem 'redis-rails'
-#gem 'redlock'
-
+gem 'redis-namespace'
+gem 'typhoeus'
 gem 'semver2'
+
+gem 'request_store'
+gem 'request_store-sidekiq'
+
+gem 'foreman'
+
+gem 'sidekiq'
+gem 'sidekiq-cron'
 
 gem 'bootsnap'
 
@@ -35,9 +41,11 @@ gem 'rack'
 gem 'rake'
 
 gem 'puma'
+gem 'auto_logger', '~> 0.1.3'
 
 group :development do
   gem 'guard'
+  gem 'guard-foreman'
   gem 'guard-bundler'
   gem 'guard-ctags-bundler'
   gem 'guard-rack'

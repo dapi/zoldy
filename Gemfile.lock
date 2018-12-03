@@ -7,22 +7,43 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     ast (2.4.0)
+    auto_logger (0.1.3)
+      activesupport
+      beautiful-log
+      logger
+    awesome_print (1.8.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    beautiful-log (0.2.2)
+      awesome_print (~> 1.8.0)
+      colorize (~> 0.8.1)
     bootsnap (1.3.2)
       msgpack (~> 1.0)
     builder (3.2.3)
     coderay (1.1.2)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
+    colorize (0.8.1)
     concurrent-ruby (1.1.3)
+    connection_pool (2.2.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
+    dotenv (0.7.0)
     equalizer (0.0.11)
+    et-orbi (1.1.6)
+      tzinfo
+    ethon (0.11.0)
+      ffi (>= 1.3.0)
     ffi (1.9.25)
+    foreman (0.64.0)
+      dotenv (~> 0.7.0)
+      thor (>= 0.13.6)
     formatador (0.2.5)
+    fugit (1.1.6)
+      et-orbi (~> 1.1, >= 1.1.6)
+      raabro (~> 1.1)
     get_process_mem (0.2.3)
     grape (1.1.0)
       activesupport
@@ -50,6 +71,9 @@ GEM
     guard-ctags-bundler (1.4.0)
       guard (>= 2.0)
       guard-compat (>= 0.1.0)
+    guard-foreman (0.0.4)
+      guard (~> 2.6)
+      spoon (~> 0.0, >= 0.0.4)
     guard-rack (2.2.0)
       ffi
       guard (~> 2.3)
@@ -63,6 +87,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    logger (1.2.8)
     lumberjack (1.0.13)
     method_source (0.9.2)
     minitest (5.11.3)
@@ -83,9 +108,12 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     puma (3.12.0)
+    raabro (1.1.6)
     rack (2.0.6)
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-protection (2.0.4)
+      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rainbow (3.0.0)
@@ -94,6 +122,13 @@ GEM
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     redis (4.0.2)
+    redis-namespace (1.6.0)
+      redis (>= 3.0.4)
+    request_store (1.4.1)
+      rack (>= 1.4)
+    request_store-sidekiq (0.1.0)
+      request_store (>= 1.3)
+      sidekiq (>= 3.0)
     rubocop (0.60.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -107,10 +142,19 @@ GEM
     semver2 (3.4.2)
     settingslogic (2.0.9)
     shellany (0.0.1)
+    sidekiq (5.2.3)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
+    sidekiq-cron (1.0.4)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
     spoon (0.0.6)
       ffi
     thor (0.20.3)
     thread_safe (0.3.6)
+    typhoeus (1.3.1)
+      ethon (>= 0.9.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     unicode-display_width (1.4.0)
@@ -129,13 +173,16 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  auto_logger (~> 0.1.3)
   bootsnap
+  foreman
   get_process_mem
   grape
   grape-swagger
   guard
   guard-bundler
   guard-ctags-bundler
+  guard-foreman
   guard-rack
   hiredis (~> 0.6.0)
   openssl
@@ -145,9 +192,15 @@ DEPENDENCIES
   rack-test
   rake
   redis (~> 4.0)
+  redis-namespace
+  request_store
+  request_store-sidekiq
   rubocop
   semver2
   settingslogic
+  sidekiq
+  sidekiq-cron
+  typhoeus
   usagewatch_ext
   virtus
   zold-score

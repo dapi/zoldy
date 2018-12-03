@@ -7,7 +7,7 @@ module Zoldy
 
       LIFETIME = 24.hours
 
-      delegate :each, to: :list
+      delegate :each, :join, to: :list
       delegate :new, to: :class
 
       def initialize(list=[])
@@ -33,6 +33,10 @@ module Zoldy
 
       def best_one
         best.first
+      end
+
+      def <<(score)
+        new list + [score]
       end
 
       private

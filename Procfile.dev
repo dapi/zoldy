@@ -1,0 +1,1 @@
+worker: bundle exec sidekiq -r ./config/environment.rb -C ./config/sidekiq.yml -e development -v  
