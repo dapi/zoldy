@@ -52,6 +52,8 @@ GEM
       tzinfo
     ethon (0.11.0)
       ffi (>= 1.3.0)
+    factory_bot (4.11.1)
+      activesupport (>= 3.0.0)
     ffi (1.9.25)
     foreman (0.64.0)
       dotenv (~> 0.7.0)
@@ -222,6 +224,7 @@ DEPENDENCIES
   activesupport
   auto_logger (~> 0.1.3)
   bootsnap
+  factory_bot
   foreman
   get_process_mem
   grape

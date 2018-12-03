@@ -56,7 +56,12 @@ group :development do
   gem 'rubocop'
 end
 
+group :development, :test do
+  #
+end
+
 group :test do
+  gem 'factory_bot'
   gem 'rack-test'
   gem 'rspec'
 end
