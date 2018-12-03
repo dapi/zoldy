@@ -1,3 +1,5 @@
+require 'benchmark'
+
 class ScoreFarmWorker
   include Sidekiq::Worker
   include AutoLogger
@@ -7,14 +9,17 @@ class ScoreFarmWorker
   end
 
   def generate(score_serialized = nil)
-    logger.info "Argumented score: #{score_serialized || :none}"
+    logger.debug "Argumented score: `#{score_serialized || :none}`"
+
     score = score_serialized.present? ? Zold::Score.parse(score_serialized) : build_score
+    logger.debug "Current score: `#{score}`, start calculation of next score"
 
-    logger.info "Current score: #{score}"
-    score = score.next
+    bm = Benchmark.measure { score = score.next }
+    logger.debug "Calculated score: `#{score}`"
+    logger.info "New score value: #{score.value}, time spent: #{bm.real} secs"
 
-    logger.info "Next score: #{score}"
     store scores << score
+    logger.debug "Scores are saved"
 
     score
   end

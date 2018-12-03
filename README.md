@@ -45,6 +45,7 @@ It starts `sidekiq`, and `rack` application on 4096 (default) port
 * Node is common rack-application
 * develpoment console a-like `rails c` -> `./bin/console`
 * reloads application when code is changes in development
+* Uses `foreman` to start and manager processes in development and production
 
 # TODO
 
