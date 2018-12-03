@@ -2,6 +2,8 @@
 
 require 'benchmark'
 
+# Calculate current score and queue itself to calculate next score
+#
 class ScoreFarmWorker
   include Sidekiq::Worker
   include AutoLogger

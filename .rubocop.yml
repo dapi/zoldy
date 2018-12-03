@@ -1,27 +1,9 @@
 require: rubocop-rspec
 
 # Offense count: 1
-Lint/HandleExceptions:
-  Exclude:
-    - 'Rakefile'
-
-# Offense count: 1
 Security/Eval:
   Exclude:
-    - 'bin/console'
-
-# Offense count: 13
-Style/Documentation:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/api/not_found_api.rb'
-    - 'app/api/ping_api.rb'
-    - 'app/api/remotes_api.rb'
-    - 'app/api/root_api.rb'
-    - 'app/api/version_api.rb'
-    - 'app/workers/add_remote_worker.rb'
-    - 'app/workers/reconnect_worker.rb'
-    - 'app/workers/score_farm_worker.rb'
+    - 'bin/*'
 
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

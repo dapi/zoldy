@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Protocol supportes /remotes endpoint
+# Returns available list of <Remote> nodes
+#
 class RemotesAPI < Grape::API
   helpers do
     include AutoLogger::Named.new(name: :remote_api)

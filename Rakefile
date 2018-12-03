@@ -21,7 +21,8 @@ end
 begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new(:spec)
-rescue LoadError
+rescue LoadError => err
+  puts err
 end
 
 require 'rubocop/rake_task'

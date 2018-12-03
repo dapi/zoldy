@@ -2,6 +2,8 @@
 
 require 'lib/pretty_json_formatter'
 
+# Root API agregator
+#
 class RootAPI < Grape::API
   format :json
   default_format :json

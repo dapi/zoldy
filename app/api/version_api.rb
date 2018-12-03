@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# /version endpoint for debugging
+#
 class VersionAPI < Grape::API
   format :txt
 

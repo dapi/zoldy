@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Debug / endpoint
+#
 class PingAPI < Grape::API
   helpers do
     include AutoLogger::Named.new(name: :ping_api)

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Adds remote host into local store. Performs from <Protocol>
+#
 class AddRemoteWorker
   include Sidekiq::Worker
   include AutoLogger
