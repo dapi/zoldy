@@ -5,10 +5,6 @@ class Settings < Settingslogic
     Zold::Score::STRENGTH
   end
 
-  def protocol
-    Zoldy::Middleware::PROTOCOL
-  end
-
   def node_alias
     [host, port].join ':'
   end

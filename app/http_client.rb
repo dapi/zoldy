@@ -26,10 +26,11 @@ class HttpClient
   def put(path, body, timeout: READ_TIMEOUT)
     Typhoeus::Request.put(
       build_uri(path),
-      body:           body,
-      headers:        headers.merge('Content-Type': 'text/plain'),
-      connecttimeout: CONNECT_TIMEOUT,
-      timeout:        timeout
+      accept_encoding: 'gzip',
+      body:            body,
+      headers:         headers.merge('Content-Type': 'text/plain'),
+      connecttimeout:  CONNECT_TIMEOUT,
+      timeout:         timeout
     )
   end
 
@@ -44,7 +45,7 @@ class HttpClient
   end
 
   def headers
-    Zoldy.app.protocol.add_remote_by_score_header(
+    Zoldy.app.protocol.add_request_headers(
       'User-Agent'      => "Zoldy #{Zoldy::VERSION}",
       'Connection'      => 'close',
       'Accept-Encoding' => 'gzip'

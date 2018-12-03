@@ -11,6 +11,6 @@ use Rack::Runtime
 use Rack::Deflater
 use Rack::Reloader
 use RequestStore::Middleware
-use Zoldy::Middleware
+use Middleware
 
-run Rack::URLMap.new('/' => Zoldy::API, '/sidekiq' => Sidekiq::Web)
+run Rack::URLMap.new('/' => RootAPI, '/sidekiq' => Sidekiq::Web)
