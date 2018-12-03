@@ -28,7 +28,7 @@ module Zoldy
       end
 
       def client
-        Zoldy::Client.new uri: uri
+        HttpClient.new uri: uri
       end
 
       def uri
