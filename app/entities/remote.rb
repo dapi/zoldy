@@ -49,7 +49,7 @@ class Remote
     0 # TODO
   end
 
-  def is_default
+  def default?
     false # TODO
   end
 
@@ -59,7 +59,7 @@ class Remote
       port: port,
       score: score,
       errors: errors,
-      default: is_default,
+      default: default?,
       home: uri
     }
   end

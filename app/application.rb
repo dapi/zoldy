@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Core application class. God object.
+#
 class Application
   attr_reader :started_at
 

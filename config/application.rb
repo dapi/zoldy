@@ -12,6 +12,8 @@ require 'lib/http_client'
 ActiveSupport::Dependencies.mechanism = :require
 ActiveSupport::Dependencies.autoload_paths += %w[app app/workers app/concerns app/api app/entities app/stores]
 
+# Core application namespace
+#
 module Zoldy
   VERSION = SemVer.find
 
@@ -28,6 +30,6 @@ module Zoldy
   end
 
   def self.app
-    @application ||= Application.new
+    @app ||= Application.new
   end
 end

@@ -52,8 +52,8 @@ class RemotesStore
     end.join LINE_SPLITTER
   end
 
-  def parse(ms)
-    list = ms.split(LINE_SPLITTER).map do |r|
+  def parse(text)
+    list = text.split(LINE_SPLITTER).map do |r|
       host, port = r.split(',')
       ::Remote.new(host: host, port: port)
     end

@@ -51,8 +51,12 @@ class Protocol
     headers[VERSION_HEADER]  = Zoldy::VERSION.to_s
 
     headers[NETWORK_HEADER]  = Settings.network
-    headers[SCORE_HEADER]    = score.reduced(SCORE_REDUCING).to_text if score.valid? && !score.expired? && score.value >= MIN_SCORE_VALUE
+    headers[SCORE_HEADER]    = score.reduced(SCORE_REDUCING).to_text if score_valid?(score)
 
     headers
+  end
+
+  def score_valid?(score)
+    score.valid? && !score.expired? && score.value >= MIN_SCORE_VALUE
   end
 end

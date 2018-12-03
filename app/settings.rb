@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Application's settings
+#
 class Settings < Settingslogic
   source 'config/settings.yml'
 

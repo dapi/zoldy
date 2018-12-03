@@ -35,8 +35,8 @@ class ScoresStore
     scores.join LINE_SPLITTER
   end
 
-  def parse(ms)
-    list = ms.split(LINE_SPLITTER).map { |s| Zold::Score.parse s }
+  def parse(text)
+    list = text.split(LINE_SPLITTER).map { |s| Zold::Score.parse s }
 
     ::Scores.new(list)
   end
