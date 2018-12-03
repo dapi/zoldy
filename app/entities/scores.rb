@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Eumerabe Zold::Score collection
 #
 class Scores
@@ -10,7 +12,7 @@ class Scores
 
   # @param Array[Zold::Score]
   #
-  def initialize(list=[])
+  def initialize(list = [])
     @list = Array(list)
   end
 
@@ -22,7 +24,7 @@ class Scores
 
   def uniq
     new sort_by(&:value).reverse.uniq(&:time)
-    # TODO WTF? .uniq { |s| (s.age / period).round }
+    # TODO: WTF? .uniq { |s| (s.age / period).round }
     # .map(&:to_s).uniq # TODO implement uniq in Zold::Score
   end
 

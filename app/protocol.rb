@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Protocol that describes a White Paper
 #
 class Protocol
@@ -15,7 +17,7 @@ class Protocol
   # Add remote node from the score received in HTTP header
   #
   def add_remote_by_score_header(score_header)
-    # TODO validate network header and protocol numbers
+    # TODO: validate network header and protocol numbers
     return if score_header.blank?
 
     logger.debug "Try to add remote by header #{score_header}"
@@ -36,7 +38,7 @@ class Protocol
   end
 
   # @param [Hash] of HTTP response headers
-  def add_response_headers headers
+  def add_response_headers(headers)
     add_http_headers headers
   end
 

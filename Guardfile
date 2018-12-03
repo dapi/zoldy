@@ -29,10 +29,10 @@ guard :bundler do
   files.each { |file| watch(helper.real_path(file)) }
 end
 
-#guard 'rack', server: :puma, port: 4096 do
-  #watch('Gemfile.lock')
-  #watch(%r{^(config|lib|app)/.*})
-#end
+# guard 'rack', server: :puma, port: 4096 do
+# watch('Gemfile.lock')
+# watch(%r{^(config|lib|app)/.*})
+# end
 
 guard 'ctags-bundler', src_path: %w[app lib] do
   watch(/^(app|lib)\/.*\.rb$/)
@@ -48,9 +48,16 @@ end
 # * :procfile - an alternate Procfile to use (default is Procfile)
 # * :port - an alternate port to use (default is 5000)
 # * :root - an alternate application root
-#guard :foreman, procfile: 'Procfile.dev' do
-  ## Rails example - Watch controllers, models, helpers, lib, and config files
-  #watch( /^app\/.+\/.+\.rb$/ )
-  #watch( /^lib\/.+\.rb$/ )
-  #watch( /^config\/*/ )
-#end
+if ENV['FOREMAN']
+  guard :foreman, procfile: 'Procfile.dev' do
+    # Rails example - Watch controllers, models, helpers, lib, and config files
+    watch(/^app\/.+\/.+\.rb$/)
+    watch(/^lib\/.+\.rb$/)
+    watch(/^config\/*/)
+  end
+end
+
+guard :rubocop do
+  watch(/.+\.rb$/)
+  watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
+end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotFoundAPI < Grape::API
   helpers do
     include AutoLogger::Named.new(name: :not_found_api)

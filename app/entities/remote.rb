@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Remote node description model
 #
 class Remote
@@ -53,12 +55,12 @@ class Remote
 
   def as_json
     {
-      host:    host,
-      port:    port,
-      score:   score,
-      errors:  errors,
+      host: host,
+      port: port,
+      score: score,
+      errors: errors,
       default: is_default,
-      home:    uri
+      home: uri
     }
   end
 end

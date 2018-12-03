@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HTTP_Headers
   # HTTP header we add to each HTTP request, in order to inform
   # the other node about the score. If the score is big enough,
@@ -18,5 +20,5 @@ module HTTP_Headers
   # protocol.
   PROTOCOL_HEADER = 'X-Zold-Protocol'
 
-  HEADERS = [SCORE_HEADER, VERSION_HEADER, NETWORK_HEADER, PROTOCOL_HEADER]
+  HEADERS = [SCORE_HEADER, VERSION_HEADER, NETWORK_HEADER, PROTOCOL_HEADER].freeze
 end

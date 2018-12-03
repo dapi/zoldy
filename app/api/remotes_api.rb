@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemotesAPI < Grape::API
   helpers do
     include AutoLogger::Named.new(name: :remote_api)
@@ -14,7 +16,7 @@ class RemotesAPI < Grape::API
       version: Zoldy::VERSION.to_s,
       alias: Settings.node_alias,
       score: Zoldy.app.score.to_h,
-      all:   Zoldy.app.remotes.map(&:as_json)
+      all: Zoldy.app.remotes.map(&:as_json)
     )
   end
 end

@@ -16,7 +16,7 @@ module Zoldy
   VERSION = SemVer.find
 
   def self.lock_manager
-    @lock_manager ||= Redlock::Client.new([ Settings.redlock_redis.symbolize_keys ]).freeze
+    @lock_manager ||= Redlock::Client.new([Settings.redlock_redis.symbolize_keys]).freeze
   end
 
   def self.env

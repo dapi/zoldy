@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Eumerabe Remote collection
 #
 class Remotes
@@ -5,7 +7,7 @@ class Remotes
 
   delegate :each, :join, :empty?, :include?, to: :list
 
-  def initialize(list=[])
+  def initialize(list = [])
     @list = Array(list)
   end
 

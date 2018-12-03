@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'benchmark'
 
 class ScoreFarmWorker
@@ -19,7 +21,7 @@ class ScoreFarmWorker
     logger.info "New score value: #{score.value}, time spent: #{bm.real} secs"
 
     store scores << score
-    logger.debug "Scores are saved"
+    logger.debug 'Scores are saved'
 
     score
   end
@@ -38,6 +40,6 @@ class ScoreFarmWorker
 
   def build_score
     scores.best_one ||
-      Zold::Score.new( host: Settings.host, port: Settings.port, invoice: Settings.invoice )
+      Zold::Score.new(host: Settings.host, port: Settings.port, invoice: Settings.invoice)
   end
 end

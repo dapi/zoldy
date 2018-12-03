@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Store ::Remote info filesystem
 #
 class RemotesStore

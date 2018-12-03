@@ -100,6 +100,9 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    guard-rubocop (1.3.0)
+      guard (~> 2.0)
+      rubocop (~> 0.20)
     hiredis (0.6.1)
     i18n (1.1.1)
       concurrent-ruby (~> 1.0)
@@ -185,6 +188,8 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.4.0)
+    rubocop-rspec (1.30.1)
+      rubocop (>= 0.60.0)
     ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
     semver2 (3.4.2)
@@ -235,6 +240,7 @@ DEPENDENCIES
   guard-foreman
   guard-rack
   guard-rspec
+  guard-rubocop
   hiredis (~> 0.6.0)
   openssl
   pry
@@ -249,6 +255,7 @@ DEPENDENCIES
   request_store-sidekiq
   rspec
   rubocop
+  rubocop-rspec
   semver2
   settingslogic
   sidekiq

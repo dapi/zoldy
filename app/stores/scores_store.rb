@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Saves and restores Zold::Score to the file system
 #
 class ScoresStore

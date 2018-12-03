@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 require 'sidekiq'
 
 Sidekiq.configure_server do |config|
   config.redis = Settings.sidekiq_redis.symbolize_keys
-  config.error_handlers << proc do |ex, context|
-    Bugsnag.notify ex do |b|
-      b.meta_data = context
+  if defined? Bugsnag
+    config.error_handlers << proc do |ex, context|
+      Bugsnag.notify ex do |b|
+        b.meta_data = context
+      end
     end
-  end if defined? Bugsnag
+  end
 end
 
 Sidekiq.configure_client do |config|
