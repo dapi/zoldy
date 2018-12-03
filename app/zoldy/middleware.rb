@@ -30,6 +30,8 @@ module Zoldy
     end
 
     def call(env)
+      Zoldy.app.protocol.add_remote_by_score_header env['HTTP_X_ZOLD_SCORE']
+
       status, headers, body = @app.call(env)
 
       headers['Cache-Control']               = 'no-cache'

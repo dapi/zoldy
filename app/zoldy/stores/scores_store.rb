@@ -16,7 +16,7 @@ module Zoldy
       # @return Zoldy::Entities::Scores
       #
       def restore
-        parse read
+        parse(read).freeze
       end
 
       private

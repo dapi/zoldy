@@ -124,6 +124,8 @@ GEM
     redis (4.0.2)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
+    redlock (0.2.2)
+      redis (>= 3.0.0, < 5.0)
     request_store (1.4.1)
       rack (>= 1.4)
     request_store-sidekiq (0.1.0)
@@ -193,6 +195,7 @@ DEPENDENCIES
   rake
   redis (~> 4.0)
   redis-namespace
+  redlock
   request_store
   request_store-sidekiq
   rubocop

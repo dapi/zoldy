@@ -3,9 +3,12 @@ module Zoldy
     class Remote
       attr_reader :host, :port
 
-      def initialize(host:, port:)
+      delegate :hash, :to_s, to: :home
+
+      def initialize(host:, port:, score: nil)
         @host = host
         @port = port.to_i
+        @score = score
       end
 
       def self.build_from_score(score)
@@ -14,6 +17,10 @@ module Zoldy
           port: score.port,
           score: score.value
         )
+      end
+
+      def ==(other)
+        home == other.home
       end
 
       def ping!
@@ -25,7 +32,11 @@ module Zoldy
       end
 
       def uri
-        URI.parse "http://#{host}:#{port}"
+        URI.parse home
+      end
+
+      def home
+        "http://#{host}:#{port}"
       end
 
       def errors

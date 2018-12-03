@@ -21,8 +21,12 @@ module Zoldy
       @started_at = Time.now
     end
 
+    def lock_manager
+      @lock_manager ||= Redlock::Client.new([ Settings.redlock_redis.symbolize_keys ])
+    end
+
     def protocol
-      @protocol ||= Zoldy::Protocol.new self
+      @protocol ||= Zoldy::Protocol.new
     end
 
     def wallets
@@ -30,7 +34,7 @@ module Zoldy
     end
 
     def remotes
-      RequestStore.store[:remotes] ||= remotes_store.restore.presence || Zoldy::Stores::RemotesStore.new(file: './resources/remotes').restore
+      RequestStore.store[:remotes] ||= remotes_store.restore
     end
 
     def scores

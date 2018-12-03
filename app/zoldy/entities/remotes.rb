@@ -5,7 +5,7 @@ module Zoldy
     class Remotes
       include Enumerable
 
-      delegate :each, :join, :empty?, to: :list
+      delegate :each, :join, :empty?, :include?, to: :list
 
       def initialize(list=[])
         @list = Array(list)
@@ -16,7 +16,7 @@ module Zoldy
       end
 
       def <<(remote)
-        new list + [remote]
+        self.class.new list + [remote]
       end
 
       private
