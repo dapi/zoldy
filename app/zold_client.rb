@@ -14,6 +14,7 @@ class ZoldClient
   def get_remotes
     response = get('/remotes')
 
+    raise response.return_message unless response.success?
     validate_status response.code, 200
     validate_content_type response.headers, 'application/json'
 
