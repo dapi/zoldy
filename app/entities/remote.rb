@@ -9,6 +9,8 @@ class Remote
 
   delegate :hash, :to_s, to: :node_alias
 
+  delegate :to_yaml, to: :to_h
+
   def self.build_from_score(score)
     new(
       host: score.host,
@@ -39,6 +41,15 @@ class Remote
 
   def client
     ZoldClient.new self
+  end
+
+  def to_h
+    {
+      host: host,
+      port: port,
+      score: score,
+      remotes_count: remotes_count
+    }
   end
 
   def home

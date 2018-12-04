@@ -14,8 +14,8 @@ class ZoldClient
   def get_remotes
     response = get('/remotes')
 
-    validate_content_type response.headers, 'application/json'
     validate_status response.code, 200
+    validate_content_type response.headers, 'application/json'
 
     Remotes.new(
       JSON.parse(response.body)['all'].map do |r|

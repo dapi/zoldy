@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'psych'
 
 # Store ::Remote info filesystem
 #
@@ -44,7 +45,7 @@ class RemotesStore
 
   def store(remotes)
     lock! do
-      IO.write file, dump(remotes)
+      IO.write file, remotes.to_yaml
     end
 
     remotes
@@ -58,19 +59,13 @@ class RemotesStore
   end
 
   def read
-    IO.read file
+    YAML.load_file file
   rescue Errno::ENOENT
-    ''
+    []
   end
 
-  def dump(remotes)
-    remotes.map(&:node_alias).join LINE_SPLITTER
-  end
-
-  def parse(string)
-    Remotes.new(
-      string.split(LINE_SPLITTER).map { |r| Remote.parse r }
-    )
+  def parse(list)
+    Remotes.new list.map { |r| Remote.new r }
   end
 
   def build_remotes
