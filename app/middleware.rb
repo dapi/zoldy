@@ -15,6 +15,11 @@ class Middleware
       ActionDispatch::Http::Headers.from_hash(env)[Protocol::SCORE_HEADER]
     )
 
+    # Example of remote_ip usage
+    #
+    # req = ActionDispatch::Request.new env
+    # req.remote_ip
+
     status, headers, body = @app.call(env)
 
     headers['Cache-Control']               = 'no-cache'

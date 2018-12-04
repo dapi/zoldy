@@ -25,6 +25,7 @@ Zold White Paper is https://papers.zold.io/wp.pdf
 * All protocol-bases (White Paper described) operations conatined in one file called a `Protocol`. Think about it like a transalation of WhitePaper from English to Ruby.
 * Less code, more stability, open to suggestions and experiments.
 * Online TDD development with guard
+* Free of dubious coding styles and rules
 
 # Installation
 
