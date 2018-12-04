@@ -16,7 +16,7 @@ Zold White Paper is https://papers.zold.io/wp.pdf
 * Used best time-tested Ruby practices instead of unstable custom solutions
 * Get rid of a mash of threads spaghetti in code and test.
 * Use redis as locking and data storage server.
-* Use production-tested `sidekiq` as simple, efficient background processing instead of custom threads runner and management.
+* Use queue and production-tested `sidekiq` as simple, efficient background processing instead of custom uncontrolled threads running.
 * Node server is a common rack-application
 * API written on grape with swagger documentation support
 * Develpoment console a-like `rails c` -> `./bin/console`
@@ -24,8 +24,12 @@ Zold White Paper is https://papers.zold.io/wp.pdf
 * Reloads application when code is changes in development
 * All protocol-bases (White Paper described) operations conatined in one file called a `Protocol`. Think about it like a transalation of WhitePaper from English to Ruby.
 * Less code, more stability, open to suggestions and experiments.
+* Use one-time loaded environment (a-la Rails) instead of every file alltime
+  requiremenets
 * Online TDD development with guard
 * Free of dubious coding styles and rules
+* Cluster mode
+* No memory leaks
 
 # Installation
 
@@ -43,6 +47,12 @@ Where `66Yodh14@1142c2d008235bbe` is your (or my) invoice.
 # Settings
 
 Look into `./config/settings.yml`
+
+# Life
+
+Ping neighbors nodes:
+
+> ./bin/console PingRemoteNodesWorker.new.perform
 
 # Development
 

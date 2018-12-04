@@ -14,7 +14,7 @@ class Application
   end
 
   def wallets
-    @wallets ||= [] # wallets_store.restore
+    [] # RequestStore.store[:wallets] ||= wallets_store.restore
   end
 
   def remotes
@@ -27,6 +27,10 @@ class Application
 
   def score
     scores.best_one || ScoreFarmWorker.new.build_score
+  end
+
+  def wallets_store
+    @wallets_store ||= ::WalletsStore.new(dir: Settings.wallets_dir)
   end
 
   def remotes_store

@@ -9,7 +9,13 @@ class NotFoundAPI < Grape::API
 
   desc 'catch all not founds'
   get '*' do
-    logger.info "Get (not_found) #{request.path} with headers #{headers} and params #{params}"
+    logger.info "GET (not_found) #{request.path} with headers #{headers} and params #{params}"
+    status 404
+    present status: :not_found
+  end
+
+  put '*' do
+    logger.info "PUT (not_found) #{request.path} with headers #{headers} and params #{params}"
     status 404
     present status: :not_found
   end

@@ -31,6 +31,8 @@ gem 'virtus'
 gem 'get_process_mem'
 gem 'usagewatch_ext'
 
+# Used for debugging and for console
+#
 gem 'pry'
 
 gem 'grape'
@@ -56,6 +58,10 @@ group :development do
   gem 'guard-rubocop'
   gem 'rubocop'
   gem 'rubocop-rspec'
+
+  gem 'pry-byebug'
+
+  gem 'grape_logging'
 end
 
 group :development, :test do

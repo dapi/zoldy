@@ -2,9 +2,9 @@
 
 # Debug / endpoint
 #
-class PingAPI < Grape::API
+class HomeAPI < Grape::API
   helpers do
-    include AutoLogger::Named.new(name: :ping_api)
+    include AutoLogger::Named.new(name: :home_api)
   end
 
   format :json

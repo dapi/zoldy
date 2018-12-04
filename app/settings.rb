@@ -4,6 +4,7 @@
 #
 class Settings < Settingslogic
   source 'config/settings.yml'
+  namespace Zoldy.env
 
   def node_alias
     [host, port].join ':'

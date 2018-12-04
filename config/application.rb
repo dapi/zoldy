@@ -32,4 +32,8 @@ module Zoldy
   def self.app
     @app ||= Application.new
   end
+
+  def self.root
+    @root ||= Pathname File.expand_path('..', __dir__)
+  end
 end

@@ -9,6 +9,10 @@ class Protocol
   VERSION = 2
   MIN_SCORE_VALUE = Zold::Score::STRENGTH
 
+  NETWORK_NAME = /[a-z]{4,16}/.freeze
+  WALLET_ID_FORMAT = /[a-z0-9]{16}/.freeze
+  TRANSACTION_DETAILS_FORMAT = /[a-zA-Z0-9 -.]{1,512}/.freeze
+
   # Reduce publicated score for http headers
   SCORE_REDUCING = 4
 

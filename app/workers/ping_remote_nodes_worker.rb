@@ -13,7 +13,7 @@ class PingRemoteNodesWorker
   def perform
     Zoldy.app.remotes.each do |remote|
       ping_remote remote
-    end
+    end.count
   end
 
   private

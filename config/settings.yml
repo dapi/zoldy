@@ -1,27 +1,39 @@
 ---
-home: https://www.zold.io
-network: zold
+defaults: &defaults
 
-host: <%= ENV['ZOLD_HOST'] || `hostname -f` %>
-port: <%= ENV['ZOLD_POST'] || 4096 %>
+  home: https://www.zold.io
+  network: zold
 
-secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>
+  host: <%= ENV['ZOLD_HOST'] || `hostname -f` %>
+  port: <%= ENV['ZOLD_POST'] || 4096 %>
 
-# @dapi`s invoice
-#
-invoice: <%= ENV['ZOLD_INVOICE'] || '66Yodh14@1142c2d008235bbe' %>
+  secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>
 
-redlock_redis:
-  namespace: redlock
-  url: redis://localhost:6379/8
+  # @dapi`s invoice
+  #
+  invoice: <%= ENV['ZOLD_INVOICE'] || '66Yodh14@1142c2d008235bbe' %>
 
-sidekiq_redis:
-  # You can use a namespace if you have no empty dbs
-  # namespace: zold
-  url: redis://localhost:6379/8
+  redlock_redis:
+    namespace: redlock
+    url: redis://localhost:6379/8
 
-scores_file: ./tmp/scores
-remotes_file: ./tmp/remotes
+  sidekiq_redis:
+    # You can use a namespace if you have no empty dbs
+    # namespace: zold
+    url: redis://localhost:6379/8
 
-resources:
-  remotes: './resources/remotes'
+  scores_file:  ./tmp/scores
+  remotes_file: ./tmp/remotes
+  wallets_dir:  ./tmp/wallets
+
+  resources:
+    remotes: ./resources/remotes
+
+production:
+  <<: *defaults
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
