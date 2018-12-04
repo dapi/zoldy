@@ -10,8 +10,10 @@ class ScoreFarmWorker
 
   sidekiq_options queue: 'scores_farm'
 
+  # Hack a system and increase your nodes's score
+  #
   def self.perform_future_score
-    perform_async new.build_score(time: Time.now + 14.days).to_s
+    perform_async new.build_score(time: Time.now + 3.days).to_s
   end
 
   def perform(score_serialized = nil)
