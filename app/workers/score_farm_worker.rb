@@ -36,7 +36,9 @@ class ScoreFarmWorker
   end
 
   def build_score(time: nil)
-    Zold::Score.new(host: Settings.host, port: Settings.port, invoice: Settings.invoice, time: time)
+    Zold::Score
+      .new(host: Settings.host, port: Settings.port, invoice: Settings.invoice, time: time || Time.now)
+      .next
   end
 
   private

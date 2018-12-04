@@ -5,7 +5,7 @@
 class RemotesStore
   include AutoLogger
 
-  LOCK_TIMEOUT = 10_000 # 10 seconds
+  LOCK_TIMEOUT = Zoldy.env.test? ? 100 : 10_000 # 10 seconds
   LINE_SPLITTER = "\n"
 
   def initialize(file: nil)
@@ -13,12 +13,12 @@ class RemotesStore
   end
 
   def add(remote)
-    Zoldy.lock_manager.lock! self.class.name, LOCK_TIMEOUT do
+    lock! do
       remotes = restore
       if remotes.include? remote
-        logger.debug "Remote #{remote} already exists in list"
+        logger.debug "Can't add #{remote} it is already added"
       else
-        logger.info "Add #{remote} to list"
+        logger.info "Add #{remote}"
 
         store remotes << remote
       end
@@ -29,12 +29,20 @@ class RemotesStore
     parse(read).freeze
   end
 
+  def store(remotes)
+    lock! do
+      IO.write file, dump(remotes)
+    end
+
+    remotes
+  end
+
   private
 
   attr_reader :file
 
-  def store(remotes)
-    IO.write file, dump(remotes)
+  def lock!(&block)
+    Zoldy.lock_manager.lock! self.class.name, LOCK_TIMEOUT, &block
   end
 
   def read
@@ -44,17 +52,12 @@ class RemotesStore
   end
 
   def dump(remotes)
-    remotes.map do |r|
-      [r.host, r.port.to_s].join ','
-    end.join LINE_SPLITTER
+    remotes.map(&:node_alias).join LINE_SPLITTER
   end
 
-  def parse(text)
-    list = text.split(LINE_SPLITTER).map do |r|
-      host, port = r.split(',')
-      ::Remote.new(host: host, port: port)
-    end
-
-    ::Remotes.new list
+  def parse(string)
+    Remotes.new(
+      string.split(LINE_SPLITTER).map { |r| Remote.parse r }
+    )
   end
 end

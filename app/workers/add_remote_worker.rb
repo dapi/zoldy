@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
-# Adds remote host into local store. Performs from <Protocol>
+# Asynchonous adds remote host to local store.
 #
 class AddRemoteWorker
   include Sidekiq::Worker
-  include AutoLogger
 
-  def perform(score)
-    remote = ::Remote.build_from_score Zold::Score.parse_text score
-
-    logger.debug "We probably need to add #{remote}"
-
-    Zoldy.app.remotes_store.add remote
+  def perform(node_alias)
+    Zoldy.app.remotes_store.add Remote.parse node_alias
   end
 end

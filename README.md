@@ -26,10 +26,13 @@ Zold White Paper is https://papers.zold.io/wp.pdf
 * Less code, more stability, open to suggestions and experiments.
 * Use one-time loaded environment (a-la Rails) instead of every file alltime
   requiremenets
-* Online TDD development with guard
+* Realtime TDD development with `guard`
 * Free of dubious coding styles and rules
 * Cluster mode
 * No memory leaks
+* Separate development, production and test environment
+* All settings combined in one file `./config/settings.yml` and overridable by
+  environment variables
 
 # Installation
 

@@ -18,7 +18,7 @@ class Application
   end
 
   def remotes
-    RequestStore.store[:remotes] ||= remotes_store.restore.presence || default_remotes
+    RequestStore.store[:remotes] ||= build_remotes
   end
 
   def scores
@@ -50,7 +50,12 @@ class Application
   def default_remotes
     Remotes.new(
       Settings.default_remotes.map { |r| Remote.parse r }
-    ).freeze
+    )
+  end
+
+  def build_remotes
+    remotes_store.restore.presence ||
+      remotes_store.store(default_remotes)
   end
 
   def build_and_make_stores_dir

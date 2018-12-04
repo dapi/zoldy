@@ -4,8 +4,9 @@
 #
 class Remote
   attr_reader :host, :port
+  SPLITTER = ':'
 
-  delegate :hash, :to_s, to: :home
+  delegate :hash, :to_s, to: :node_alias
 
   def self.build_from_score(score)
     new(
@@ -16,7 +17,7 @@ class Remote
   end
 
   def self.parse(home)
-    host, port = home.split ':'
+    host, port = home.split SPLITTER
     new host: host, port: port
   end
 
@@ -43,7 +44,11 @@ class Remote
   end
 
   def home
-    "http://#{host}:#{port}"
+    'http://' + node_alias
+  end
+
+  def node_alias
+    [host, port].join SPLITTER
   end
 
   def errors

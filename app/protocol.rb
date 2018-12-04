@@ -5,13 +5,11 @@
 class Protocol
   include AutoLogger
   include HttpHeaders
+  include DataFormats
 
-  VERSION = 2
+  VERSION = 2 # Protocol version number
+
   MIN_SCORE_VALUE = Zold::Score::STRENGTH
-
-  NETWORK_NAME = /[a-z]{4,16}/.freeze
-  WALLET_ID_FORMAT = /[a-z0-9]{16}/.freeze
-  TRANSACTION_DETAILS_FORMAT = /[a-zA-Z0-9 -.]{1,512}/.freeze
 
   # Reduce publicated score for http headers
   SCORE_REDUCING = 4
@@ -24,7 +22,7 @@ class Protocol
     # TODO: validate network header and protocol numbers
     return if score_header.blank?
 
-    logger.debug "Try to add remote by header #{score_header}"
+    logger.debug "Validate remote by header #{score_header}"
 
     score = Zold::Score.parse_text score_header
 
@@ -33,7 +31,7 @@ class Protocol
     raise Error, 'The score is invalid' unless score.valid?
     raise Error, 'The score is weak' if score.strength < Zold::Score::STRENGTH
 
-    AddRemoteWorker.perform_async score.to_s
+    AddRemoteWorker.perform_async Remote.build_from_score score
   end
 
   # @param [Hash] of HTTP request headers

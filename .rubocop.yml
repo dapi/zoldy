@@ -9,3 +9,6 @@ Security/Eval:
 # URISchemes: http, https
 Metrics/LineLength:
   Max: 120
+
+RSpec/MessageSpies:
+  Enabled: false

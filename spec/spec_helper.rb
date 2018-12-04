@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-ENV['RAILS_ENV'] ||= 'test'
+ENV['RACK_ENV'] ||= 'test'
 
 require File.expand_path('../config/environment', __dir__)
 require 'factory_bot'
+require 'sidekiq/testing'
+require 'rack/test'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

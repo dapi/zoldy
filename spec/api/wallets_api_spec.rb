@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'rack/test'
 
 describe WalletsAPI do
   include Rack::Test::Methods
