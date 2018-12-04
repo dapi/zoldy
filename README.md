@@ -74,6 +74,11 @@ Start guard to have interactive TDD and rubocop
 * Redis
 * Ruby
 
+# Protocol TODO
+
+* Restrict plain/text responses and requestes. Use only json. Probably use
+  jsonapi
+
 # TODO
 
 * Setup capistrano deployment

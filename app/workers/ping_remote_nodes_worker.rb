@@ -2,9 +2,9 @@
 
 require 'benchmark'
 
-# Ping all remote nodes
+# Ping all remote nodes, get remote nodes list and save it
 #
-# TODO validate node and remove from list is it is unvalid
+# TODO validate node and remove from list if it's invalid
 #
 class PingRemoteNodesWorker
   include Sidekiq::Worker
@@ -18,9 +18,9 @@ class PingRemoteNodesWorker
 
   private
 
-  def ping_remote(remote)
+  def ping_remote remote
     bm = Benchmark.measure do
-      remote.ping!
+      Zoldy.app.remotes_store.add remote.client.get_remotes
     end
     logger.info "Successful ping #{remote} with #{bm.real} secs"
   rescue StandardError => err

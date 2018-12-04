@@ -43,9 +43,9 @@ class HttpClient
 
   attr_reader :root_url, :protocol
 
-  def build_uri(_path)
+  def build_uri(path)
     uri = root_url.clone
-    uri.path
+    uri.path = path
     uri
   end
 

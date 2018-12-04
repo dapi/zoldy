@@ -23,6 +23,8 @@ defaults: &defaults
 
   stores_dir: ./.data
 
+  lock_timeout: 1000 # 1 second
+
   # Default remote nodes
   default_remotes:
     - 'b1.zold.io:80'
@@ -42,3 +44,4 @@ development:
 test:
   <<: *defaults
   stores_dir: ./.data/test
+  lock_timeout: 100 # 0.1 second

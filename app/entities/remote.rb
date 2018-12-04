@@ -3,8 +3,9 @@
 # Remote node description model
 #
 class Remote
-  attr_reader :host, :port
   SPLITTER = ':'
+
+  attr_reader :host, :port, :remotes_count
 
   delegate :hash, :to_s, to: :node_alias
 
@@ -12,7 +13,7 @@ class Remote
     new(
       host: score.host,
       port: score.port,
-      score: score.value
+      score: score.value,
     )
   end
 
@@ -21,26 +22,23 @@ class Remote
     new host: host, port: port
   end
 
-  def initialize(host:, port:, score: nil)
-    @host = host
-    @port = port.to_i
-    @score = score
+  def initialize(host:, port:, score: nil, remotes_count: nil)
+    @host          = host
+    @port          = port.to_i
+    @score         = score
+    @remotes_count = remotes_count
   end
 
   def ==(other)
     home == other.home
   end
 
-  def ping!
-    client.get
+  def uri
+    URI.parse home
   end
 
   def client
-    HttpClient.new uri, protocol: Zoldy.protocol
-  end
-
-  def uri
-    URI.parse home
+    ZoldClient.new self
   end
 
   def home

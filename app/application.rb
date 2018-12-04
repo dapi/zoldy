@@ -5,6 +5,8 @@
 class Application
   attr_reader :started_at
 
+  delegate :remotes, to: :remotes_store
+
   def initialize
     @started_at = Time.now
   end
@@ -17,11 +19,8 @@ class Application
     [] # RequestStore.store[:wallets] ||= wallets_store.restore
   end
 
-  def remotes
-    RequestStore.store[:remotes] ||= build_remotes
-  end
-
-  def scores
+  def scores(force = false)
+    RequestStore.store[:scores] if force
     RequestStore.store[:scores] ||= scores_store.restore
   end
 
@@ -46,17 +45,6 @@ class Application
   end
 
   private
-
-  def default_remotes
-    Remotes.new(
-      Settings.default_remotes.map { |r| Remote.parse r }
-    )
-  end
-
-  def build_remotes
-    remotes_store.restore.presence ||
-      remotes_store.store(default_remotes)
-  end
 
   def build_and_make_stores_dir
     dir = File.expand_path Settings.stores_dir, Zoldy.root
