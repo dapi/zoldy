@@ -30,14 +30,26 @@ class Application
   end
 
   def wallets_store
-    @wallets_store ||= ::WalletsStore.new(dir: Settings.wallets_dir)
+    @wallets_store ||= ::WalletsStore.new(dir: stores_dir.join('wallets'))
   end
 
   def remotes_store
-    @remotes_store ||= ::RemotesStore.new(file: Settings.remotes_file)
+    @remotes_store ||= ::RemotesStore.new(file: stores_dir.join('remotes.txt'))
   end
 
   def scores_store
-    @scores_store ||= ::ScoresStore.new(file: Settings.scores_file)
+    @scores_store ||= ::ScoresStore.new(file: stores_dir.join('scores.txt'))
+  end
+
+  def stores_dir
+    @stores_dir ||= Pathname build_and_make_stores_dir
+  end
+
+  private
+
+  def build_and_make_stores_dir
+    dir = File.expand_path Settings.stores_dir, Zoldy.root
+    Dir.mkdir dir unless Dir.exist? dir
+    dir
   end
 end

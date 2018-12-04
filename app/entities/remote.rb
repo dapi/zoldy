@@ -7,18 +7,18 @@ class Remote
 
   delegate :hash, :to_s, to: :home
 
-  def initialize(host:, port:, score: nil)
-    @host = host
-    @port = port.to_i
-    @score = score
-  end
-
   def self.build_from_score(score)
     new(
       host: score.host,
       port: score.port,
       score: score.value
     )
+  end
+
+  def initialize(host:, port:, score: nil)
+    @host = host
+    @port = port.to_i
+    @score = score
   end
 
   def ==(other)

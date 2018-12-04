@@ -28,13 +28,20 @@ class RemotesStore
   def restore
     (
       parse(read).presence ||
-      self.class.new(file: Settings.resources.remotes).restore
+      load_defaults
     ).freeze
   end
 
   private
 
   attr_reader :file
+
+  def load_defaults
+    Settings.default_remotes.map do |r|
+      host, port = r.split ':'
+      Remote.new host: host, port: port
+    end
+  end
 
   def store(remotes)
     IO.write file, dump(remotes)

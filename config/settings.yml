@@ -1,6 +1,5 @@
 ---
 defaults: &defaults
-
   home: https://www.zold.io
   network: zold
 
@@ -22,18 +21,24 @@ defaults: &defaults
     # namespace: zold
     url: redis://localhost:6379/8
 
-  scores_file:  ./tmp/scores
-  remotes_file: ./tmp/remotes
-  wallets_dir:  ./tmp/wallets
+  stores_dir: ./tmp/stores
 
-  resources:
-    remotes: ./resources/remotes
+  # Default remote nodes
+  default_remotes:
+    - 'b1.zold.io:80'
+    - 'b2.zold.io:4096'
+    - '159.203.63.90:4096'
+    - '167.99.77.100:4096'
+    - '159.203.19.189:4096'
+    - '138.197.140.42:4096'
 
 production:
   <<: *defaults
 
 development:
   <<: *defaults
+  stores_dir: ./tmp/stores_dev
 
 test:
   <<: *defaults
+  stores_dir: ./tmp/stores_test
