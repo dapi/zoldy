@@ -1,22 +1,43 @@
 # Zoldy
 
-Brave (unofficial) ZOLD implementation on Ruby
+Brave, exrepimental unofficial implementation of Zold on Ruby. Zold is A Fast Cryptocurrency
+for Micro Payments.
 
-* ZOLD White Paper - https://papers.zold.io/wp.pdf
+Zold White Paper is https://papers.zold.io/wp.pdf
 
 # Motivation
+
+* Validate architectural hypothesis of cryptocurrency implementation on Ruby.
+* Get a simple and stable Zold server and client thas ease to maintain, disturb
+  and support.
+
+## Diffenece between an offical repo
+
+* Used best time-tested Ruby practices instead of unstable custom solutions
+* Get rid of a mash of threads spaghetti in code and test.
+* Use redis as locking and data storage server.
+* Use production-tested `sidekiq` as simple, efficient background processing instead of custom threads runner and management.
+* Node server is a common rack-application
+* API written on grape with swagger documentation support
+* Develpoment console a-like `rails c` -> `./bin/console`
+* Uses `foreman` to start and manager processes in development and production
+* Reloads application when code is changes in development
+* All protocol-bases (White Paper described) operations conatined in one file called a `Protocol`. Think about it like a transalation of WhitePaper from English to Ruby.
+* Less code, more stability, open to suggestions and experiments.
+* Online TDD development with guard
 
 # Installation
 
 1. Install redis: `sudo apt-get install redis`
 2. Install rbenv/rvm (rbenv is preferrable): `https://github.com/rbenv/rbenv`
-3. Install required ruby and it's depdencies: `rbenv install; gem instal
-   bundled`
+3. Install required ruby and it's depdencies: `rbenv install; gem instal bundler`
 4. Install application dependencies: `bundle`
 
-# Deployment
+# Start
 
-> RAKE_ENV=production bundle exec foreman start
+> RAKE_ENV=production ZOLD_INVOICE=66Yodh14@1142c2d008235bbe bundle exec foreman start
+
+Where `66Yodh14@1142c2d008235bbe` is your (or my) invoice.
 
 # Settings
 
@@ -24,28 +45,20 @@ Look into `./config/settings.yml`
 
 # Development
 
-I recoment to install `direnv` to work with environment variables in `.envrc`
+It is recomend to install `direnv` to work with environment variables in `.envrc`
 
-Start an application:
+Start an application (puma rack server on 4096 port and sidekiq workers):
+
+> bundle exec foreman start -f Procfile.dev
+
+Start guard to have interactive TDD and rubocop
 
 > bundle exec guard
 
-It starts `sidekiq`, and `rack` application on 4096 (default) port
-
 # Dependencies
 
-* redis
-* ruby
-
-
-# Diffenece with offical version
-
-* `Zoldy::Protocol` - class contains implementation of ZOLD protocol. Think about it like and transalation of WhitePaper from English to Ruby
-* Use sidekiq instead of metronome
-* Node is common rack-application
-* develpoment console a-like `rails c` -> `./bin/console`
-* reloads application when code is changes in development
-* Uses `foreman` to start and manager processes in development and production
+* Redis
+* Ruby
 
 # TODO
 
