@@ -15,6 +15,11 @@ class Remote
     )
   end
 
+  def self.parse(home)
+    host, port = home.split ':'
+    new host: host, port: port
+  end
+
   def initialize(host:, port:, score: nil)
     @host = host
     @port = port.to_i

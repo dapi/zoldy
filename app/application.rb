@@ -18,7 +18,7 @@ class Application
   end
 
   def remotes
-    RequestStore.store[:remotes] ||= remotes_store.restore
+    RequestStore.store[:remotes] ||= remotes_store.restore.presence || default_remotes
   end
 
   def scores
@@ -46,6 +46,12 @@ class Application
   end
 
   private
+
+  def default_remotes
+    Remotes.new(
+      Settings.default_remotes.map { |r| Remote.parse r }
+    ).freeze
+  end
 
   def build_and_make_stores_dir
     dir = File.expand_path Settings.stores_dir, Zoldy.root

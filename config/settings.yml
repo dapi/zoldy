@@ -21,7 +21,7 @@ defaults: &defaults
     # namespace: zold
     url: redis://localhost:6379/8
 
-  stores_dir: ./tmp/stores
+  stores_dir: ./.data
 
   # Default remote nodes
   default_remotes:
@@ -37,8 +37,8 @@ production:
 
 development:
   <<: *defaults
-  stores_dir: ./tmp/stores_dev
+  stores_dir: ./.data/dev
 
 test:
   <<: *defaults
-  stores_dir: ./tmp/stores_test
+  stores_dir: ./.data/test
