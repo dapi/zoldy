@@ -8,12 +8,20 @@ class ScoreFarmWorker
   include Sidekiq::Worker
   include AutoLogger
 
+  sidekiq_options queue: 'scores_farm'
+
+  def self.perform_future_score
+    perform_async new.build_score(time: Time.now + 14.days).to_s
+  end
+
   def perform(score_serialized = nil)
     self.class.perform_async generate(score_serialized).to_s
   end
 
   def generate(score_serialized = nil) # rubocop:disable Metrics/AbcSize
-    score = score_serialized.present? ? Zold::Score.parse(score_serialized) : build_score
+    score = Zold::Score.parse(score_serialized) if score_serialized.present?
+    score = scores.best_one || build_score if score.nil? || score.expired?
+
     logger.debug "Current score: `#{score}`, start calculation of next score"
 
     bm = Benchmark.measure { score = score.next }
@@ -23,6 +31,10 @@ class ScoreFarmWorker
     logger.debug 'Scores are saved'
 
     score
+  end
+
+  def build_score(time: nil)
+    Zold::Score.new(host: Settings.host, port: Settings.port, invoice: Settings.invoice, time: time)
   end
 
   private
@@ -35,10 +47,5 @@ class ScoreFarmWorker
 
   def scores
     @scores ||= restore
-  end
-
-  def build_score
-    scores.best_one ||
-      Zold::Score.new(host: Settings.host, port: Settings.port, invoice: Settings.invoice)
   end
 end

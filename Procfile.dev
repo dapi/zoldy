@@ -1,1 +1,3 @@
-worker: bundle exec sidekiq -r ./config/environment.rb -C ./config/sidekiq.yml -e development -v  
+node: bundle exec puma config.ru -p 4096
+default_worker: bundle exec sidekiq -r ./config/environment.rb -C ./config/sidekiq.yml -e development -q scores_farm -v
+scores_farm_worker: bundle exec sidekiq -r ./config/environment.rb -C ./config/sidekiq.yml -e development -q critical -q default -v

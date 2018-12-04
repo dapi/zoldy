@@ -18,7 +18,7 @@ class HttpClient
     @protocol = protocol
   end
 
-  def get(path, timeout: READ_TIMEOUT)
+  def get(path = '/', timeout: READ_TIMEOUT)
     Typhoeus::Request.get(
       build_uri(path),
       accept_encoding: 'gzip',

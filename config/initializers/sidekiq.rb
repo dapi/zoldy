@@ -20,3 +20,5 @@ end
 crontab_file = File.expand_path('../crontab.yml', __dir__)
 
 Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
+
+RequestStore::Sidekiq.add_custom_middleware!

@@ -26,14 +26,14 @@ class Application
   end
 
   def score
-    scores.best_one
+    scores.best_one || ScoreFarmWorker.new.build_score
   end
 
   def remotes_store
-    @remotes_store ||= ::RemotesStore.new(file: Settings.remotes_file).freeze
+    @remotes_store ||= ::RemotesStore.new(file: Settings.remotes_file)
   end
 
   def scores_store
-    @scores_store ||= ::ScoresStore.new(file: Settings.scores_file).freeze
+    @scores_store ||= ::ScoresStore.new(file: Settings.scores_file)
   end
 end
