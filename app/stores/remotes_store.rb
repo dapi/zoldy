@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'psych'
 
 # Store ::Remote info filesystem
@@ -53,7 +54,7 @@ class RemotesStore
 
   def lock!(&block)
     Zoldy.lock_manager.lock! self.class.name, Settings.lock_timeout, &block
-  rescue => err
+  rescue StandardError => err
     logger.error err.message
     raise err
   end

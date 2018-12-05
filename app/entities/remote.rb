@@ -15,7 +15,7 @@ class Remote
     new(
       host: score.host,
       port: score.port,
-      score: score.value,
+      score: score.value
     )
   end
 

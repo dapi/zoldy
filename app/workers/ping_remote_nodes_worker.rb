@@ -18,7 +18,7 @@ class PingRemoteNodesWorker
 
   private
 
-  def ping_remote remote
+  def ping_remote(remote)
     bm = Benchmark.measure do
       Zoldy.app.remotes_store.add remote.client.get_remotes
     end

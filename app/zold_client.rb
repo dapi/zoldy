@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # HTTP Client of Zold Specitification
 #
 class ZoldClient
@@ -15,12 +17,13 @@ class ZoldClient
     response = get('/remotes')
 
     raise response.return_message unless response.success?
+
     validate_status response.code, 200
     validate_content_type response.headers, 'application/json'
 
     Remotes.new(
       JSON.parse(response.body)['all'].map do |r|
-        # TODO Move to spec
+        # TODO: Move to spec
         # {"host"=>"88.198.13.175", "port"=>4096, "score"=>255, "errors"=>4, "default"=>false, "home"=>"http://88.198.13.175:4096/"}
         Remote.new host: r['host'], port: r['port'], score: r['score'], remotes_count: r['remotes']
       end
@@ -33,12 +36,12 @@ class ZoldClient
 
   delegate :get, :put, to: :http_client
 
-  def validate_content_type headers, type
+  def validate_content_type(headers, type)
     ct = headers['Content-Type']
     raise "Wrong content_type (#{ct} != #{type})" unless ct == type
   end
 
-  def validate_status response_status, status
+  def validate_status(response_status, status)
     raise "Wrong response status #{response_status} <> #{status}" unless response_status == status
   end
 
