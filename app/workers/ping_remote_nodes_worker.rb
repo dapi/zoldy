@@ -20,7 +20,7 @@ class PingRemoteNodesWorker
 
   def ping_remote(remote)
     bm = Benchmark.measure do
-      Zoldy.app.remotes_store.add remote.client.get_remotes
+      Zoldy.app.remotes_store.add remote.client.remotes
     end
     logger.info "Successful ping #{remote} with #{bm.real} secs"
   rescue StandardError => err

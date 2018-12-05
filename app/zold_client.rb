@@ -9,11 +9,11 @@ class ZoldClient
     @remote = remote
   end
 
-  def get_home
+  def home
     get
   end
 
-  def get_remotes
+  def remotes
     response = get('/remotes')
 
     raise response.return_message unless response.success?
@@ -21,18 +21,20 @@ class ZoldClient
     validate_status response.code, 200
     validate_content_type response.headers, 'application/json'
 
-    Remotes.new(
-      JSON.parse(response.body)['all'].map do |r|
-        # TODO: Move to spec
-        # {"host"=>"88.198.13.175", "port"=>4096, "score"=>255, "errors"=>4, "default"=>false, "home"=>"http://88.198.13.175:4096/"}
-        Remote.new host: r['host'], port: r['port'], score: r['score'], remotes_count: r['remotes']
-      end
-    ).freeze
+    build_remotes JSON.parse(response.body)['all']
   end
 
   private
 
   attr_reader :remote
+
+  def build_remotes(array)
+    Remotes.new(
+      array.map do |r|
+        Remote.new host: r['host'], port: r['port'], score: r['score'], remotes_count: r['remotes']
+      end
+    ).freeze
+  end
 
   delegate :get, :put, to: :http_client
 

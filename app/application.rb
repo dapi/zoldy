@@ -33,7 +33,7 @@ class Application
   end
 
   def remotes_store
-    @remotes_store ||= ::RemotesStore.new(file: stores_dir.join('remotes.yml'))
+    @remotes_store ||= ::RemotesStore.new(dir: stores_dir.join('remotes'))
   end
 
   def scores_store

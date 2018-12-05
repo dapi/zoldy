@@ -26,10 +26,11 @@ class RemotesStore
       Array(one_or_more).each do |remote|
         if remotes.include? remote
           logger.debug "Can't add #{remote} it is already added"
-        else
-          logger.info "Add #{remote}"
-          remotes = remotes << remote
+          next
         end
+
+        logger.info "Add #{remote}"
+        remotes = remotes << remote
       end
       store remotes
       RequestStore.store[:remotes] = remotes
@@ -66,7 +67,7 @@ class RemotesStore
   end
 
   def parse(list)
-    Remotes.new list.map { |r| Remote.new r }
+    Remotes.new(list.map { |r| Remote.new r })
   end
 
   def build_remotes
