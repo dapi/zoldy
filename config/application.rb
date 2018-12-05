@@ -17,10 +17,6 @@ ActiveSupport::Dependencies.autoload_paths += %w[app app/workers app/concerns ap
 module Zoldy
   VERSION = SemVer.find
 
-  def self.lock_manager
-    @lock_manager ||= Redlock::Client.new([Settings.redlock_redis.symbolize_keys])
-  end
-
   def self.env
     @env ||= ActiveSupport::StringInquirer.new(ENV['RACK_ENV']).freeze
   end

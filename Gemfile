@@ -14,8 +14,6 @@ gem 'redis-namespace'
 gem 'semver2'
 gem 'typhoeus'
 
-gem 'redlock'
-
 gem 'request_store'
 gem 'request_store-sidekiq'
 

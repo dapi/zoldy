@@ -12,10 +12,6 @@ defaults: &defaults
   #
   invoice: <%= ENV['ZOLD_INVOICE'] || '66Yodh14@1142c2d008235bbe' %>
 
-  redlock_redis:
-    namespace: redlock
-    url: redis://localhost:6379/8
-
   sidekiq_redis:
     # You can use a namespace if you have no empty dbs
     # namespace: zold
