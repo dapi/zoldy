@@ -8,8 +8,8 @@ class WalletsStore
   include AutoLogger
 
   def initialize(dir: nil)
-    @dir = dir
-    Dir.mkdir dir unless Dir.exist? dir
+    @dir = dir.is_a?(Pathname) ? dir : Pathname(dir)
+    FileUtils.mkdir_p dir unless Dir.exist? dir
   end
 
   def save(wallet)

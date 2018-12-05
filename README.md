@@ -15,7 +15,7 @@ Zold White Paper is https://papers.zold.io/wp.pdf
 
 * Used best time-tested Ruby practices instead of unstable custom solutions
 * Get rid of a mash of threads spaghetti in code and test.
-* Use redis as locking and data storage server.
+* No locking (no file locking, no mutes) in core application.
 * Use queue and production-tested `sidekiq` as simple, efficient background processing instead of custom uncontrolled threads running.
 * Node server is a common rack-application
 * API written on grape with swagger documentation support

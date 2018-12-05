@@ -31,7 +31,7 @@ class Protocol
     raise Error, 'The score is invalid' unless score.valid?
     raise Error, 'The score is weak' if score.strength < Zold::Score::STRENGTH
 
-    AddRemoteWorker.perform_async Remote.build_from_score score
+    Zoldy.app.remotes_store.add Remote.build_from_score score
   end
 
   # @param [Hash] of HTTP request headers
