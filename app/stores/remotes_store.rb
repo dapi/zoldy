@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'psych'
 
-# Store ::Remote info filesystem
+# Store <Remote> into filesystem
 #
 class RemotesStore
   include AutoLogger
