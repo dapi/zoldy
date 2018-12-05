@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'fileutils'
 require 'psych'
 
@@ -9,7 +10,7 @@ class RemotesStore
 
   LINE_SPLITTER = "\n"
 
-  def initialize(dir: )
+  def initialize(dir:)
     @dir = dir.is_a?(Pathname) ? dir : Pathname(dir)
     FileUtils.mkdir_p dir unless Dir.exist? dir
   end
@@ -18,7 +19,8 @@ class RemotesStore
   #
   def clear!(force: false)
     raise 'Clear must be forces to use in production' if Zoldy.env.prodiction? && !force
-    FileUtils.rm_rf Dir.glob(dir.join '*')
+
+    FileUtils.rm_rf Dir.glob(dir.join('*'))
     RequestStore.store[:remotes] = nil
   end
 

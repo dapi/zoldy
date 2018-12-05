@@ -1,5 +1,7 @@
-# Initialize default data
+# frozen_string_literal: true
 
+# Initialize default application data in stores
+#
 class Defaults
   def perform
     make_default_remotes

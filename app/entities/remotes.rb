@@ -23,8 +23,8 @@ class Remotes
     self.class.new list + [remote]
   end
 
-  def +(others)
-    self.class.new (to_a + others.to_a).uniq
+  def +(other)
+    self.class.new((to_a + other.to_a).uniq)
   end
 
   private

@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe RemotesStore do
-  subject(:store) { RemotesStore.new dir: Pathname(Settings.stores_dir).join('remotes') }
+  subject(:store) { described_class.new dir: Pathname(Settings.stores_dir).join('remotes') }
 
   before do
     store.clear!
@@ -11,7 +11,7 @@ describe RemotesStore do
 
   specify { expect(store.remotes).to be_empty }
 
-  context 'adds remote' do
+  context 'when remotes is empty' do
     let(:remote) { build :remote }
 
     specify do
