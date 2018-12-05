@@ -3,6 +3,10 @@
 
 require File.expand_path('../config/environment', __dir__)
 
+at_exit do
+  Bugsnag.notify($ERROR_INFO) if $ERROR_INFO
+end
+
 if ARGV.empty?
   Pry.start
 else

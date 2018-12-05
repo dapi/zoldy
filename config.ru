@@ -12,7 +12,7 @@ use Rack::Runtime
 use Rack::Deflater
 use Rack::Reloader
 use RequestStore::Middleware
-# use ActionDispatch::RemoteIp
+use Bugsnag::Rack
 use Middleware
 
 run Rack::URLMap.new '/' => RootAPI, '/sidekiq' => Sidekiq::Web
