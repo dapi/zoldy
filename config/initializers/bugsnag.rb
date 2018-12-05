@@ -8,4 +8,5 @@ Bugsnag.configure do |config|
   config.notify_release_stages = %w[production]
   config.send_code = true
   config.send_environment = true
+  config.project_root = Zoldy.root
 end
