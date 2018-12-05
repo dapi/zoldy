@@ -11,14 +11,13 @@ Sidekiq.configure_server do |config|
       end
     end
   end
+
+  crontab_file = File.expand_path('../crontab.yml', __dir__)
+  Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
 end
 
 Sidekiq.configure_client do |config|
   config.redis = Settings.sidekiq_redis.symbolize_keys
 end
-
-crontab_file = File.expand_path('../crontab.yml', __dir__)
-
-Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
 
 RequestStore::Sidekiq.add_custom_middleware!

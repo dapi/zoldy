@@ -1,0 +1,1 @@
+./bin/console PingRemoteNodesWorker.new.perform

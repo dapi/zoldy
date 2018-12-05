@@ -1,7 +1,7 @@
 # Save actual and fetch reduced score. This helps to have quick header settings in HTTP requests
 #
 class ReducedScore
-  SCORE_REDUCING = Protocol::MIN_SCORE_VALUE
+  SCORE_REDUCING = 16
 
   def initialize
     @file = Zoldy.app.stores_dir.join 'reduced_score'

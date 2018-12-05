@@ -7,6 +7,8 @@ at_exit do
   Bugsnag.notify($ERROR_INFO) if $ERROR_INFO
 end
 
+puts "Zoldy environment: #{Zoldy.env}"
+
 if ARGV.empty?
   Pry.start
 else

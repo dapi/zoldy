@@ -13,6 +13,10 @@ class Application
     (Time.now - started_at).freeze
   end
 
+  def mine_node
+    @mine_node ||= Remote.parse Settings.node_alias
+  end
+
   def wallets
     [] # RequestStore.store[:wallets] ||= wallets_store.restore
   end

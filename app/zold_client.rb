@@ -42,7 +42,7 @@ class ZoldClient
   def build_remotes(array)
     array.map do |r|
       Remote.new host: r['host'], port: r['port'], score: r['score'], remotes_count: r['remotes']
-    end.to_set.freeze
+    end.freeze
   end
 
   delegate :get, :put, to: :http_client
