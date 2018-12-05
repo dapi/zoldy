@@ -7,7 +7,7 @@ class ScoreHistoryWorker
   include AutoLogger
 
   def perform
-    score = scores_store.restore.best_one
+    score = Zoldy.app.scores_store.best_one
     File.open(file_name, 'a') do |f|
       f.puts [Time.now, score.time, score.age, score.value].join "\t"
     end

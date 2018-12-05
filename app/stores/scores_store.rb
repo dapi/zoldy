@@ -5,6 +5,8 @@
 class ScoresStore
   LINE_SPLITTER = "\n"
 
+  delegate :best_one, to: :restore
+
   def initialize(file: nil)
     @file = file || raise('Must be a file path')
   end

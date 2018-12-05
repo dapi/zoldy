@@ -9,6 +9,8 @@ class ReducedScore
 
   def fetch
     File.read file
+  rescue Errno::ENOENT
+    ''
   end
 
   def score
