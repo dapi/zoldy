@@ -43,6 +43,7 @@ gem 'settingslogic'
 gem 'rack'
 gem 'rake'
 
+gem 'logger'
 gem 'auto_logger', '~> 0.1.3'
 gem 'puma'
 
