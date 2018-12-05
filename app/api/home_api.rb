@@ -15,6 +15,10 @@ class HomeAPI < Grape::API
     def detailed_threads_count
       "#{Thread.list.select { |t| t.status == 'run' }.count}/#{Thread.list.count}"
     end
+
+    def score
+      Zoldy.app.scores_store.restore.best_one || ScoreFarmWorker.new.build_score
+    end
   end
 
   desc 'ping node'
@@ -25,7 +29,7 @@ class HomeAPI < Grape::API
       alias: Settings.node_alias,
       network: Settings.network,
       protocol: Protocol::VERSION,
-      score: Zoldy.app.score.to_h,
+      score: Zoldy.app.scores_store.restore.best_one.to_h,
       pid: Process.pid,
       processes: 1, # TODO: get it from Puma wokers size
       cpus: Concurrent.processor_count,
@@ -34,8 +38,8 @@ class HomeAPI < Grape::API
       load: Usagewatch.uw_load.to_f,
       threads: detailed_threads_count,
       wallets: Zoldy.app.wallets.count,
-      remotes: Zoldy.app.remotes.count,
-      nscore: Zoldy.app.remotes.map(&:score).inject(&:+) || 0,
+      remotes: Zoldy.app.remotes_store.count,
+      nscore: Zoldy.app.remotes_store.nscore,
 
       # farm: Zoldy.Settings.farm.to_json,
       # entrance: Zoldy.Settings.entrance.to_json,

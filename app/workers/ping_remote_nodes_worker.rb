@@ -11,7 +11,7 @@ class PingRemoteNodesWorker
   include AutoLogger
 
   def perform
-    Zoldy.app.remotes.each do |remote|
+    Zoldy.app.remotes_store.each do |remote|
       ping_remote remote
     end.count
   end
@@ -19,6 +19,8 @@ class PingRemoteNodesWorker
   private
 
   def ping_remote(remote)
+    remote.client.home
+    remote.client.version
     bm = Benchmark.measure do
       Zoldy.app.remotes_store.add remote.client.remotes
     end

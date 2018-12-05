@@ -14,16 +14,15 @@ class Middleware
 
   def call(env)
     request_headers = ActionDispatch::Http::Headers.from_hash env
-    Zoldy.protocol.add_remote_by_score_header request_headers[Protocol::SCORE_HEADER]
+    Zoldy.protocol.touch_remote_by_score_header request_headers[Protocol::SCORE_HEADER]
 
     # Example of remote_ip usage
     #
-    # req = ActionDispatch::Request.new env
-    # req.remote_ip
+    # req  = ActionDispatch::Request.new env
+    # puts req.remote_ip
 
     status, response_headers, body = @app.call(env)
 
-    response_headers['Cache-Control']               = 'no-cache' # TODO: move to API
     response_headers['Access-Control-Allow-Origin'] = '*'
 
     Zoldy.protocol.add_response_headers response_headers

@@ -7,8 +7,8 @@ class WalletsAPI < Grape::API
     include AutoLogger::Named.new(name: :wallets_api)
   end
 
-  content_type :json, 'application/json'
-  content_type :txt, 'text/plain'
+  content_type :json, Protocol::DATA_CONTENT_TYPE
+  content_type :txt,  Protocol::TEXT_CONTENT_TYPE
 
   default_format :json
   formatter :json, PrettyJSONFormatter
@@ -28,7 +28,7 @@ class WalletsAPI < Grape::API
 
       desc 'Return transactions count of the wallet'
       get :size do
-        content_type('text/plain')
+        content_type Protocol::TEXT_CONTENT_TYPE
         wallet.body.length
       end
 
@@ -37,7 +37,7 @@ class WalletsAPI < Grape::API
         logger.info "Save wallet #{wallet.id}"
         Zoldy.app.wallets_store.save wallet
 
-        content_type('text/plain')
+        content_type Protocol::TEXT_CONTENT_TYPE
         status 304
 
         wallet.body.length

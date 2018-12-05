@@ -9,6 +9,8 @@ class RemotesStore
 
   LINE_SPLITTER = "\n"
 
+  delegate :each, to: :remotes
+
   def initialize(dir:)
     @dir = dir.is_a?(Pathname) ? dir : Pathname(dir)
     FileUtils.mkdir_p dir unless Dir.exist? dir
@@ -26,6 +28,18 @@ class RemotesStore
   # Get remotes <Remotes)
   def remotes
     RequestStore.store[:remotes] ||= restore
+  end
+
+  def touch(remote)
+    add remote
+  end
+
+  def count
+    Pathname.new(dir).children.count
+  end
+
+  def nscore
+    remotes.map(&:score).inject(&:+) || 0
   end
 
   # @param [Remote] or [Enumerable<Remote>]

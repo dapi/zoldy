@@ -5,28 +5,39 @@
 class ZoldClient
   # @param [Remote] remote node
   #
-  def initialize(remote)
-    @remote = remote
+  def initialize(remote_node)
+    @remote_node = remote_node
   end
 
   def home
-    get
+    response = get
+    validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
+    JSON.parse(response.body)
+  end
+
+  def version
+    response = get '/version'
+    validate_response! response, content_type: Protocol::TEXT_CONTENT_TYPE
+    response.body
   end
 
   def remotes
-    response = get('/remotes')
-
-    raise response.return_message unless response.success?
-
-    validate_status response.code, 200
-    validate_content_type response.headers, 'application/json'
+    response = get '/remotes'
+    validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
 
     build_remotes JSON.parse(response.body)['all']
   end
 
   private
 
-  attr_reader :remote
+  attr_reader :remote_node
+
+  def validate_response!(response, status: 200, content_type: nil)
+    raise response.return_message unless response.success?
+
+    validate_status response.code, 200
+    validate_content_type response.headers, content_type
+  end
 
   def build_remotes(array)
     array.map do |r|
@@ -38,7 +49,7 @@ class ZoldClient
 
   def validate_content_type(headers, type)
     ct = headers['Content-Type']
-    raise "Wrong content_type (#{ct} != #{type})" unless ct == type
+    raise "Wrong content_type (#{ct} != #{type})" unless ct.start_with? type
   end
 
   def validate_status(response_status, status)
@@ -46,6 +57,6 @@ class ZoldClient
   end
 
   def http_client
-    HttpClient.new remote.uri, protocol: Zoldy.protocol
+    HttpClient.new remote_node.uri, protocol: Zoldy.protocol
   end
 end

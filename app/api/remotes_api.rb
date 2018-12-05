@@ -15,6 +15,6 @@ class RemotesAPI < Grape::API
   desc 'Return remotes list'
   get :remotes do
     logger.info "Get remotes with headers #{zold_headers}"
-    zold_present all: Zoldy.app.remotes.map(&:as_json)
+    zold_present all: Zoldy.app.remotes_store.remotes.map(&:as_json)
   end
 end

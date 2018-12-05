@@ -5,8 +5,6 @@
 class Application
   attr_reader :started_at
 
-  delegate :remotes, to: :remotes_store
-
   def initialize
     @started_at = Time.now
   end
@@ -17,15 +15,6 @@ class Application
 
   def wallets
     [] # RequestStore.store[:wallets] ||= wallets_store.restore
-  end
-
-  def scores(force = false)
-    RequestStore.store[:scores] if force
-    RequestStore.store[:scores] ||= scores_store.restore
-  end
-
-  def score
-    scores.best_one || ScoreFarmWorker.new.build_score
   end
 
   def wallets_store

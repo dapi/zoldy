@@ -32,6 +32,8 @@ class ScoreFarmWorker
     store scores << score
     logger.debug 'Scores are saved'
 
+    ReducedScore.new.store score
+
     score
   end
 
