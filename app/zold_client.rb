@@ -29,11 +29,9 @@ class ZoldClient
   attr_reader :remote
 
   def build_remotes(array)
-    Remotes.new(
-      array.map do |r|
-        Remote.new host: r['host'], port: r['port'], score: r['score'], remotes_count: r['remotes']
-      end
-    ).freeze
+    array.map do |r|
+      Remote.new host: r['host'], port: r['port'], score: r['score'], remotes_count: r['remotes']
+    end.to_set.freeze
   end
 
   delegate :get, :put, to: :http_client

@@ -29,7 +29,7 @@ class RemotesStore
     RequestStore.store[:remotes] ||= restore
   end
 
-  # @param [Remote] or [Remotes]
+  # @param [Remote] or [Enumerable<Remote>]
   #
   def add(one_or_more)
     added_nodes = Array(one_or_more).map do |remote|
@@ -42,7 +42,7 @@ class RemotesStore
 
   attr_reader :dir
 
-  # @param <Remote>
+  # @param <Enumerable>
   #
   def add_or_update(remote)
     remote_dir = dir.join remote.node_alias
@@ -54,10 +54,8 @@ class RemotesStore
   end
 
   def restore
-    Remotes.new(
-      Pathname.new(dir).children.map do |remote_dir|
-        Remote.parse remote_dir.basename.to_s
-      end
-    )
+    Pathname.new(dir).children.map do |remote_dir|
+      Remote.parse remote_dir.basename.to_s
+    end
   end
 end

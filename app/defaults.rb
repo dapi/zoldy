@@ -11,9 +11,7 @@ class Defaults
 
   def make_default_remotes
     Zoldy.app.remotes_store.add(
-      Remotes.new(
-        Settings.default_remotes.map { |r| Remote.parse r }
-      )
+      Settings.default_remotes.map { |r| Remote.parse r }
     )
   end
 end

@@ -35,7 +35,8 @@ class HomeAPI < Grape::API
       threads: detailed_threads_count,
       wallets: Zoldy.app.wallets.count,
       remotes: Zoldy.app.remotes.count,
-      nscore: Zoldy.app.remotes.nscore,
+      nscore: Zoldy.app.remotes.map(&:score).inject(&:+) || 0,
+
       # farm: Zoldy.Settings.farm.to_json,
       # entrance: Zoldy.Settings.entrance.to_json,
       date: Time.now.utc.iso8601,
