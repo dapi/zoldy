@@ -20,7 +20,7 @@ class Remote
   end
 
   def self.parse(home)
-    host, port = home.split SPLITTER
+    host, port = home.to_s.split SPLITTER
     new host: host, port: port
   end
 

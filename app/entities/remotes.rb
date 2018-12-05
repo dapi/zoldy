@@ -5,7 +5,7 @@
 class Remotes
   include Enumerable
 
-  delegate :each, :join, :empty?, :include?, to: :list
+  delegate :each, :join, :empty?, :include?, :to_a, to: :list
 
   def initialize(list = [])
     @list = Array(list)
@@ -21,6 +21,10 @@ class Remotes
 
   def <<(remote)
     self.class.new list + [remote]
+  end
+
+  def +(others)
+    self.class.new (to_a + others.to_a).uniq
   end
 
   private
