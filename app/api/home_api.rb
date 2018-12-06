@@ -24,7 +24,7 @@ class HomeAPI < Grape::API
       alias: Settings.node_alias,
       network: Settings.network,
       protocol: Protocol::VERSION,
-      score: Zoldy.app.scores_store.restore.best_one.to_h,
+      score: Zoldy.app.scores_store.best.to_h,
       pid: Process.pid,
       processes: 1, # TODO: get it from Puma wokers size
       cpus: Concurrent.processor_count,

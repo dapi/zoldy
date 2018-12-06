@@ -3,11 +3,6 @@ ReconnectWorker:
   class: ReconnectWorker
   queue: default
 
-ScoreHistoryWorker:
-  cron: '*/5 * * * *'
-  class: ScoreHistoryWorker
-  queue: default
-
 PingRemoteNodesWorker:
   cron: '15 */1 * * *'
   class: PingRemoteNodesWorker

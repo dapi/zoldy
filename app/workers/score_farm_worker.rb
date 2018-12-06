@@ -34,7 +34,7 @@ class ScoreFarmWorker
   def parse_score(score_serialized)
     return unless score_serialized
 
-    score = Zold::Score.parse score_serialized
+    score = Zold::Score.load score_serialized
     return if score.expired? || !score.valid?
 
     score

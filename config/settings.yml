@@ -36,12 +36,12 @@ defaults: &defaults
 
 production:
   <<: *defaults
-  stores_dir: ./.data/prod
+  stores_dir: ./.zoldy/prod
 
 development:
   <<: *defaults
-  stores_dir: ./.data/dev
+  stores_dir: ./.zoldy/dev
 
 test:
   <<: *defaults
-  stores_dir: ./.data/test
+  stores_dir: ./.zoldy/test

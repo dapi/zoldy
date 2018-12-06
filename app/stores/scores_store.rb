@@ -21,7 +21,7 @@ class ScoresStore < FileSystemStore
   #
   def all
     Pathname.new(dir).children.map do |score_dir|
-      Zold::Score.parse(
+      Zold::Score.load(
         File.read(
           score_dir.children.max_by { |a| a.basename.to_s.to_i }
         )

@@ -14,21 +14,6 @@ class RootAPI < Grape::API
     use GrapeLogging::Middleware::RequestLogger, logger: logger
   end
 
-  helpers do
-    def zold_headers
-      headers.slice(*::Protocol::HEADERS)
-    end
-
-    def zold_present(hash)
-      hash.reverse_merge(
-        version: Zoldy::VERSION.to_s,
-        alias: Settings.node_alias,
-        score: Zoldy.app.scores_store.best.to_h,
-        wallets: Zoldy.app.wallets.size
-      )
-    end
-  end
-
   rescue_from WalletsStore::WalletNotFound do |e|
     error! e, 404
   end
