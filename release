@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+#
+semver inc patch
+# semver meta `git rev-parse HEAD`
+git add .semver
+git commit -m `semver`
+git tag -a `semver` -m `semver`
+git push
