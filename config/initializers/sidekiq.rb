@@ -12,6 +12,7 @@ Sidekiq.configure_server do |config|
     end
   end
 
+  puts 'Load sidekiq cron'
   crontab_file = File.expand_path('../crontab.yml', __dir__)
   Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
 end

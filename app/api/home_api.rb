@@ -40,6 +40,11 @@ class HomeAPI < Grape::API
       wallets: Zoldy.app.wallets_store.count,
       remotes: Zoldy.app.remotes_store.count,
       nscore: Zoldy.app.remotes_store.nscore,
+      entrance: {
+        history_size: 0, # "Hstr" (history) is the amount of recently processed PUSH requests;
+        speed: 0, # "Spd" (speed) is the average amount of time in seconds the node spends per each PUSH request processing
+        queue: Sidekiq::Queue.all.map(&:size).inject(&:+)
+      },
 
       # farm: Zoldy.Settings.farm.to_json,
       # entrance: Zoldy.Settings.entrance.to_json,

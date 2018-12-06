@@ -1,13 +1,29 @@
 # frozen_string_literal: true
 
-# Each node runs a 'reconnect' procedure every minute,
-# updating the list of remote nodes and removing those,
-# which have too low availability values.
+require 'benchmark'
+
+# Ping all remote nodes, get remote nodes list and save it
+#
+# TODO validate node and remove from list if it's invalid
+#
 class ReconnectWorker
   include Sidekiq::Worker
   include AutoLogger
 
   def perform
-    # TODO
+    Zoldy.app.remotes_store.each do |remote|
+      ping_remote remote
+    end.count
+  end
+
+  private
+
+  def ping_remote(remote)
+    bm = Benchmark.measure do
+      Zoldy.app.remotes_store.add remote.client.remotes
+    end
+    logger.info "Successful ping #{remote} with #{bm.real} secs"
+  rescue StandardError => err
+    logger.error "Ping #{remote} failed with message: #{err}"
   end
 end
