@@ -14,7 +14,7 @@ class WalletsStore
 
   def save!(wallet)
     wallet_dir = build_wallet_dir wallet.id
-    FileUtils.mkdir_p wallet_dir unless Dir.exists? wallet_dir
+    FileUtils.mkdir_p wallet_dir unless Dir.exist? wallet_dir
     IO.write wallet_dir.join('body'), wallet.body
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Save actual and fetch reduced score. This helps to have quick header settings in HTTP requests
 #
 class ReducedScore

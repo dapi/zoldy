@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Some development utils
+#
 class Utils
   def checker
     Zoldy.app.remotes_store.remotes.each do |remote|
@@ -12,7 +16,7 @@ class Utils
     else
       puts "#{remote} - none"
     end
-  rescue => err
+  rescue StandardError => err
     puts "#{remote}: #{err}"
   end
 end

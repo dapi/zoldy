@@ -35,7 +35,7 @@ class ZoldClient
   def validate_response!(response, status: 200, content_type: nil)
     raise response.return_message unless response.success?
 
-    validate_status response.code, 200
+    validate_status response.code, status
     validate_content_type response.headers, content_type
   end
 

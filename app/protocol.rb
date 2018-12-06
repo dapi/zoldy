@@ -9,8 +9,8 @@ class Protocol
 
   VERSION = 2 # Protocol version number
 
-  DATA_CONTENT_TYPE = 'application/json'.freeze
-  TEXT_CONTENT_TYPE = 'text/plain'.freeze
+  DATA_CONTENT_TYPE = 'application/json'
+  TEXT_CONTENT_TYPE = 'text/plain'
 
   MIN_SCORE_VALUE = Zold::Score::STRENGTH
 
@@ -19,7 +19,6 @@ class Protocol
   # Add remote node from the score received in HTTP header
   #
   def touch_remote_by_score_header(score_header)
-    # TODO: validate network header and protocol numbers
     return if score_header.blank?
 
     score = Zold::Score.parse_text score_header
@@ -27,10 +26,7 @@ class Protocol
 
     return if remote.node_alias == Settings.node_alias
 
-    puts "touch remote #{remote}"
-
-    # NOTE What it reasone to raise an error? May be just log warning?
-    #
+    # NOTE What is reason to raise an error? May be just log warning?
     raise Error, 'The score is invalid' unless score.valid?
     raise Error, 'The score is weak' if score.strength < Zold::Score::STRENGTH
 

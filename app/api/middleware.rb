@@ -14,6 +14,7 @@ class Middleware
 
   def call(env)
     request_headers = ActionDispatch::Http::Headers.from_hash env
+    # TODO: validate network header and protocol numbers
     Zoldy.protocol.touch_remote_by_score_header request_headers[Protocol::SCORE_HEADER]
 
     # Example of remote_ip usage

@@ -11,17 +11,17 @@ describe WalletsStore do
     store.clear!
   end
 
-  context 'has one saved wallet' do
+  context 'when there is one saved wallet' do
     before do
       store.save! wallet
     end
 
     it 'find a wallet' do
-      expect(store.find wallet.id).to eq wallet
+      expect(store.find(wallet.id)).to eq wallet
     end
 
     it 'returns wallet`s size' do
-      expect(store.wallet_size wallet.id).to eq wallet.body.size
+      expect(store.wallet_size(wallet.id)).to eq wallet.body.size
     end
 
     it 'has exactly one wallet' do

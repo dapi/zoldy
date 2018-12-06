@@ -3,10 +3,6 @@
 # Debug / endpoint
 #
 class HomeAPI < Grape::API
-  helpers do
-    include AutoLogger::Named.new(name: :home_api)
-  end
-
   format :json
   default_format :json
   formatter :json, PrettyJSONFormatter
@@ -23,7 +19,6 @@ class HomeAPI < Grape::API
 
   desc 'ping node'
   get '/' do
-    logger.info 'Get ping'
     present(
       version: Zoldy::VERSION.to_s,
       alias: Settings.node_alias,
@@ -41,8 +36,8 @@ class HomeAPI < Grape::API
       remotes: Zoldy.app.remotes_store.count,
       nscore: Zoldy.app.remotes_store.nscore,
       entrance: {
-        history_size: 0, # "Hstr" (history) is the amount of recently processed PUSH requests;
-        speed: 0, # "Spd" (speed) is the average amount of time in seconds the node spends per each PUSH request processing
+        history_size: 0, # Hstr is the amount of recently processed PUSH requests;
+        speed: 0, # Spd is the average amount of time in seconds the node spends per each PUSH request processing
         queue: Sidekiq::Queue.all.map(&:size).inject(&:+)
       },
 

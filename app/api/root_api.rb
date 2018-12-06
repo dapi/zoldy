@@ -22,8 +22,8 @@ class RootAPI < Grape::API
     def zold_present(hash)
       hash.reverse_merge(
         version: Zoldy::VERSION.to_s,
-        alias:   Settings.node_alias,
-        score:   ReducedScore.new.score.to_h,
+        alias: Settings.node_alias,
+        score: ReducedScore.new.score.to_h,
         wallets: Zoldy.app.wallets.size
       )
     end
