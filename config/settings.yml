@@ -17,10 +17,6 @@ defaults: &defaults
     # namespace: zold
     url: redis://localhost:6379/8
 
-  stores_dir: ./.data
-
-  lock_timeout: 1000 # 1 second
-
   # Default remote nodes
   default_remotes:
     - b1.zold.io:80
@@ -40,6 +36,7 @@ defaults: &defaults
 
 production:
   <<: *defaults
+  stores_dir: ./.data/prod
 
 development:
   <<: *defaults
@@ -48,4 +45,3 @@ development:
 test:
   <<: *defaults
   stores_dir: ./.data/test
-  lock_timeout: 100 # 0.1 second

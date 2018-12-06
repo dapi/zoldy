@@ -8,7 +8,7 @@ class ScoresStore < FileSystemStore
   def save!(score)
     score_dir = dir.join score.time.utc.iso8601
     FileUtils.mkdir_p score_dir
-    IO.write score_dir.join(score.value.to_s), score.to_text
+    IO.write score_dir.join(score.value.to_s), score.to_s
     remove_weak_scores score_dir
     score
   end
@@ -21,7 +21,7 @@ class ScoresStore < FileSystemStore
   #
   def all
     Pathname.new(dir).children.map do |score_dir|
-      Zold::Score.parse_text(
+      Zold::Score.parse(
         File.read(
           score_dir.children.max_by { |a| a.basename.to_s.to_i }
         )
