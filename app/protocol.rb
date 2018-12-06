@@ -50,7 +50,7 @@ class Protocol
     headers[VERSION_HEADER]  = Zoldy::VERSION.to_s
 
     headers[NETWORK_HEADER]  = Settings.network
-    headers[SCORE_HEADER]    = ReducedScore.new.fetch
+    headers[SCORE_HEADER]    = Zoldy.app.scores_store.best
 
     headers
   end

@@ -2,15 +2,8 @@
 
 # Store ::Remote info filesystem
 #
-class WalletsStore
+class WalletsStore < FileSystemStore
   WalletNotFound = Class.new StandardError
-
-  include AutoLogger
-
-  def initialize(dir: nil)
-    @dir = dir.is_a?(Pathname) ? dir : Pathname(dir)
-    FileUtils.mkdir_p dir unless Dir.exist? dir
-  end
 
   def save!(wallet)
     wallet_dir = build_wallet_dir wallet.id
@@ -20,10 +13,6 @@ class WalletsStore
 
   def wallet_size(id)
     File.size build_wallet_dir(id).join('body')
-  end
-
-  def count
-    Pathname.new(dir).children.count
   end
 
   def find!(id)
@@ -40,17 +29,7 @@ class WalletsStore
     )
   end
 
-  # Clear all wallets data
-  #
-  def clear!(force: false)
-    raise 'Clear must be forces to use in production' if Zoldy.env.prodiction? && !force
-
-    FileUtils.rm_rf Dir.glob(dir.join('*'))
-  end
-
   private
-
-  attr_reader :dir
 
   def build_wallet_dir(id)
     Wallet.validate_id! id

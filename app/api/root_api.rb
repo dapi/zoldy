@@ -23,7 +23,7 @@ class RootAPI < Grape::API
       hash.reverse_merge(
         version: Zoldy::VERSION.to_s,
         alias: Settings.node_alias,
-        score: ReducedScore.new.score.to_h,
+        score: Zoldy.app.scores_store.best.to_h,
         wallets: Zoldy.app.wallets.size
       )
     end

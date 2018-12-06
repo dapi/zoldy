@@ -57,6 +57,7 @@ group :development do
   gem 'guard-rubocop'
   gem 'rubocop'
   gem 'rubocop-rspec'
+  gem 'timecop'
 
   gem 'pry-byebug'
 

@@ -17,10 +17,6 @@ class Application
     @mine_node ||= Remote.parse Settings.node_alias
   end
 
-  def wallets
-    [] # RequestStore.store[:wallets] ||= wallets_store.restore
-  end
-
   def wallets_store
     @wallets_store ||= ::WalletsStore.new(dir: stores_dir.join('wallets'))
   end
@@ -30,7 +26,7 @@ class Application
   end
 
   def scores_store
-    @scores_store ||= ::ScoresStore.new(file: stores_dir.join('scores.txt'))
+    @scores_store ||= ::ScoresStore.new(dir: stores_dir.join('scores'))
   end
 
   def stores_dir

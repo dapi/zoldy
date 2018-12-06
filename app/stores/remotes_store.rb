@@ -1,41 +1,22 @@
 # frozen_string_literal: true
 
-require 'fileutils'
-
 # Store <Remote> into filesystem
 #
-class RemotesStore
-  include AutoLogger
-
-  LINE_SPLITTER = "\n"
-
+class RemotesStore < FileSystemStore
   delegate :each, to: :remotes
-
-  def initialize(dir:)
-    @dir = dir.is_a?(Pathname) ? dir : Pathname(dir)
-    FileUtils.mkdir_p dir unless Dir.exist? dir
-  end
-
-  # Clear all remotes data
-  #
-  def clear!(force: false)
-    raise 'Clear must be forces to use in production' if Zoldy.env.prodiction? && !force
-
-    FileUtils.rm_rf Dir.glob(dir.join('*'))
-    RequestStore.store[:remotes] = nil
-  end
 
   # Get remotes <Remotes)
   def remotes
     RequestStore.store[:remotes] ||= restore
   end
 
-  def touch(remote)
-    add remote
+  def clear!(force: false)
+    super force: force
+    RequestStore.store[:remotes] = nil
   end
 
-  def count
-    Pathname.new(dir).children.count
+  def touch(remote)
+    add remote
   end
 
   def nscore
@@ -52,8 +33,6 @@ class RemotesStore
   end
 
   private
-
-  attr_reader :dir
 
   # @param <Enumerable>
   #

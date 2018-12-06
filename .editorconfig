@@ -29,12 +29,7 @@ indent_size=2
 indent_style=space
 indent_size=2
 
-[Rakefile]
-indent_style=space
-indent_size=2
-trim_trailing_whitespace = true
-
-[*.rb]
+[{Rakefile,*.rb,Guardfile,Gemfile}]
 indent_style=space
 indent_size=2
 trim_trailing_whitespace = true

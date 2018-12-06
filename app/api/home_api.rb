@@ -13,7 +13,7 @@ class HomeAPI < Grape::API
     end
 
     def score
-      Zoldy.app.scores_store.restore.best_one || ScoreFarmWorker.new.build_score
+      Zoldy.app.scores_store.best Zoldy.app.scores_store.build
     end
   end
 

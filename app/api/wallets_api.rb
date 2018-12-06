@@ -36,7 +36,7 @@ class WalletsAPI < Grape::API
       put do
         wallet = Wallet.new(id: params[:id], body: request.body.read)
         logger.info "Save wallet #{wallet.id}"
-        Zoldy.app.wallets_store.save wallet
+        Zoldy.app.wallets_store.save! wallet
 
         content_type Protocol::TEXT_CONTENT_TYPE
         status 304

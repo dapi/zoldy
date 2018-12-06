@@ -8,50 +8,42 @@ class ScoreFarmWorker
   include Sidekiq::Worker
   include AutoLogger
 
+  LONG_TIME_LIVE_PERIOD = 100.days
+
   sidekiq_options queue: 'scores_farm'
 
   # Hack a system and increase your nodes's score
   #
-  def self.perform_future_score
-    perform_async new.build_score(time: Time.now + 3.days).to_s
+  def self.make_long_time_living_score
+    perform_async Zoldy.app.scores_store.build(time: Time.now + LONG_TIME_LIVE_PERIOD).to_s
   end
 
   def perform(score_serialized = nil)
-    self.class.perform_async generate(score_serialized).to_s
-  end
-
-  def generate(score_serialized = nil) # rubocop:disable Metrics/AbcSize
-    score = Zold::Score.parse(score_serialized) if score_serialized.present?
-    score = scores.best_one || build_score if score.nil? || score.expired?
-
-    logger.debug "Current score: `#{score}`, start calculation of next score"
-
-    bm = Benchmark.measure { score = score.next }
-    logger.info "New score value: '#{score}', time spent: #{bm.real} secs"
-
-    store scores << score
-    logger.debug 'Scores are saved'
-
-    ReducedScore.new.store score
-
-    score
-  end
-
-  def build_score(time: nil)
-    Zold::Score
-      .new(host: Settings.host, port: Settings.port, invoice: Settings.invoice, time: time || Time.now)
-      .next
+    score = regenerate(
+      parse_score(score_serialized) || build_score
+    )
+    self.class.perform_async score.to_s
   end
 
   private
 
-  delegate :restore, :store, to: :scores_store
-
-  def scores_store
-    Zoldy.app.scores_store
+  def build_score
+    Zoldy.app.scores_store.best || Zoldy.app.scores_store.build
   end
 
-  def scores
-    @scores ||= restore
+  def parse_score(score_serialized)
+    return unless score_serialized
+
+    score = Zold::Score.parse score_serialized
+    return if score.expired? || !score.valid?
+
+    score
+  end
+
+  def regenerate(score)
+    bm = Benchmark.measure { score = score.next }
+    Zoldy.app.scores_store.save! score
+    logger.info "Score '#{score.value}' in #{bm.real} secs"
+    score
   end
 end
