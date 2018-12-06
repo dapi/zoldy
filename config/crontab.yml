@@ -2,8 +2,3 @@ ReconnectWorker:
   cron: '*/1 * * * *'
   class: ReconnectWorker
   queue: default
-
-PingRemoteNodesWorker:
-  cron: '15 */1 * * *'
-  class: PingRemoteNodesWorker
-  queue: default
