@@ -3,6 +3,14 @@
 require 'securerandom'
 
 FactoryBot.define do
+  sequence :wallet_body do
+    SecureRandom.hex(10)
+  end
+
+  sequence :wallet_id do
+    SecureRandom.hex(10)
+  end
+
   sequence :host do
     SecureRandom.hex(10)
   end

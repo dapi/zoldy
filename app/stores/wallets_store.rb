@@ -12,9 +12,18 @@ class WalletsStore
     FileUtils.mkdir_p dir unless Dir.exist? dir
   end
 
-  def save(wallet)
-    path = build_wallet_path wallet.id
-    store path, wallet.body
+  def save!(wallet)
+    wallet_dir = build_wallet_dir wallet.id
+    FileUtils.mkdir_p wallet_dir unless Dir.exists? wallet_dir
+    IO.write wallet_dir.join('body'), wallet.body
+  end
+
+  def wallet_size(id)
+    File.size build_wallet_dir(id).join('body')
+  end
+
+  def count
+    Pathname.new(dir).children.count
   end
 
   def find!(id)
@@ -22,32 +31,29 @@ class WalletsStore
   end
 
   def find(id)
-    path = build_wallet_path id
-    return unless File.exist? path
+    wallet_dir = build_wallet_dir id
+    return unless Dir.exist? wallet_dir
 
-    build id, read(path)
+    Wallet.new(
+      id: id,
+      body: IO.read(build_wallet_dir(id).join('body'))
+    )
+  end
+
+  # Clear all wallets data
+  #
+  def clear!(force: false)
+    raise 'Clear must be forces to use in production' if Zoldy.env.prodiction? && !force
+
+    FileUtils.rm_rf Dir.glob(dir.join('*'))
   end
 
   private
 
   attr_reader :dir
 
-  def store(file, body)
-    IO.write file, body
-  end
-
-  def build(id, body)
-    Wallet.new id: id, body: body
-  end
-
-  def read
-    IO.read file
-  rescue Errno::ENOENT
-    ''
-  end
-
-  def build_wallet_path(id)
+  def build_wallet_dir(id)
     Wallet.validate_id! id
-    File.expand_path File.join dir, id
+    dir.join id
   end
 end

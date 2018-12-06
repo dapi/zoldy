@@ -17,19 +17,20 @@ class WalletsAPI < Grape::API
   resource :wallet do
     resource ':id' do
       helpers do
-        def wallet
-          @wallet ||= Zoldy.app.wallets_store.find! params[:id]
+        def store
+          Zoldy.app.wallets_store
         end
       end
 
       get do
+        wallet = store.find!(params[:id])
         zold_present body: wallet.body
       end
 
       desc 'Return transactions count of the wallet'
       get :size do
         content_type Protocol::TEXT_CONTENT_TYPE
-        wallet.body.length
+        store.wallet_size params[:id]
       end
 
       put do

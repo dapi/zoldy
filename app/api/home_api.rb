@@ -37,7 +37,7 @@ class HomeAPI < Grape::API
       platform: RUBY_PLATFORM,
       load: Usagewatch.uw_load.to_f,
       threads: detailed_threads_count,
-      wallets: Zoldy.app.wallets.count,
+      wallets: Zoldy.app.wallets_store.count,
       remotes: Zoldy.app.remotes_store.count,
       nscore: Zoldy.app.remotes_store.nscore,
 

@@ -14,4 +14,8 @@ class Wallet
     @body = body
     Wallet.validate_id! id
   end
+
+  def ==(other)
+    id == other.id && body == other.body
+  end
 end
