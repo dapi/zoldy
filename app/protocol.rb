@@ -35,7 +35,8 @@ class Protocol
 
   # @param [Hash] of HTTP request headers
   def add_request_headers(headers)
-    add_http_headers headers, reduce: 4, serializer: :to_text
+    # NOTE was reducing to 4
+    add_http_headers headers, reduce: 16, serializer: :to_text
   end
 
   # @param [Hash] of HTTP response headers
