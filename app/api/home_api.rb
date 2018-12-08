@@ -48,11 +48,6 @@ class HomeAPI < Grape::API
       home: Settings.home
     }
 
-    data.merge!(
-      GC: GC.stat,
-      ObjectSpace: ObjectSpace.count_objects
-    ) if Zoldy.app.env.development?
-
     present data
   end
 end

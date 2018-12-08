@@ -15,6 +15,8 @@ ActiveSupport::Dependencies.autoload_paths += %w[app app/workers app/concerns ap
 # Core application namespace
 #
 module Zoldy
+  require 'app/protocol'
+
   VERSION = SemVer.find
 
   def self.env

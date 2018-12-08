@@ -4,7 +4,7 @@
 # Returns available list of <Remote> nodes
 #
 class RemotesAPI < Grape::API
-  include ApiHelpers
+  include ::ApiHelpers
 
   format :json
   default_format :json

@@ -1,0 +1,22 @@
+How to find leaks:
+
+* Gather three snapshots
+* Remove common objects in snapshot 1 from snapshot 2
+* Remove missing objects in snapshot 3 from snapshot 2
+
+1. Add `rbtrace` gem.
+2. Run server
+3. Run in console `./bin/gather_rbtrace.sh 0`
+4. Wait 2 minutes
+5. Run in console `./bin/gather_rbtrace.sh 1`
+6. Wait 2 minutes
+7. Run in console `./bin/gather_rbtrace.sh 2`
+8  Run `./bin/detect_leaks.rb`
+
+Source:  https://blog.skylight.io/hunting-for-leaks-in-ruby/
+
+Other helpful articles:
+
+* https://samsaffron.com/archive/2015/03/31/debugging-memory-leaks-in-ruby
+* https://gist.github.com/wvengen/f1097651c238b2f7f11d
+* https://www.toptal.com/ruby/hunting-ruby-memory-issues

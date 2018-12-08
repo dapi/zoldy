@@ -33,7 +33,7 @@ gem 'usagewatch_ext'
 #
 gem 'pry'
 
-gem 'grape'
+gem 'grape', '~> 1.2.2'
 gem 'grape-swagger'
 
 
@@ -49,8 +49,6 @@ gem 'logger'
 gem 'puma'
 
 group :development do
-  gem 'memory_profiler'
-  gem 'rack-mini-profiler'
   gem 'rbtrace'
 
   gem 'guard'

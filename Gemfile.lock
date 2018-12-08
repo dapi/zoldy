@@ -64,7 +64,7 @@ GEM
       et-orbi (~> 1.1, >= 1.1.6)
       raabro (~> 1.1)
     get_process_mem (0.2.3)
-    grape (1.2.1)
+    grape (1.2.2)
       activesupport
       builder
       mustermann-grape (~> 1.0.0)
@@ -121,7 +121,6 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.13)
-    memory_profiler (0.9.12)
     method_source (0.9.2)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -152,8 +151,6 @@ GEM
     rack (2.0.6)
     rack-accept (0.4.5)
       rack (>= 0.4)
-    rack-mini-profiler (1.0.0)
-      rack (>= 1.2.0)
     rack-protection (2.0.4)
       rack
     rack-test (1.1.0)
@@ -247,7 +244,7 @@ DEPENDENCIES
   factory_bot
   foreman
   get_process_mem
-  grape
+  grape (~> 1.2.2)
   grape-swagger
   grape_logging
   guard
@@ -259,13 +256,11 @@ DEPENDENCIES
   guard-rubocop
   hiredis (~> 0.6.0)
   logger
-  memory_profiler
   openssl (>= 2.1.2)
   pry
   pry-byebug
   puma
   rack
-  rack-mini-profiler
   rack-test
   rake
   rbtrace

@@ -3,7 +3,7 @@
 # Protocol supportes /wallet/* endpoint
 #
 class WalletsAPI < Grape::API
-  include ApiHelpers
+  include ::ApiHelpers
 
   content_type :json, Protocol::DATA_CONTENT_TYPE
   content_type :txt,  Protocol::TEXT_CONTENT_TYPE
