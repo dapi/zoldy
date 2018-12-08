@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby '2.4.5'
 
 # Needed for zold-score
-gem 'openssl'
+gem 'openssl', '>= 2.1.2'
 gem 'zold-score'
 
 gem 'hiredis', '~> 0.6.0'
@@ -36,6 +36,7 @@ gem 'pry'
 gem 'grape'
 gem 'grape-swagger'
 
+
 gem 'actionpack'
 gem 'activesupport'
 gem 'settingslogic'
@@ -48,6 +49,10 @@ gem 'logger'
 gem 'puma'
 
 group :development do
+  gem 'memory_profiler'
+  gem 'rack-mini-profiler'
+  gem 'rbtrace'
+
   gem 'guard'
   gem 'guard-bundler'
   gem 'guard-ctags-bundler'

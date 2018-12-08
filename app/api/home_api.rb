@@ -19,7 +19,7 @@ class HomeAPI < Grape::API
 
   desc 'ping node'
   get '/' do
-    present(
+    data = {
       version: Zoldy::VERSION.to_s,
       alias: Settings.node_alias,
       network: Settings.network,
@@ -46,6 +46,13 @@ class HomeAPI < Grape::API
       date: Time.now.utc.iso8601,
       hours_alive: (Zoldy.app.uptime / (60 * 60)).round(2),
       home: Settings.home
-    )
+    }
+
+    data.merge!(
+      GC: GC.stat,
+      ObjectSpace: ObjectSpace.count_objects
+    ) if Zoldy.app.env.development?
+
+    present data
   end
 end

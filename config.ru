@@ -8,6 +8,7 @@ require 'action_dispatch'
 
 Sidekiq::Web.set :session_secret, Settings.secret_key_base
 
+use Rack::MiniProfiler if defined? Rack::MiniProfiler
 use Rack::Runtime
 use Rack::Deflater
 use Rack::Reloader if Zoldy.env.development?
