@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-semver inc patch
+semver inc minor
 # semver meta `git rev-parse HEAD`
 git add .semver
 git commit -m `semver`
