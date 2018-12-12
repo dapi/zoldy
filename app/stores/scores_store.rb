@@ -16,7 +16,13 @@ class ScoresStore < FileSystemStore
   end
 
   def find_by_time(time)
-    read_best dir.join time.utc.iso8601
+    load_best dir.join time.utc.iso8601
+  rescue Errno::ENOENT
+    nil
+  end
+
+  def remove_by_time(time)
+    FileUtils.remove_dir dir.join time.utc.iso8601
   rescue Errno::ENOENT
     nil
   end
@@ -33,9 +39,7 @@ class ScoresStore < FileSystemStore
   #
   def all
     Pathname.new(dir).children.map do |score_dir|
-      Zold::Score.load(
-        read_best(score_dir)
-      )
+      load_best score_dir
     end
   end
 
@@ -46,9 +50,11 @@ class ScoresStore < FileSystemStore
 
   private
 
-  def read_best(score_dir)
-    File.read(
-      score_dir.children.max_by { |a| a.basename.to_s.to_i }
+  def load_best(score_dir)
+    Zold::Score.load(
+      File.read(
+        score_dir.children.max_by { |a| a.basename.to_s.to_i }
+      )
     )
   end
 

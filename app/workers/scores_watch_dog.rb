@@ -13,6 +13,11 @@ class ScoresWatchDog
   PERIOD           = EXPIRATION_HOURS / PROCESSORS_COUNT
   QUEUES           = Array.new(PROCESSORS_COUNT) { |i| QUEUE_PREFIX + i.to_s }
 
+  def self.reset!
+    Sidekiq::ScheduledSet.new.clear
+    new.perform
+  end
+
   def perform
     QUEUES.each do |queue|
       perform_worker queue

@@ -7,7 +7,7 @@
 class Starter
   def perform
     validate_version!
-    start_score_farms
+    ScoresWatchDog.reset!
   end
 
   private
@@ -22,10 +22,5 @@ class Starter
     raise "Wrong version configured #{file_version} <> #{Zoldy.version}" unless file_version == Zoldy.verison.to_s
 
     raise 'Zoldy is already configured!'
-  end
-
-  def start_score_farms
-    Sidekiq::ScheduledSet.new.clear
-    ScoresWatchDog.perform_async
   end
 end

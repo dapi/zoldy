@@ -19,6 +19,7 @@ gem 'foreman'
 
 gem 'sidekiq'
 gem 'sidekiq-cron'
+gem 'sidekiq-unique-jobs'
 
 gem 'get_process_mem'
 gem 'rack-cors'
