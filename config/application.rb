@@ -25,6 +25,9 @@ ActiveSupport::Dependencies.autoload_paths += %w[
 #
 module Zoldy
   require 'app/protocol'
+  require 'app/stores/remotes_store'
+  require 'app/stores/wallets_store'
+  require 'app/stores/scores_store'
 
   VERSION = SemVer.find
 
@@ -46,5 +49,10 @@ module Zoldy
 
   def self.root
     @root ||= Pathname File.expand_path('..', __dir__)
+  end
+
+  def self.logger
+    @logger ||= ActiveSupport::Logger.new(root.join 'log', 'zoldy.log').
+      tap { |logger| logger.formatter = Logger::Formatter.new }
   end
 end

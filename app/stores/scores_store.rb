@@ -16,7 +16,11 @@ class ScoresStore < FileSystemStore
   end
 
   def best
-    all.max_by(&:value)
+    alive.max_by(&:value)
+  end
+
+  def alive
+    all.reject { |s| s.expired? }
   end
 
   # Returns list of a best scores grouped by time

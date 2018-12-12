@@ -1,4 +1,7 @@
 ReconnectWorker:
   cron: '*/1 * * * *'
   class: ReconnectWorker
-  queue: default
+
+ScoresWatchDog:
+  cront: '*/15 * * * *'
+  class: ScoresWatchDog

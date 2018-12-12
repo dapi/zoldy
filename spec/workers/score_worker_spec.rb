@@ -4,7 +4,7 @@
 
 require 'spec_helper'
 
-describe ScoreFarmWorker do
+describe ScoreWorker do
   subject(:worker) { described_class.new }
 
   let(:score) { build(:score).next }

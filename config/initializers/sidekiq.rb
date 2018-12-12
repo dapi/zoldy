@@ -18,10 +18,8 @@ Sidekiq.configure_server do |config|
   Sidekiq::Cron::Job.destroy_all!
   Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
 
-  if Sidekiq::Queue.new('scores_farm').size.zero? && Zoldy.app.scores_store.all.empty?
-    puts 'Start ScoreFarmWorker'
-    ScoreFarmWorker.perform_async
-  end
+  Sidekiq::ScheduledSet.new.clear
+  ScoresWatchDog.perform_async
 end
 
 Sidekiq.configure_client do |config|

@@ -1,22 +1,19 @@
 # Copyright (c) 2018 Danil Pismenny <danil@brandymint.ru>
-
 # frozen_string_literal: true
 
 require 'benchmark'
 
 # Calculate current score and queue itself to calculate next score
 #
-class ScoreFarmWorker
+class ScoreWorker
   include Sidekiq::Worker
   include AutoLogger
 
-  sidekiq_options queue: 'scores_farm'
+  sidekiq_options retry: true
 
   def perform(score_serialized = nil)
-    logger.info "Start score generation from #{score_serialized}"
-    score = regenerate(
-      parse_score(score_serialized) || build_score
-    )
+    logger.info "Start score generation from #{score_serialized || :unspecified}"
+    score = regenerate(parse_score(score_serialized) || build_score)
     self.class.perform_async score.to_s
   end
 
