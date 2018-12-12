@@ -12,8 +12,8 @@ describe ScoresWatchDog do
     Sidekiq::ScheduledSet.new.clear
   end
 
-  it do # rubocop:disable RSpec/MultipleExpectations
-    expect { described_class.new.perform }.to change(ScoreWorker.jobs, :size).by(ScoresWatchDog::PROCESSORS_COUNT - 1)
-    expect(Sidekiq::Queue.new('worker0').size).to eq 1
+  it do
+    described_class.new.perform
+    expect(ScoreWorker.jobs.size + Sidekiq::Queue.new('worker0').size).to eq ScoresWatchDog::PROCESSORS_COUNT
   end
 end

@@ -15,6 +15,12 @@ class ScoresStore < FileSystemStore
     score
   end
 
+  def find_by_time(time)
+    read_best dir.join time.utc.iso8601
+  rescue Errno::ENOENT
+    nil
+  end
+
   def best
     alive.max_by(&:value)
   end
@@ -28,9 +34,7 @@ class ScoresStore < FileSystemStore
   def all
     Pathname.new(dir).children.map do |score_dir|
       Zold::Score.load(
-        File.read(
-          score_dir.children.max_by { |a| a.basename.to_s.to_i }
-        )
+        read_best(score_dir)
       )
     end
   end
@@ -41,6 +45,12 @@ class ScoresStore < FileSystemStore
   end
 
   private
+
+  def read_best(score_dir)
+    File.read(
+      score_dir.children.max_by { |a| a.basename.to_s.to_i }
+    )
+  end
 
   def remove_weak_scores(score_dir)
     score_values = score_dir.children.sort_by { |a| a.basename.to_s.to_i }
