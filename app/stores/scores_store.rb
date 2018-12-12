@@ -20,7 +20,7 @@ class ScoresStore < FileSystemStore
   end
 
   def alive
-    all.reject { |s| s.expired? }
+    all.reject(&:expired?)
   end
 
   # Returns list of a best scores grouped by time

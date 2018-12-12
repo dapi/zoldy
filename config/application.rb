@@ -52,7 +52,7 @@ module Zoldy
   end
 
   def self.logger
-    @logger ||= ActiveSupport::Logger.new(root.join 'log', 'zoldy.log').
-      tap { |logger| logger.formatter = Logger::Formatter.new }
+    @logger ||= ActiveSupport::Logger.new(root.join('log', 'zoldy.log'))
+                                     .tap { |logger| logger.formatter = Logger::Formatter.new }
   end
 end

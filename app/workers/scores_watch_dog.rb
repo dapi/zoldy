@@ -35,7 +35,7 @@ class ScoresWatchDog
 
   def workers_count(queue)
     Sidekiq::Queue.new(queue)
-                  .select { |a| a.display_class == ScoreWorker.to_s }
+                  .select { |a| a.klass == ScoreWorker.to_s }
                   .size
   end
 end
