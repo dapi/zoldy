@@ -5,6 +5,7 @@
 # Saves and restores Zold::Score to the file system
 #
 class ScoresStore < FileSystemStore
+  EXPIRED_PERIOD = 24.hours
   # @param [Zold::Score]
   #
   def save!(score)
@@ -13,6 +14,13 @@ class ScoresStore < FileSystemStore
     IO.write score_dir.join(score.value.to_s), score.to_s
     remove_weak_scores score_dir
     score
+  end
+
+  def clear_expired_scores!
+    Pathname.new(dir).children.map do |score_dir|
+      # remove_score_dir score_dir if score_expired? score_dir
+      puts score_dir if score_expired? score_dir
+    end
   end
 
   def find_by_time(time)
@@ -49,6 +57,15 @@ class ScoresStore < FileSystemStore
   end
 
   private
+
+  def score_expired?(score_dir)
+    Time.parse(score_dir.basename.to_s) < Time.now - EXPIRED_PERIOD
+  rescue ArgumentError
+  end
+
+  def remove_score_dir(score_dir)
+    FileUtils.remove_dir score_dir rescue Errno::ENOENT
+  end
 
   def load_best(score_dir)
     Zold::Score.load(
