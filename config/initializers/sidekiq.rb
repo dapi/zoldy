@@ -17,7 +17,7 @@ Sidekiq.configure_server do |config|
   crontab_file = File.expand_path('../crontab.yml', __dir__)
   puts 'Load sidekiq crontab'
   Sidekiq::Cron::Job.destroy_all!
-  Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
+  puts Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
 end
 
 Sidekiq.configure_client do |config|

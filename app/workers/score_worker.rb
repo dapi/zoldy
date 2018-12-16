@@ -18,35 +18,33 @@ class ScoreWorker
     unique_args: ->(args) { [args.first] }
   )
 
-  def self.unique_args(args)
-    [args[0]]
-  end
-
+  # TODO: Don't start score generation when have only 2 hours to be expired
+  #
   def self.perform_new
     score = Zoldy.app.scores_store.build
-    Zoldy.logger.info "Start scoring in #{score.time}"
+    Zoldy.logger.info "Start scoring in #{score.time.utc.iso8601}"
     Zoldy.app.scores_store.save! score
     perform_async score.time.to_s
   end
 
-  def perform(time = nil)
-    time = Time.parse time if time.present?
-    logger.info "Start score generation from #{time || :unspecified} time"
-    score = regenerate(
-      Zoldy.app.scores_store.find_by_time(time) ||
-      # Zoldy.app.scores_store.best ||
-      Zoldy.app.scores_store.build
-    )
-    logger.info "Delay perform for #{score.time}"
+  def perform(time) # rubocop:disable Metrics/AbcSize
+    time = Time.parse time
+    logger.info "Start score generation from #{time.utc.iso8601} time"
+    score = Zoldy.app.scores_store.save! regenerate find_or_build(time)
+    logger.info "Delay perform for #{score.time.utc.iso8601}"
     self.class.perform_async score.time.to_s
   end
 
   private
 
+  def find_or_build(time)
+    Zoldy.app.scores_store.find_by_time(time) ||
+      Zoldy.app.scores_store.build
+  end
+
   def regenerate(score)
     bm = Benchmark.measure { score = score.next }
-    logger.info "Score of #{score.time} with value #{score.value} generated in #{bm.total} secs"
-    Zoldy.app.scores_store.save! score
+    logger.info "Score of #{score.time.utc.iso8601} with value #{score.value} generated in #{bm.total} secs"
     score
   end
 end

@@ -15,12 +15,6 @@ describe ScoreWorker do
     allow_any_instance_of(Zold::Score).to receive(:next).and_return next_score # rubocop:disable RSpec/AnyInstance
   end
 
-  it 'generates new score' do # rubocop:disable RSpec/MultipleExpectations
-    expect(described_class).to receive(:perform_async)
-    worker.perform
-    expect(Zoldy.app.scores_store.best).to eq next_score
-  end
-
   it 'build next from an existen score' do # rubocop:disable RSpec/MultipleExpectations
     expect(described_class).to receive(:perform_async)
     worker.perform score.time.to_s

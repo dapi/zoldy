@@ -14,6 +14,6 @@ class RemotesAPI < Grape::API
 
   desc 'Return remotes list'
   get :remotes do
-    zold_present all: Zoldy.app.remotes_store.remotes.map(&:as_json)
+    zold_present all: Zoldy.app.remotes_store.all.map(&:as_json)
   end
 end

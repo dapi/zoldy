@@ -17,9 +17,8 @@ class ScoresStore < FileSystemStore
   end
 
   def clear_expired_scores!
-    Pathname.new(dir).children.map do |score_dir|
-      # remove_score_dir score_dir if score_expired? score_dir
-      puts score_dir if score_expired? score_dir
+    Pathname.new(dir).children.each do |score_dir|
+      remove_score_dir score_dir if score_expired? score_dir
     end
   end
 
@@ -61,10 +60,13 @@ class ScoresStore < FileSystemStore
   def score_expired?(score_dir)
     Time.parse(score_dir.basename.to_s) < Time.now - EXPIRED_PERIOD
   rescue ArgumentError
+    nil
   end
 
   def remove_score_dir(score_dir)
-    FileUtils.remove_dir score_dir rescue Errno::ENOENT
+    FileUtils.remove_dir score_dir
+  rescue StandardError
+    Errno::ENOENT
   end
 
   def load_best(score_dir)
