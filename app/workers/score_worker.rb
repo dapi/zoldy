@@ -10,30 +10,17 @@ class ScoreWorker
   include AutoLogger
 
   sidekiq_options(
-    retry: true,
-    queue: :scores_farm,
-    lock_timeout: 4.hours,
-    unique_across_queues: true,
+    retry:                 true,
+    queue:                 :scores_farm,
+    unique_across_queues:  true,
     unique_across_workers: true,
-    lock: :while_executing,
-    unique_args: ->(args) { [args.first] }
+    unique:                :until_and_while_executing,
+    on_conflict:           :log,
+    unique_args:           ->(args) { args }
   )
 
   # TODO: Don't start score generation when have only 2 hours to be expired
   #
-  def self.perform_new
-    score = Zoldy.app.scores_store.build
-    Zoldy.logger.info "Start scoring in #{score.time.utc.iso8601}"
-    Zoldy.app.scores_store.save! score
-    perform_async score.time.to_s
-  end
-
-  def self.perform_best
-    score = Zoldy.app.scores_store.best
-    Zoldy.logger.info "Start scoring in #{score.time.utc.iso8601}"
-    perform_async score.time.to_s
-  end
-
   def perform(time) # rubocop:disable Metrics/AbcSize
     time = Time.parse time
     logger.info "Start score generation from #{time.utc.iso8601} time"

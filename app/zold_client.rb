@@ -5,6 +5,9 @@
 # HTTP Client of Zold Specitification
 #
 class ZoldClient
+  Error = Class.new StandardError
+  NotFound = Class.new Error
+  UnknownError = Class.new Error
   # @param [Remote] remote node
   #
   def initialize(remote_node)
@@ -17,7 +20,7 @@ class ZoldClient
     JSON.parse(response.body)
   end
 
-  def fetch_score
+  def score
     Zold::Score.new home['score'].slice('host', 'time', 'port', 'suffixes', 'strength', 'invoice').symbolize_keys
   end
 
@@ -57,7 +60,10 @@ class ZoldClient
   attr_reader :remote_node
 
   def validate_response!(response, status: 200, content_type: nil)
-    raise response.return_message unless response.success?
+    unless response.success?
+      raise NotFound if response.code == 404
+      raise UnknownError, response.return_message
+    end
 
     validate_status response.code, status
     validate_content_type response.headers, content_type

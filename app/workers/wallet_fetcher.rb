@@ -8,7 +8,7 @@
 #
 # To start fetching all wallets from the network run:
 #
-# > WalletFetcher.new.perform
+# > WalletFetcher.perform_async
 #
 class WalletFetcher
   include Sidekiq::Worker
@@ -16,14 +16,15 @@ class WalletFetcher
 
   DEFAULT_WALLET_ID  = '0000000000000000'
   DEFAULT_NODE_ALIAS = 'b2.zold.io'
+  TOUCH_EXPIRAION_PERIOD = 5.minute
 
   sidekiq_options(
-    retry: false,
-    unique: :until_and_while_executing,
-    unique_across_queues: true,
+    retry:                 false,
+    unique:                :until_and_while_executing,
+    unique_across_queues:  true,
     unique_across_workers: true,
-    on_conflict: :log,
-    unique_args: ->(args) { args }
+    on_conflict:           :log,
+    unique_args:           ->(args) { args }
   )
 
   def perform(wallet_id = DEFAULT_WALLET_ID, node_alias = nil)
@@ -36,15 +37,19 @@ class WalletFetcher
 
   private
 
-  TOUCH_EXPIRAION_PERIOD = 15.minute
-
   def fetch_wallet(wallet_id, node_alias)
     logger.info "Start wallet fetching #{wallet_id} from #{node_alias}"
 
     wallet = fetch_remote_wallet wallet_id, node_alias
     wallet.transactions.map(&:bnf).uniq.each do |id|
-      fetch_async id
+      WalletFetcher.perform_async id
     end
+  rescue ZoldClient::NotFound => ex
+    logger.warn "Wallet #{wallet_id} is not found on #{node_alias}"
+  rescue StandardError => ex
+    Zoldy.app.wallets_store.touch_remote_modification wallet_id, node_alias
+    logger.error "Error while fetching wallet '#{wallet_id}', '#{node_alias}' -> #{ex.class} #{ex}"
+    nil
   end
 
   def fetch_remote_wallet(wallet_id, node_alias)
@@ -53,18 +58,15 @@ class WalletFetcher
     Zoldy.app.wallets_store.save_copy! wallet, score
 
     wallet
-  rescue StandardError => error
-    Zoldy.app.wallets_store.touch_remote_modification wallet_id, node_alias
-    logger.error "Error while fetching wallet #{wallet_id} from #{node_alias} -> #{error.class} #{error}"
   end
 
   def fetch_async(wallet_id, node_alias)
     unless score_expired? wallet_id, node_alias
-      logger.info "Ignore fetching #{wallet_id} from #{node_alias}"
+      logger.warn "Ignore fetching #{wallet_id} from #{node_alias}"
       return
     end
 
-    logger.info "Perform async fetching #{wallet_id} from #{node_alias}"
+    logger.debug "Perform async fetching #{wallet_id} from #{node_alias}"
     WalletFetcher.perform_async wallet_id, node_alias
   end
 

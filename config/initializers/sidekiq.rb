@@ -14,8 +14,10 @@ Sidekiq.configure_server do |config|
     end
   end
 
-  crontab_file = File.expand_path('../crontab.yml', __dir__)
   Sidekiq::Cron::Job.destroy_all!
+  SidekiqUniqueJobs::Digests.all.each { |digest| SidekiqUniqueJobs::Digests.del digest: digest }
+
+  crontab_file = File.expand_path('../crontab.yml', __dir__)
   result = Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
   puts "Load sidekiq crontab: #{result.presence || 'Success'}"
 end
