@@ -19,8 +19,6 @@ class WalletFetcher
   sidekiq_options(
     retry: false,
     unique: :until_and_while_executing,
-    unique_across_queues: true,
-    unique_across_workers: true,
     on_conflict: :log,
     unique_args: ->(args) { args }
   )

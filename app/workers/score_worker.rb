@@ -12,8 +12,6 @@ class ScoreWorker
   sidekiq_options(
     retry: true,
     queue: :scores_farm,
-    unique_across_queues: true,
-    unique_across_workers: true,
     unique: :until_and_while_executing,
     on_conflict: :log,
     unique_args: ->(args) { args }
