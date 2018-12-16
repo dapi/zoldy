@@ -18,6 +18,7 @@ ActiveSupport::Dependencies.autoload_paths += %w[
   app/api
   app/middleware
   app/entities
+  app/stores/concerns
   app/stores
 ]
 

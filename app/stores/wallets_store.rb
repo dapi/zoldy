@@ -6,7 +6,12 @@ require 'digest'
 
 # Store ::Remote info filesystem
 #
+#
+# TODO move score's manimulation to difference store
+#
 class WalletsStore < FileSystemStore
+  include WalletsStorePaths
+
   WalletNotFound = Class.new StandardError
 
   def save_copy!(wallet, score = nil)
@@ -44,6 +49,10 @@ class WalletsStore < FileSystemStore
     nil
   end
 
+  def count
+    Dir[all_best_dir].count
+  end
+
   def each
     Dir[all_best_dir].lazy.each do |file|
       yield Wallet.load File.read file
@@ -52,22 +61,11 @@ class WalletsStore < FileSystemStore
 
   def save_score!(wallet, score)
     wallet_copy_dir = build_wallet_copy_dir wallet
-    touch_remote_modification wallet.id, score.node_alias
     IO.write wallet_copy_dir.join(validate_path!(score.node_alias) + '.score'), score.value
     IO.write wallet_copy_dir.join('total_scores'), calculate_total_scores_in_wallet_directory(wallet_copy_dir)
   end
 
-  def touch_remote_modification(wallet_id, node_alias)
-    FileUtils.touch build_remote_touch_file(wallet_id, node_alias)
-  rescue Errno::ENOENT
-    nil
-  end
-
-  def remote_touched_at(wallet_id, node_alias)
-    File.mtime build_remote_touch_file(wallet_id, node_alias)
-  rescue Errno::ENOENT
-    nil
-  end
+  private
 
   def select_best!(id)
     id = id.id if id.is_a? Wallet
@@ -78,12 +76,6 @@ class WalletsStore < FileSystemStore
     return if Dir.exist?(best_dir) && File.readlink(best_dir) == best_copy_path
 
     create_symlink best_copy_path, best_dir
-  end
-
-  private
-
-  def build_remote_touch_file(wallet_id, node_alias)
-    build_wallet_dir(wallet_id).join(node_alias + '.remote')
   end
 
   def find_path_of_best_copy(id)
@@ -114,23 +106,5 @@ class WalletsStore < FileSystemStore
     wallet_copy_dir = build_wallet_copy_dir wallet
     FileUtils.mkdir_p wallet_copy_dir
     IO.write wallet_copy_dir.join('body'), wallet.body
-  end
-
-  def build_wallet_dir(id)
-    d = dir.join validate_path! id
-    FileUtils.mkdir_p d
-    d
-  end
-
-  def build_wallet_copy_dir(wallet)
-    build_wallet_dir(wallet.id).join wallet.digest + '.copy'
-  end
-
-  def build_best_wallet_dir(id)
-    build_wallet_dir(id).join('best')
-  end
-
-  def all_best_dir
-    dir.join('*').join('best').join('body')
   end
 end

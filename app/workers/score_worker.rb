@@ -10,13 +10,13 @@ class ScoreWorker
   include AutoLogger
 
   sidekiq_options(
-    retry:                 true,
-    queue:                 :scores_farm,
-    unique_across_queues:  true,
+    retry: true,
+    queue: :scores_farm,
+    unique_across_queues: true,
     unique_across_workers: true,
-    unique:                :until_and_while_executing,
-    on_conflict:           :log,
-    unique_args:           ->(args) { args }
+    unique: :until_and_while_executing,
+    on_conflict: :log,
+    unique_args: ->(args) { args }
   )
 
   # TODO: Don't start score generation when have only 2 hours to be expired

@@ -1,3 +1,9 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2018 Danil Pismenny <danil@brandymint.ru>
+
+# Top level directives
+#
 class Commands
   include AutoLogger
 
@@ -18,8 +24,13 @@ class Commands
   #
   def fetch_remote_invoice_wallets
     Zoldy.app.remotes_store.all.each do |r|
-      score = r.client.fetch_score rescue nil
+      score = begin
+                r.client.fetch_score
+              rescue StandardError
+                nil
+              end
       next unless score
+
       wallet_id = score.invoice.split('@').last
 
       WalletFetcher.perform_async wallet_id, r.node_alias

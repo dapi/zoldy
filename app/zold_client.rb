@@ -62,6 +62,7 @@ class ZoldClient
   def validate_response!(response, status: 200, content_type: nil)
     unless response.success?
       raise NotFound if response.code == 404
+
       raise UnknownError, response.return_message
     end
 
