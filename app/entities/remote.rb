@@ -6,6 +6,7 @@
 #
 class Remote
   SPLITTER = ':'
+  DEFAULT_PORT = 4096
 
   attr_reader :host, :port, :remotes_count, :score
 
@@ -26,7 +27,7 @@ class Remote
     new host: host, port: port
   end
 
-  def initialize(host:, port:, score: nil, remotes_count: nil)
+  def initialize(host:, port: DEFAULT_PORT, score: nil, remotes_count: nil)
     @host          = host
     @port          = port.to_i
     @score         = score
