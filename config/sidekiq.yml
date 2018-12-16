@@ -9,5 +9,6 @@ production:
   - [worker1, 16]
   - [worker2, 16]
   - [worker3, 16]
+  - [scores_farm, 16]
   - [default, 1]
 :logfile: ./log/sidekiq.log

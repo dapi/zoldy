@@ -11,6 +11,7 @@ class ScoreWorker
 
   sidekiq_options(
     retry: true,
+    queue: :scores_farm,
     lock_timeout: 4.hours,
     unique_across_queues: true,
     unique_across_workers: true,
@@ -24,6 +25,12 @@ class ScoreWorker
     score = Zoldy.app.scores_store.build
     Zoldy.logger.info "Start scoring in #{score.time.utc.iso8601}"
     Zoldy.app.scores_store.save! score
+    perform_async score.time.to_s
+  end
+
+  def self.perform_best
+    score = Zoldy.app.scores_store.best
+    Zoldy.logger.info "Start scoring in #{score.time.utc.iso8601}"
     perform_async score.time.to_s
   end
 

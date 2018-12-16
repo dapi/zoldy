@@ -17,10 +17,30 @@ class ZoldClient
     JSON.parse(response.body)
   end
 
+  def fetch_score
+    Zold::Score.new home['score'].slice(*%w(host time port suffixes strength invoice)).symbolize_keys
+  end
+
   def version
     response = get '/version'
     validate_response! response, content_type: Protocol::TEXT_CONTENT_TYPE
     response.body
+  end
+
+  def fetch_wallet(wallet_id)
+    response = get '/wallet/' + wallet_id.to_s
+    validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
+    Wallet.load JSON.parse(response.body)['body']
+  end
+
+  def fetch_wallet_and_score(wallet_id)
+    response = get '/wallet/' + wallet_id.to_s
+    validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
+    data = JSON.parse response.body
+    wallet = Wallet.load data['body']
+    score = Zold::Score.new data['score'].slice(*%w(host time port suffixes strength invoice)).symbolize_keys
+
+    [wallet, score]
   end
 
   def remotes

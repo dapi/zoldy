@@ -18,12 +18,12 @@ class Wallet
   def self.load(body)
     lines = body.split(LINE_SEPARATOR)
     Wallet.new(
-      network: lines[0],
-      protocol: lines[1],
-      id: lines[2],
-      public_key: lines[3],
+      network:      lines[0],
+      protocol:     lines[1],
+      id:           lines[2],
+      public_key:   lines[3],
       transactions: Array(lines.slice(5, lines.length - 5)).map { |t| WalletTransaction.load t }.freeze,
-      body: body
+      body:         body
     )
   end
 

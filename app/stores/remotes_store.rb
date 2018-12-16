@@ -5,7 +5,7 @@
 # Store <Remote> into filesystem
 #
 class RemotesStore < FileSystemStore
-  delegate :each, to: :remotes
+  delegate :each, to: :all
 
   # Get remotes <Remotes)
   def all

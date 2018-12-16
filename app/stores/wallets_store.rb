@@ -9,11 +9,12 @@ require 'digest'
 class WalletsStore < FileSystemStore
   WalletNotFound = Class.new StandardError
 
-  def save_copy!(wallet)
+  def save_copy!(wallet, score = nil)
     return if copy? wallet
 
     save_wallet! wallet
-    select_best! wallet.id unless Dir.exist? build_best_wallet_dir(wallet.id)
+    save_score! wallet, score if score.present?
+    select_best! wallet.id
   end
 
   def wallet_size(id)
