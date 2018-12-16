@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2018 Danil Pismenny <danil@brandymint.ru>
+
 # Fetches wallet from specified host.
 # Save score of that host in wallet's store.
 # Perform async fetching for all beneficiaries of all transacfions in wallet
@@ -10,37 +14,61 @@ class WalletFetcher
   include Sidekiq::Worker
   include AutoLogger
 
-  DEFAULT_WALLET_ID = '0000000000000000'
+  DEFAULT_WALLET_ID  = '0000000000000000'
   DEFAULT_NODE_ALIAS = 'b2.zold.io'
 
   sidekiq_options(
     retry: false,
+    unique: :until_and_while_executing,
+    unique_across_queues: true,
+    unique_across_workers: true,
+    on_conflict: :log,
+    unique_args: ->(args) { args }
   )
-    #lock_timeout: nil,
-    #unique_across_queues: true,
-    #unique_across_workers: true,
-    #lock: :while_executing,
-    #on_conflict: :reject,
 
-    #unique_args: ->(args) { args }
-  #)
+  def perform(wallet_id = DEFAULT_WALLET_ID, node_alias = nil)
+    return fetch_wallet wallet_id, node_alias if node_alias.present?
 
+    Zoldy.app.remotes_store.alive.each do |remote|
+      fetch_async wallet_id, remote.node_alias
+    end
+  end
 
-  def perform(wallet_id = DEFAULT_WALLET_ID, node_alias = DEFAULT_NODE_ALIAS)
+  private
+
+  TOUCH_EXPIRAION_PERIOD = 15.minute
+
+  def fetch_wallet(wallet_id, node_alias)
     logger.info "Start wallet fetching #{wallet_id} from #{node_alias}"
 
-    remote = Remote.parse DEFAULT_NODE_ALIAS
-    wallet, score = remote.client.fetch_wallet_and_score wallet_id
+    wallet = fetch_remote_wallet wallet_id, node_alias
+    wallet.transactions.map(&:bnf).uniq.each do |id|
+      fetch_async id
+    end
+  end
 
-    logger.info "Save wallet #{wallet.id} from #{remote}"
+  def fetch_remote_wallet(wallet_id, node_alias)
+    wallet, score = Remote.parse(node_alias).client.fetch_wallet_and_score wallet_id
+
     Zoldy.app.wallets_store.save_copy! wallet, score
 
-    wallet.transactions.each do |t|
-      logger.info "Perform async fetching #{t.bnf} from #{remote}"
-      # TODO fetch from all known remotes
-      # WalletFetcher.perform_async t.bnf, remote
+    wallet
+  rescue StandardError => error
+    Zoldy.app.wallets_store.touch_remote_modification wallet_id, node_alias
+    logger.error "Error while fetching wallet #{wallet_id} from #{node_alias} -> #{error.class} #{error}"
+  end
+
+  def fetch_async(wallet_id, node_alias)
+    unless score_expired? wallet_id, node_alias
+      logger.info "Ignore fetching #{wallet_id} from #{node_alias}"
+      return
     end
-  rescue => error
-    logger.error "Error white perform fetching wallet #{wallet_id} from #{node_alias} -> #{error.class} #{error}"
+
+    logger.info "Perform async fetching #{wallet_id} from #{node_alias}"
+    WalletFetcher.perform_async wallet_id, node_alias
+  end
+
+  def score_expired?(wallet_id, node_alias)
+    Time.now - (Zoldy.app.wallets_store.remote_touched_at(wallet_id, node_alias) || 0) > TOUCH_EXPIRAION_PERIOD
   end
 end

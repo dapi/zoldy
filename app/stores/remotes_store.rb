@@ -14,6 +14,10 @@ class RemotesStore < FileSystemStore
     end
   end
 
+  def alive
+    all
+  end
+
   def clear!(force: false)
     super force: force
   end

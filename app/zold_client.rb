@@ -18,7 +18,7 @@ class ZoldClient
   end
 
   def fetch_score
-    Zold::Score.new home['score'].slice(*%w(host time port suffixes strength invoice)).symbolize_keys
+    Zold::Score.new home['score'].slice('host', 'time', 'port', 'suffixes', 'strength', 'invoice').symbolize_keys
   end
 
   def version
@@ -38,7 +38,9 @@ class ZoldClient
     validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
     data = JSON.parse response.body
     wallet = Wallet.load data['body']
-    score = Zold::Score.new data['score'].slice(*%w(host time port suffixes strength invoice)).symbolize_keys
+    score = Zold::Score.new data['score']
+            .slice('host', 'time', 'port', 'suffixes', 'strength', 'invoice')
+            .symbolize_keys
 
     [wallet, score]
   end

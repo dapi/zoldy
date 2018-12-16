@@ -10,7 +10,10 @@ class WalletsStore < FileSystemStore
   WalletNotFound = Class.new StandardError
 
   def save_copy!(wallet, score = nil)
-    return if copy? wallet
+    if copy? wallet
+      touch_remote_modification wallet.id, score.node_alias if score.present?
+      return
+    end
 
     save_wallet! wallet
     save_score! wallet, score if score.present?
@@ -41,16 +44,29 @@ class WalletsStore < FileSystemStore
     nil
   end
 
-  def all
-    Dir[dir.join('*').join('best').join('body')].lazy.map do |file|
-      Wallet.load File.read file
+  def each
+    Dir[all_best_dir].lazy.each do |file|
+      yield Wallet.load File.read file
     end
   end
 
   def save_score!(wallet, score)
     wallet_copy_dir = build_wallet_copy_dir wallet
+    touch_remote_modification wallet.id, score.node_alias
     IO.write wallet_copy_dir.join(validate_path!(score.node_alias) + '.score'), score.value
     IO.write wallet_copy_dir.join('total_scores'), calculate_total_scores_in_wallet_directory(wallet_copy_dir)
+  end
+
+  def touch_remote_modification(wallet_id, node_alias)
+    FileUtils.touch build_remote_touch_file(wallet_id, node_alias)
+  rescue Errno::ENOENT
+    nil
+  end
+
+  def remote_touched_at(wallet_id, node_alias)
+    File.mtime build_remote_touch_file(wallet_id, node_alias)
+  rescue Errno::ENOENT
+    nil
   end
 
   def select_best!(id)
@@ -65,6 +81,10 @@ class WalletsStore < FileSystemStore
   end
 
   private
+
+  def build_remote_touch_file(wallet_id, node_alias)
+    build_wallet_dir(wallet_id).join(node_alias + '.remote')
+  end
 
   def find_path_of_best_copy(id)
     Dir[build_wallet_dir(id).join '*.copy'].max_by do |file|
@@ -97,7 +117,9 @@ class WalletsStore < FileSystemStore
   end
 
   def build_wallet_dir(id)
-    dir.join validate_path! id
+    d = dir.join validate_path! id
+    FileUtils.mkdir_p d
+    d
   end
 
   def build_wallet_copy_dir(wallet)
@@ -106,5 +128,9 @@ class WalletsStore < FileSystemStore
 
   def build_best_wallet_dir(id)
     build_wallet_dir(id).join('best')
+  end
+
+  def all_best_dir
+    dir.join('*').join('best').join('body')
   end
 end

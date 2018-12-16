@@ -12,9 +12,13 @@ class ReconnectWorker
   include Sidekiq::Worker
   include AutoLogger
   MAX_ERRORS = 2
+  sidekiq_options(
+    queue: :critical
+  )
 
   def perform
     Zoldy.app.remotes_store.each do |remote|
+      # TODO: perform async ping
       ping_remote remote unless remote.node_alias == Settings.node_alias
     end.count
   end
