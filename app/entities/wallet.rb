@@ -60,6 +60,10 @@ class Wallet
     @body ||= build_body
   end
 
+  def zents
+    transactions.map(&:zents).inject(&:+)
+  end
+
   private
 
   def build_body

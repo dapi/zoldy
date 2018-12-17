@@ -31,13 +31,15 @@ class Commands
   def fetch_remote_invoice_wallets
     Zoldy.app.remotes_store.all.each do |r|
       begin
-        score = r.client.fetch_score
+        score = r.client.score
 
         wallet_id = score.invoice.split('@').last
 
         WalletFetcher.perform_async wallet_id, r.node_alias
       rescue ZoldClient::Error => err
         logger.warn "#{err} -> #{r}"
+      rescue
+        logger.error "#{err} -> #{r}"
       end
     end
   end
