@@ -43,7 +43,7 @@ class Remote
   end
 
   def client
-    ZoldClient.new self
+    ZoldClient.new node_alias
   end
 
   def to_h

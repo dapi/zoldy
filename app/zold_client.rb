@@ -7,11 +7,12 @@
 class ZoldClient
   Error = Class.new StandardError
   NotFound = Class.new Error
+  TimeoutExceed = Class.new Error
   UnknownError = Class.new Error
   # @param [Remote] remote node
   #
-  def initialize(remote_node)
-    @remote_node = remote_node
+  def initialize(uri)
+    @uri = uri.is_a?(URI) ? uri : URI.parse('http://' + uri)
   end
 
   def home
@@ -57,11 +58,12 @@ class ZoldClient
 
   private
 
-  attr_reader :remote_node
+  attr_reader :uri
 
   def validate_response!(response, status: 200, content_type: nil)
     unless response.success?
-      raise NotFound if response.code == 404
+      raise NotFound, response.return_message if response.code == 404
+      raise TimeoutExceed, response.return_message if response.timed_out?
 
       raise UnknownError, response.return_message
     end
@@ -88,6 +90,6 @@ class ZoldClient
   end
 
   def http_client
-    HttpClient.new remote_node.uri, protocol: Zoldy.protocol
+    HttpClient.new uri, protocol: Zoldy.protocol
   end
 end

@@ -14,7 +14,7 @@ describe RemotesStore do
   specify { expect(store.all).to be_empty }
 
   context 'when remotes is empty' do
-    let(:remote) { build :remote, score: Protocol::MIN_SCORE_VALUE + 1 }
+    let(:remote) { build :remote }
 
     specify do
       store.add remote

@@ -55,6 +55,7 @@ class WalletFetcher
     touches_store.touch wallet_id, node_alias
     wallet, score = Remote.parse(node_alias).client.fetch_wallet_and_score wallet_id
 
+    Zoldy.app.remotes_store.update_score score.remote, score
     Zoldy.app.wallets_store.save_copy! wallet, score
 
     wallet
