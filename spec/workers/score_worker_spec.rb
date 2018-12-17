@@ -12,7 +12,7 @@ describe ScoreWorker do
 
   before do
     Zoldy.app.scores_store.clear!
-    allow_any_instance_of(Zold::Score).to receive(:next).and_return next_score # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(Zold::Score).to receive(:next).and_return next_score
   end
 
   it 'build next from an existen score' do # rubocop:disable RSpec/MultipleExpectations

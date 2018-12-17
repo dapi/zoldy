@@ -49,3 +49,6 @@ development:
 test:
   <<: *defaults
   stores_dir: ./.zoldy/test
+  sidekiq_redis:
+    url: redis://localhost:6379/9
+

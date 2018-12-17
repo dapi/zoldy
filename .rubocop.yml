@@ -13,6 +13,9 @@ Metrics/LineLength:
 RSpec/MessageSpies:
   Enabled: false
 
+RSpec/AnyInstance:
+  Enabled: false
+
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context']
 

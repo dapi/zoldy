@@ -7,24 +7,31 @@ class ScoresWatchDog
   include Sidekiq::Worker
   include AutoLogger
 
-  QUEUE_PREFIX     = 'worker'
-  EXPIRATION_HOURS = 24 # 24 hours expiration of Score
-  PROCESSORS_COUNT = 4 # Count of processors used to run parallelized score mining
-  PERIOD           = EXPIRATION_HOURS / PROCESSORS_COUNT
-  QUEUES           = Array.new(PROCESSORS_COUNT) { |i| QUEUE_PREFIX + i.to_s }
+  QUEUE = ScoreWorker.sidekiq_options['queue'] || :default
 
   def perform
     Zoldy.app.scores_store.clear_expired_scores!
-    # QUEUES.each do |queue|
-    # perform_worker queue
-    # end
+    start_new_score_if_need
   end
 
   private
 
-  def workers_count(queue)
-    Sidekiq::Queue.new(queue)
-                  .select { |a| a.klass == ScoreWorker.to_s }
-                  .size
+  def start_new_score_if_need
+    Commands.new.perform_new_score if last_time.nil? || last_time < Time.now - period_between_scores
+  end
+
+  def last_time
+    score_times.max
+  end
+
+  def score_times
+    Sidekiq::Workers.new.map do |_process_id, _thread_id, work|
+      j = Sidekiq::Job.new(work['payload'])
+      j.klass == ScoreWorker.name ? Time.parse(j.args.first) : nil
+    end.compact
+  end
+
+  def period_between_scores
+    Zold::Score::EXPIRATION_PERIOD / Sidekiq::Stats.new.processes_size
   end
 end
