@@ -16,7 +16,8 @@ class ScoresWatchDog
 
   def start_new_score_if_need
     return unless last_time.nil? || last_time < Time.now - period_between_scores
-    logger.info "Perform async new score calculation"
+
+    logger.info 'Perform async new score calculation'
     Commands.new.perform_new_score
   end
 

@@ -5,6 +5,8 @@
 # Store <Remote> into filesystem
 #
 class RemotesStore < FileSystemStore
+  ALIVE_PERIOD = 15.minutes
+
   def all
     map { |r| r }
   end
@@ -23,7 +25,15 @@ class RemotesStore < FileSystemStore
 
   # TODO: Return nodes available in last 10 minutes only
   def alive
-    all
+    Pathname.new(dir).children.map do |remote_dir|
+      node_alias = Pathname(remote_dir).basename.to_s
+      Remote.parse node_alias if alive? node_alias
+    end.compact
+  end
+
+  def alive?(node_alias)
+    time = last_error_time node_alias
+    time.nil? || time < Time.now - ALIVE_PERIOD
   end
 
   # Remote all remotes
@@ -63,8 +73,14 @@ class RemotesStore < FileSystemStore
     nil
   end
 
-  def get_errors_count(remote)
-    Dir[build_remote_dir(remote.node_alias).join '*.error'].count
+  def get_errors_count(node_alias)
+    Dir[build_remote_dir(node_alias).join '*.error'].count
+  end
+
+  def last_error_time(node_alias)
+    file = Dir[build_remote_dir(node_alias).join '*.error'].sort.last
+    return unless file
+    File.mtime file
   end
 
   def remove(node_alias)
@@ -76,6 +92,6 @@ class RemotesStore < FileSystemStore
   private
 
   def build_remote_dir(node_alias)
-    dir.join validate_path! node_alias.to_s
+    dir.join validate_path! node_alias.to_s.strip
   end
 end

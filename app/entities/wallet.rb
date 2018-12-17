@@ -44,6 +44,10 @@ class Wallet
     @body = body
   end
 
+  def to_s
+    id
+  end
+
   def ==(other)
     id == other.id && digest == other.digest
   end

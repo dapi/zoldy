@@ -56,20 +56,27 @@ class ZoldClient
     build_remotes JSON.parse(response.body)['all']
   end
 
+  def push_wallet(wallet)
+    response = put '/wallet/' + wallet.id.to_s, wallet.body
+    validate_response! response, status: [200, 304]
+
+    response.code == 200 ? :created : :modified
+  end
+
   private
 
   attr_reader :uri
 
   def validate_response!(response, status: 200, content_type: nil)
-    unless response.success?
-      raise NotFound, response.return_message if response.code == 404
-      raise TimeoutExceed, response.return_message if response.timed_out?
-
-      raise UnknownError, response.return_message
-    end
-
+    raise_unsuccessful response unless response.success?
     validate_status response.code, status
-    validate_content_type response.headers, content_type
+    validate_content_type response.headers, content_type if content_type.present?
+  end
+
+  def raise_unsuccessful(response)
+    raise NotFound, response.return_message if response.code == 404
+    raise TimeoutExceed, response.return_message if response.timed_out?
+    raise UnknownError, response.return_message if response.failure?
   end
 
   def build_remotes(array)
@@ -86,7 +93,7 @@ class ZoldClient
   end
 
   def validate_status(response_status, status)
-    raise "Wrong response status #{response_status} <> #{status}" unless response_status == status
+    raise "Wrong response status #{response_status} <> #{status}" unless Array(status).include? response_status
   end
 
   def http_client
