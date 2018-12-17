@@ -7,8 +7,6 @@ class ScoresWatchDog
   include Sidekiq::Worker
   include AutoLogger
 
-  QUEUE = ScoreWorker.sidekiq_options['queue'] || :default
-
   def perform
     Zoldy.app.scores_store.clear_expired_scores!
     start_new_score_if_need
@@ -17,7 +15,9 @@ class ScoresWatchDog
   private
 
   def start_new_score_if_need
-    Commands.new.perform_new_score if last_time.nil? || last_time < Time.now - period_between_scores
+    return unless last_time.nil? || last_time < Time.now - period_between_scores
+    logger.info "Perform async new score calculation"
+    Commands.new.perform_new_score
   end
 
   def last_time
