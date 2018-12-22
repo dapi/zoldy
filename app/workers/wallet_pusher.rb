@@ -9,7 +9,7 @@ class WalletPusher
 
   def perform(wallet_id, node_alias)
     unless Zoldy.app.remotes_store.alive? node_alias
-      logger.warn "Ingore dead node #{node_alias}"
+      logger.warn "Ignore dead node #{node_alias}"
       return
     end
     wallet = Zoldy.app.wallets_store.find! wallet_id
