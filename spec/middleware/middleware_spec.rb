@@ -21,7 +21,6 @@ describe Middleware do
 
   before do
     stub_const 'Zold::Score::STRENGTH', 0
-    Sidekiq::Testing.inline!
   end
 
   it do

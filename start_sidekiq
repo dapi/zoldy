@@ -1,0 +1,2 @@
+./bin/console ScoresWatchDog.reset!
+bundle exec foreman start -m worker0=1,worker1=1,worker2=1,worker3=1,node=0

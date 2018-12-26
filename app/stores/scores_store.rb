@@ -5,6 +5,7 @@
 # Saves and restores Zold::Score to the file system
 #
 class ScoresStore < FileSystemStore
+  EXPIRED_PERIOD = 24.hours
   # @param [Zold::Score]
   #
   def save!(score)
@@ -15,19 +16,41 @@ class ScoresStore < FileSystemStore
     score
   end
 
+  def clear_expired_scores!
+    Pathname.new(dir).children.each do |score_dir|
+      remove_score_dir score_dir if score_expired? score_dir
+    end
+  end
+
+  def find_by_time(time)
+    load_best dir.join time.utc.iso8601
+  rescue Errno::ENOENT
+    nil
+  end
+
+  def remove_by_time(time)
+    FileUtils.remove_dir dir.join time.utc.iso8601
+  rescue Errno::ENOENT
+    nil
+  end
+
   def best
-    all.max_by(&:value)
+    alive.max_by(&:value)
+  end
+
+  def last
+    alive.max_by(&:time)
+  end
+
+  def alive
+    all.reject(&:expired?)
   end
 
   # Returns list of a best scores grouped by time
   #
   def all
     Pathname.new(dir).children.map do |score_dir|
-      Zold::Score.load(
-        File.read(
-          score_dir.children.max_by { |a| a.basename.to_s.to_i }
-        )
-      )
+      load_best score_dir
     end
   end
 
@@ -37,6 +60,26 @@ class ScoresStore < FileSystemStore
   end
 
   private
+
+  def score_expired?(score_dir)
+    Time.parse(score_dir.basename.to_s) < Time.now - EXPIRED_PERIOD
+  rescue ArgumentError
+    nil
+  end
+
+  def remove_score_dir(score_dir)
+    FileUtils.remove_dir score_dir
+  rescue StandardError
+    Errno::ENOENT
+  end
+
+  def load_best(score_dir)
+    Zold::Score.load(
+      File.read(
+        score_dir.children.max_by { |a| a.basename.to_s.to_i }
+      )
+    )
+  end
 
   def remove_weak_scores(score_dir)
     score_values = score_dir.children.sort_by { |a| a.basename.to_s.to_i }

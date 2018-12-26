@@ -6,7 +6,7 @@
 #
 class Utils
   def checker
-    Zoldy.app.remotes_store.remotes.each do |remote|
+    Zoldy.app.remotes_store.all.each do |remote|
       check remote
     end
     nil

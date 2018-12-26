@@ -36,7 +36,6 @@ defaults: &defaults
     - 159.69.220.146:4096
     - 92.60.176.47:4096
     - 92.60.176.47:4097
-    - db2.kiiiosk.ru:4096
 
 production:
   <<: *defaults
@@ -49,3 +48,6 @@ development:
 test:
   <<: *defaults
   stores_dir: ./.zoldy/test
+  sidekiq_redis:
+    url: redis://localhost:6379/9
+

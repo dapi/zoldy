@@ -36,6 +36,13 @@ class WalletsAPI < Grape::API
         Zoldy.app.wallets_store.wallet_size params[:id]
       end
 
+      desc 'Return wallet`s balance (UNDOCUMENTED)'
+      get :balance do
+        content_type Protocol::TEXT_CONTENT_TYPE
+        Zoldy.app.wallets_store.find!(params[:id]).zents
+      end
+
+      desc 'Save wallet in local store'
       put do
         content_type Protocol::TEXT_CONTENT_TYPE
 

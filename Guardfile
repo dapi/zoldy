@@ -3,6 +3,7 @@
 # frozen_string_literal: true
 
 ignore %r{^.zoldy/}
+ignore %r{^/tmp/}
 
 directories %w[app config lib spec]
 

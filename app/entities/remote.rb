@@ -6,6 +6,7 @@
 #
 class Remote
   SPLITTER = ':'
+  DEFAULT_PORT = 4096
 
   attr_reader :host, :port, :remotes_count, :score
 
@@ -23,10 +24,10 @@ class Remote
 
   def self.parse(home)
     host, port = home.to_s.split SPLITTER
-    new host: host, port: port
+    new host: host, port: port.presence || DEFAULT_PORT
   end
 
-  def initialize(host:, port:, score: nil, remotes_count: nil)
+  def initialize(host:, port: DEFAULT_PORT, score: nil, remotes_count: nil)
     @host          = host
     @port          = port.to_i
     @score         = score
@@ -42,7 +43,7 @@ class Remote
   end
 
   def client
-    ZoldClient.new self
+    ZoldClient.new node_alias
   end
 
   def to_h

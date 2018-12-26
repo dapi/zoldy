@@ -5,10 +5,14 @@
 # HTTP Client of Zold Specitification
 #
 class ZoldClient
+  Error = Class.new StandardError
+  NotFound = Class.new Error
+  TimeoutExceed = Class.new Error
+  UnknownError = Class.new Error
   # @param [Remote] remote node
   #
-  def initialize(remote_node)
-    @remote_node = remote_node
+  def initialize(uri)
+    @uri = uri.is_a?(URI) ? uri : URI.parse('http://' + uri)
   end
 
   def home
@@ -17,10 +21,32 @@ class ZoldClient
     JSON.parse(response.body)
   end
 
+  def score
+    Zold::Score.new home['score'].slice('host', 'time', 'port', 'suffixes', 'strength', 'invoice').symbolize_keys
+  end
+
   def version
     response = get '/version'
     validate_response! response, content_type: Protocol::TEXT_CONTENT_TYPE
     response.body
+  end
+
+  def fetch_wallet(wallet_id)
+    response = get '/wallet/' + wallet_id.to_s
+    validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
+    Wallet.load JSON.parse(response.body)['body']
+  end
+
+  def fetch_wallet_and_score(wallet_id)
+    response = get '/wallet/' + wallet_id.to_s
+    validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
+    data = JSON.parse response.body
+    wallet = Wallet.load data['body']
+    score = Zold::Score.new data['score']
+            .slice('host', 'time', 'port', 'suffixes', 'strength', 'invoice')
+            .symbolize_keys
+
+    [wallet, score]
   end
 
   def remotes
@@ -30,15 +56,27 @@ class ZoldClient
     build_remotes JSON.parse(response.body)['all']
   end
 
+  def push_wallet(wallet)
+    response = put '/wallet/' + wallet.id.to_s, wallet.body
+    validate_response! response, status: [200, 304]
+
+    response.code == 200 ? :created : :modified
+  end
+
   private
 
-  attr_reader :remote_node
+  attr_reader :uri
 
   def validate_response!(response, status: 200, content_type: nil)
-    raise response.return_message unless response.success?
-
+    raise_unsuccessful response unless response.success?
     validate_status response.code, status
-    validate_content_type response.headers, content_type
+    validate_content_type response.headers, content_type if content_type.present?
+  end
+
+  def raise_unsuccessful(response)
+    raise NotFound, response.return_message if response.code == 404
+    raise TimeoutExceed, response.return_message if response.timed_out?
+    raise UnknownError, response.return_message if response.failure?
   end
 
   def build_remotes(array)
@@ -55,10 +93,10 @@ class ZoldClient
   end
 
   def validate_status(response_status, status)
-    raise "Wrong response status #{response_status} <> #{status}" unless response_status == status
+    raise "Wrong response status #{response_status} <> #{status}" unless Array(status).include? response_status
   end
 
   def http_client
-    HttpClient.new remote_node.uri, protocol: Zoldy.protocol
+    HttpClient.new uri, protocol: Zoldy.protocol
   end
 end

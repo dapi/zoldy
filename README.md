@@ -41,9 +41,10 @@ There are a lot of design patterns and `gems` and few pricipes used to get code 
 
 * score generation - DONE
 * current node emitting and remote nodes discovery - DONE
-* wallets receiving - IN PROGRESS
+* wallets receiving - DONE
+* pushing wallets to remote nodes - DONE
 * wallet creation - TODO
-* pushing wallets to remote nodes - TODO
+* hosting bonus and taxes - TODO
 * stress tests - TODO
 
 # Installation

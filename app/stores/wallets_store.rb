@@ -6,14 +6,23 @@ require 'digest'
 
 # Store ::Remote info filesystem
 #
+#
+# TODO move score's manimulation to difference store
+#
 class WalletsStore < FileSystemStore
+  include WalletsStorePaths
+
   WalletNotFound = Class.new StandardError
 
-  def save_copy!(wallet)
-    return if copy? wallet
+  def save_copy!(wallet, score = nil)
+    if copy? wallet
+      touch_remote_modification wallet.id, score.node_alias if score.present?
+      return
+    end
 
     save_wallet! wallet
-    select_best! wallet.id unless Dir.exist? build_best_wallet_dir(wallet.id)
+    save_score! wallet, score if score.present?
+    select_best! wallet.id
   end
 
   def wallet_size(id)
@@ -40,9 +49,13 @@ class WalletsStore < FileSystemStore
     nil
   end
 
-  def all
-    Dir[dir.join('*').join('best').join('body')].lazy.map do |file|
-      Wallet.load File.read file
+  def count
+    Dir[all_best_dir].count
+  end
+
+  def each
+    Dir[all_best_dir].lazy.each do |file|
+      yield Wallet.load File.read file
     end
   end
 
@@ -51,6 +64,8 @@ class WalletsStore < FileSystemStore
     IO.write wallet_copy_dir.join(validate_path!(score.node_alias) + '.score'), score.value
     IO.write wallet_copy_dir.join('total_scores'), calculate_total_scores_in_wallet_directory(wallet_copy_dir)
   end
+
+  private
 
   def select_best!(id)
     id = id.id if id.is_a? Wallet
@@ -62,8 +77,6 @@ class WalletsStore < FileSystemStore
 
     create_symlink best_copy_path, best_dir
   end
-
-  private
 
   def find_path_of_best_copy(id)
     Dir[build_wallet_dir(id).join '*.copy'].max_by do |file|
@@ -93,17 +106,5 @@ class WalletsStore < FileSystemStore
     wallet_copy_dir = build_wallet_copy_dir wallet
     FileUtils.mkdir_p wallet_copy_dir
     IO.write wallet_copy_dir.join('body'), wallet.body
-  end
-
-  def build_wallet_dir(id)
-    dir.join validate_path! id
-  end
-
-  def build_wallet_copy_dir(wallet)
-    build_wallet_dir(wallet.id).join wallet.digest + '.copy'
-  end
-
-  def build_best_wallet_dir(id)
-    build_wallet_dir(id).join('best')
   end
 end

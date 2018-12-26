@@ -1,20 +1,28 @@
 require: rubocop-rspec
 
-# Offense count: 1
-Security/Eval:
+AllCops:
   Exclude:
-    - 'bin/*'
+    - utils/*
+    - bin/*
+    - doc/*
+    - log/*
+    - vendor/*
+    - vendor/**/*
+    - tmp/*
 
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
   Max: 120
 
+Metrics/BlockLength:
+  ExcludedMethods: ['resource', 'describe', 'context']
+
 RSpec/MessageSpies:
   Enabled: false
 
-Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context']
+RSpec/AnyInstance:
+  Enabled: false
 
 Style/Copyright:
   Notice: 'Copyright (\(c\) )?2[0-9]{3} .+'
@@ -22,8 +30,3 @@ Style/Copyright:
   Description: 'Include a copyright notice in each file before any code.'
   Enabled: true
   VersionAdded: '0.30'
-
-AllCops:
-  Exclude:
-    - utils/*
-    - vendor/bundle/**/*

@@ -6,6 +6,8 @@ module Zold
   # We need to do it because parsing score changes it's time zone and created attributes
   #
   class Score
+    EXPIRATION_PERIOD = 24.hours
+
     # Autodetect serialized format and parse it
     #
     def self.load(value)

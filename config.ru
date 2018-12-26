@@ -27,7 +27,7 @@ map '/swagger' do
 end
 
 if Settings.sidekiq_web.username.present?
-  require 'sidekiq/web'
+  require 'sidekiq_unique_jobs/web'
   require 'sidekiq/cron/web'
   Sidekiq::Web.set :session_secret, Settings.secret_key_base
   map '/sidekiq' do

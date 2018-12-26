@@ -51,8 +51,8 @@ describe WalletsStore do
       expect(store).to be_copy(wallet)
     end
 
-    it { expect(store.all.count).to eq 1 }
-    it { expect(store.all).to include wallet }
+    it { expect(store.count).to eq 1 }
+    it { expect(store).to be_exists(wallet) }
     it { expect(store.send(:total_scores_of_copy, wallet)).to be_nil }
 
     context 'when one node confirmed' do
@@ -80,21 +80,21 @@ describe WalletsStore do
       store.save_copy! wallet1
       store.save_score! wallet3, low_score
 
-      store.select_best! wallet_id
+      store.send :select_best!, wallet_id
     end
 
-    it { expect(store.all.count).to eq 1 }
-    it { expect(store.all).to include wallet3 }
+    it { expect(store.count).to eq 1 }
+    it { expect(store).to be_exists(wallet3) }
 
     context 'when saves wallet with higgest score' do
       before do
         store.save_copy! wallet2
         store.save_score! wallet3, high_score
-        store.select_best! wallet_id
+        store.send :select_best!, wallet_id
       end
 
-      it { expect(store.all.count).to eq 1 }
-      it { expect(store.all).to include wallet3 }
+      it { expect(store.count).to eq 1 }
+      it { expect(store).to be_exists(wallet3) }
     end
   end
 end

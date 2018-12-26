@@ -44,6 +44,10 @@ class Wallet
     @body = body
   end
 
+  def to_s
+    id
+  end
+
   def ==(other)
     id == other.id && digest == other.digest
   end
@@ -54,6 +58,10 @@ class Wallet
 
   def body
     @body ||= build_body
+  end
+
+  def zents
+    transactions.map(&:zents).inject(&:+)
   end
 
   private

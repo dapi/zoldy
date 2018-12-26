@@ -28,6 +28,20 @@ describe ScoresStore do
       expect(store.best).to eq better_score
     end
 
+    it 'find by time' do
+      expect(store.find_by_time(better_score.time)).to eq better_score
+    end
+
+    context 'when removed' do
+      before do
+        store.remove_by_time better_score.time
+      end
+
+      it do
+        expect(store.find_by_time(better_score.time)).to be_nil
+      end
+    end
+
     context 'when addes another one' do
       let(:best_of_the_best) { build(:score, time: Time.now - 100).next.next.next }
 
