@@ -1,12 +1,13 @@
 require: rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 2.4
   Exclude:
     - utils/*
     - bin/*
     - doc/*
+    - log/*
     - vendor/*
+    - vendor/**/*
     - tmp/*
 
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
