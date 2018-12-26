@@ -9,29 +9,29 @@ class ScoreWorker
   include Sidekiq::Worker
   include AutoLogger
 
+  # Don't waste cpu time and don't calculate score more then needed
+  MAX_VALUE = Zold::Score::STRENGTH + 1
+
   sidekiq_options(
     retry: true,
-    queue: :scores_farm,
-    unique: :until_and_while_executing,
-    on_conflict: :log,
-    unique_args: ->(args) { args }
+    unique: :until_and_while_executing
   )
 
-  # TODO: Don't start score generation when have only 2 hours to be expired
-  #
-  def perform(time) # rubocop:disable Metrics/AbcSize
-    time = Time.parse time
-    logger.info "Start score generation from #{time.utc.iso8601} time"
-    score = Zoldy.app.scores_store.save! regenerate find_or_build(time)
+  def perform # rubocop:disable Metrics/AbcSize
+    score = find_last_or_build_score
+    logger.info "Start score at #{score.time.utc.iso8601}"
+    score = Zoldy.app.scores_store.save! regenerate score
     logger.info "Delay perform for #{score.time.utc.iso8601}"
     self.class.perform_async score.time.to_s
   end
 
   private
 
-  def find_or_build(time)
-    Zoldy.app.scores_store.find_by_time(time) ||
-      Zoldy.app.scores_store.build
+  def find_last_or_build_score
+    score = Zoldy.app.scores_store.last
+    return score if score.present? && score.value < MAX_VALUE && !score.expired?
+
+    Zoldy.app.scores_store.build
   end
 
   def regenerate(score)

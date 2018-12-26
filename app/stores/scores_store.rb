@@ -38,6 +38,10 @@ class ScoresStore < FileSystemStore
     alive.max_by(&:value)
   end
 
+  def last
+    alive.max_by(&:time)
+  end
+
   def alive
     all.reject(&:expired?)
   end

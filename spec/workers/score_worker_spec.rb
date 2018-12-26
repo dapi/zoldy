@@ -17,7 +17,7 @@ describe ScoreWorker do
 
   it 'build next from an existen score' do # rubocop:disable RSpec/MultipleExpectations
     expect(described_class).to receive(:perform_async)
-    worker.perform score.time.to_s
+    worker.perform
     expect(Zoldy.app.scores_store.best).to eq next_score
   end
 end

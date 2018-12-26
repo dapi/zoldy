@@ -1,14 +1,10 @@
 :verbose: true
-:concurrency: 4
+:concurrency: 8
 # Set timeout to 8 on Heroku, longer if you manage your own systems.
 :timeout: 30
 production:
-  :concurrency: 4
+  :concurrency: 16
 :queues:
-  - [worker0, 16]
-  - [worker1, 16]
-  - [worker2, 16]
-  - [worker3, 16]
-  - [scores_farm, 16]
+  - [critical, 256]
   - [default, 1]
 :logfile: ./log/sidekiq.log

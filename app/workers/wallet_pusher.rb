@@ -12,12 +12,18 @@ class WalletPusher
       logger.warn "Ignore dead node #{node_alias}"
       return
     end
+    push_wallet wallet_id, node_alias
+  rescue ZoldClient::Error => ex
+    logger.info "Push #{wallet} (#{wallet.digest}) to #{node_alias} failed with #{ex}"
+    Zoldy.app.remotes_store.add_error node_alias, ex
+  end
+
+  private
+
+  def push_wallet(wallet_id, node_alias)
     wallet = Zoldy.app.wallets_store.find! wallet_id
     client = ZoldClient.new node_alias
     result = client.push_wallet wallet
     logger.info "Push #{wallet} (#{wallet.digest}) to #{node_alias}: #{result}"
-  rescue ZoldClient::Error => ex
-    logger.info "Push #{wallet} (#{wallet.digest}) to #{node_alias} failed with #{ex}"
-    Zoldy.app.remotes_store.add_error node_alias, ex
   end
 end

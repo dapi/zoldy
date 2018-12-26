@@ -78,8 +78,9 @@ class RemotesStore < FileSystemStore
   end
 
   def last_error_time(node_alias)
-    file = Dir[build_remote_dir(node_alias).join '*.error'].sort.last
+    file = Dir[build_remote_dir(node_alias).join '*.error'].max
     return unless file
+
     File.mtime file
   end
 

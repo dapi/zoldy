@@ -62,7 +62,7 @@ class WalletTransaction
   end
 
   def zolds
-    zents.to_f/ZENTS_IN_ZOLD
+    zents.to_f / ZENTS_IN_ZOLD
   end
 
   private
