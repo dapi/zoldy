@@ -38,18 +38,7 @@ class Application
     @stores_dir ||= Pathname build_and_make_stores_dir
   end
 
-  def log_dir
-    @log_dir ||= build_log_dir
-  end
-
   private
-
-  def build_log_dir
-    dir = Zoldy.root.join 'log'
-    dir = dir.join Zoldy.env unless Zoldy.env.production?
-    FileUtils.mkdir_p dir unless Dir.exist? dir
-    dir
-  end
 
   def build_and_make_stores_dir
     dir = File.expand_path Settings.stores_dir, Zoldy.root

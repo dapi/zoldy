@@ -53,7 +53,14 @@ module Zoldy
   end
 
   def self.logger
-    @logger ||= ActiveSupport::Logger.new(root.join('log', 'zoldy.log'))
+    @logger ||= ActiveSupport::Logger.new(log_dir.join('zoldy.log'))
                                      .tap { |logger| logger.formatter = Logger::Formatter.new }
+  end
+
+  def self.log_dir
+    dir = root.join 'log'
+    dir = dir.join Zoldy.env unless Zoldy.env.production?
+    FileUtils.mkdir_p dir unless Dir.exist? dir
+    dir
   end
 end
