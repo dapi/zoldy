@@ -5,6 +5,8 @@
 # Methods to work with saved errors
 #
 module RemotesStoreErrors
+  EXPIRED_ERRORS_PERIOD = 1.day
+
   def add_error(node_alias, err)
     dir = build_remote_dir(node_alias)
     FileUtils.mkdir_p dir
@@ -15,10 +17,12 @@ module RemotesStoreErrors
   end
 
   def purge_aged_errors(node_alias)
-    dir = build_remote_dir(node_alias)
-    return unless Dir.exist? dir
+    remote_dir = build_remote_dir(node_alias)
+    return unless Dir.exist? remote_dir
 
-    Dir[dir.join('*.error')].count
+    Dir[remote_dir.join('*.error')].each do |file|
+      FileUtils.rm file if File.mtime(file) < Time.now - 1.day
+    end
   end
 
   def get_errors_count(node_alias)
