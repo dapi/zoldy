@@ -22,7 +22,7 @@ class ScoreWorker
     logger.info "Start score at #{score.time.utc.iso8601}"
     score = Zoldy.app.scores_store.save! regenerate score
     logger.info "Delay perform for #{score.time.utc.iso8601}"
-    self.class.perform_async score.time.to_s
+    self.class.perform_async
   end
 
   private

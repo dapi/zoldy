@@ -12,12 +12,13 @@ class Commands
     private_key ||= Zoldy.app.private_key
 
     wallet = Wallet.new(
-      id: Wallet.generate_id.to_s,
+      id: Wallet.generate_id.to_s, # TODO check new id existence in remote nodes
       public_key: public_key,
       private_key: private_key
     )
     logger.info "Create wallet with ID #{wallet.id}"
     Zoldy.app.wallets_store.save_copy! wallet, Zoldy.app.scores_store.best
+    WalletPusher.perform_async wallet.id
     wallet
   end
 
@@ -25,19 +26,6 @@ class Commands
     Settings.default_remotes.each do |node_alias|
       Zoldy.app.remotes_store.add node_alias
     end
-  end
-
-  def perform_new_score
-    score = Zoldy.app.scores_store.build
-    logger.info "Start scoring in #{score.time.utc.iso8601}"
-    Zoldy.app.scores_store.save! score
-    ScoreWorker.perform_async score.time.to_s
-  end
-
-  def perform_best_score
-    score = Zoldy.app.scores_store.best
-    logger.info "Start scoring in #{score.time.utc.iso8601}"
-    ScoreWorker.perform_async score.time.to_s
   end
 
   # Start async wallet fetching from remote invoices
