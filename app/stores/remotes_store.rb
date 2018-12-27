@@ -8,21 +8,21 @@ class RemotesStore < FileSystemStore
   include RemotesStoreErrors
   include RemotesStoreScores
 
-  ALIVE_PERIOD = 15.minutes
-
   def all
     map { |r| r }
   end
 
   def each
     children.lazy.each do |remote_dir|
-      yield Remote.parse Pathname(remote_dir).basename.to_s
+      node_alias = Pathname(remote_dir).basename.to_s
+      yield Remote.parse node_alias, get_score(node_alias)
     end
   end
 
   def map
     children.map do |remote_dir|
-      yield Remote.parse Pathname(remote_dir).basename.to_s
+      node_alias = Pathname(remote_dir).basename.to_s
+      yield Remote.parse node_alias, get_score(node_alias)
     end
   end
 
@@ -30,13 +30,10 @@ class RemotesStore < FileSystemStore
   def alive
     children.map do |remote_dir|
       node_alias = Pathname(remote_dir).basename.to_s
-      Remote.parse node_alias if alive? node_alias
-    end.compact
-  end
+      next unless alive? node_alias
 
-  def alive?(node_alias)
-    time = last_error_time node_alias
-    time.nil? || time < Time.now - ALIVE_PERIOD
+      Remote.parse node_alias, get_score(node_alias)
+    end.compact
   end
 
   # Remove all remotes
@@ -47,6 +44,22 @@ class RemotesStore < FileSystemStore
 
   def add(node_alias)
     FileUtils.mkdir_p build_remote_dir(node_alias)
+  end
+
+  def exist?(node_alias)
+    Dir.exist? build_remote_dir node_alias
+  end
+
+  def touch(node_alias)
+    FileUtils.touch build_remote_dir node_alias
+  end
+
+  def add_or_touch(node_alias)
+    if exist? node_alias
+      touch node_alias
+    else
+      add node_alias
+    end
   end
 
   def remove(node_alias)

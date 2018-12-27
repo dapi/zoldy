@@ -17,8 +17,9 @@ class PingWorker
   def perform(node_alias)
     return if node_alias == Settings.node_alias
 
-    ping_node node_alias
+    # TODO: perform async
     Zoldy.app.remotes_store.purge_aged_errors node_alias
+    ping_node node_alias
   rescue StandardError => err
     logger.error "Failed #{node_alias} ping with message: #{err.class} #{err.message}"
     Zoldy.app.remotes_store.add_error node_alias, err
@@ -28,7 +29,8 @@ class PingWorker
 
   def ping_node(node_alias)
     client = ZoldClient.new node_alias
-    bm = Benchmark.measure { Zoldy.app.remotes_store.update_score node_alias, client.score }
-    logger.info "Successful ping #{node_alias} with #{bm.real} secs"
+    score = client.score
+    bm = Benchmark.measure { Zoldy.app.remotes_store.update_score node_alias, score }
+    logger.info "Successful ping #{node_alias} / #{score.value} with #{bm.real} secs"
   end
 end

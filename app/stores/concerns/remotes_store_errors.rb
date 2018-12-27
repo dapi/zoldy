@@ -5,7 +5,7 @@
 # Methods to work with saved errors
 #
 module RemotesStoreErrors
-  EXPIRED_ERRORS_PERIOD = 1.day
+  EXPIRED_ERRORS_PERIOD = 1.hour
 
   def add_error(node_alias, err)
     dir = build_remote_dir(node_alias)
@@ -21,12 +21,30 @@ module RemotesStoreErrors
     return unless Dir.exist? remote_dir
 
     Dir[remote_dir.join('*.error')].each do |file|
-      FileUtils.rm file if File.mtime(file) < Time.now - 1.day
+      FileUtils.rm file if File.mtime(file) < Time.now - EXPIRED_ERRORS_PERIOD
     end
   end
 
   def get_errors_count(node_alias)
     Dir[build_remote_dir(node_alias).join '*.error'].count
+  end
+
+  def last_error(node_alias)
+    file = Dir[build_remote_dir(node_alias).join '*.error'].max
+    return unless file
+
+    File.read file
+  end
+
+  def errors_in_period(node_alias, period = 1.hour)
+    remote_dir = build_remote_dir(node_alias)
+    Dir[remote_dir.join('*.error')].select do |file|
+      begin
+        File.mtime(file) >= Time.now - period
+      rescue StandardError
+        Errno::ENOENT
+      end
+    end.count
   end
 
   def last_error_time(node_alias)

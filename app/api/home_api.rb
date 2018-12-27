@@ -25,7 +25,7 @@ class HomeAPI < Grape::API
       load: Usagewatch.uw_load.to_f,
       threads: "#{Thread.list.select { |t| t.status == 'run' }.count}/#{Thread.list.count}",
       wallets: Zoldy.app.wallets_store.count,
-      remotes: Zoldy.app.remotes_store.count,
+      remotes: Zoldy.app.remotes_store.alive.count,
       nscore: Zoldy.app.remotes_store.nscore,
       entrance: {
         history_size: 0, # Hstr is the amount of recently processed PUSH requests;

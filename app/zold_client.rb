@@ -9,6 +9,9 @@ class ZoldClient
   NotFound = Class.new Error
   TimeoutExceed = Class.new Error
   UnknownError = Class.new Error
+  WrongResponseStatus = Class.new Error
+  WrongContentType = Class.new Error
+
   # @param [Remote] remote node
   #
   def initialize(uri)
@@ -89,11 +92,11 @@ class ZoldClient
 
   def validate_content_type(headers, type)
     ct = headers['Content-Type']
-    raise "Wrong content_type (#{ct} != #{type})" unless ct.start_with? type
+    raise WrongContentType, "(#{ct} != #{type})" unless ct.start_with? type
   end
 
   def validate_status(response_status, status)
-    raise "Wrong response status #{response_status} <> #{status}" unless Array(status).include? response_status
+    raise WrongResponseStatus, "#{response_status} <> #{status}" unless Array(status).include? response_status
   end
 
   def http_client

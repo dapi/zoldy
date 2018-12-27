@@ -22,9 +22,9 @@ class Remote
     )
   end
 
-  def self.parse(home)
+  def self.parse(home, score = nil)
     host, port = home.to_s.split SPLITTER
-    new host: host, port: port.presence || DEFAULT_PORT
+    new host: host, port: port.presence || DEFAULT_PORT, score: score
   end
 
   def initialize(host:, port: DEFAULT_PORT, score: nil, remotes_count: nil)

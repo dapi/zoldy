@@ -19,6 +19,14 @@ Metrics/LineLength:
 Metrics/BlockLength:
   ExcludedMethods: ['resource', 'describe', 'context']
 
+Metrics/AbcSize:
+  Exclude:
+    - app/commands.rb
+
+Metrics/MethodLength:
+  Exclude:
+    - app/commands.rb
+
 RSpec/MessageSpies:
   Enabled: false
 

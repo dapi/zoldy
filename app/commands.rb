@@ -7,12 +7,31 @@
 class Commands
   include AutoLogger
 
-  def create_wallet!(public_key: nil, private_key: nil) # rubocop:disable Metrics/AbcSize
+  def print_remotes
+    store = Zoldy.app.remotes_store
+    rows = store.all.map do |remote|
+      [
+        remote.to_s,
+        store.get_score(remote).try(:value) || '?',
+        store.alive?(remote) && 'alive',
+        store.touched_at(remote),
+        store.errors_in_period(remote, 1.hour),
+        store.last_error(remote).to_s.truncate(40)
+      ]
+    end
+    table = Terminal::Table.new(
+      headings: ['Node', 'Score', 'Alive?', 'Touched', 'Errors in last hour', 'Last error'],
+      rows: rows
+    )
+    puts table
+  end
+
+  def create_wallet!(public_key: nil, private_key: nil)
     public_key ||= Zoldy.app.public_key
     private_key ||= Zoldy.app.private_key
 
     wallet = Wallet.new(
-      id: Wallet.generate_id.to_s, # TODO check new id existence in remote nodes
+      id: Wallet.generate_id.to_s, # TODO: check new id existence in remote nodes
       public_key: public_key,
       private_key: private_key
     )

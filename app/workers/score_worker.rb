@@ -13,6 +13,7 @@ class ScoreWorker
   MAX_VALUE = Zold::Score::STRENGTH * 2
 
   sidekiq_options(
+    queue: :scores,
     retry: true,
     unique: :until_and_while_executing
   )

@@ -6,5 +6,6 @@ production:
   :concurrency: 16
 :queues:
   - [critical, 256]
-  - [default, 1]
+  - [default, 16]
+  - [scores, 1]
 :logfile: ./log/sidekiq.log
