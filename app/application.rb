@@ -38,6 +38,14 @@ class Application
     @stores_dir ||= Pathname build_and_make_stores_dir
   end
 
+  def public_key
+    @public_key ||= `ssh-keygen -f #{File.expand_path('~/.ssh/id_rsa.pub')} -e -m pem`
+  end
+
+  def private_key
+    @private_key ||= File.read File.expand_path('~/.ssh/id_rsa')
+  end
+
   private
 
   def build_and_make_stores_dir

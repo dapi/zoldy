@@ -7,6 +7,20 @@
 class Commands
   include AutoLogger
 
+  def create_wallet!(public_key: nil, private_key: nil) # rubocop:disable Metrics/AbcSize
+    public_key ||= Zoldy.app.public_key
+    private_key ||= Zoldy.app.private_key
+
+    wallet = Wallet.new(
+      id: Wallet.generate_id.to_s,
+      public_key: public_key,
+      private_key: private_key
+    )
+    logger.info "Create wallet with ID #{wallet.id}"
+    Zoldy.app.wallets_store.save_copy! wallet, Zoldy.app.scores_store.best
+    wallet
+  end
+
   def add_default_remotes
     Settings.default_remotes.each do |node_alias|
       Zoldy.app.remotes_store.add node_alias

@@ -45,6 +45,7 @@ There are a lot of design patterns and `gems` and few pricipes used to get code 
 * pushing wallets to remote nodes - DONE
 * wallets patching and merging - TODO
 * create wallet - TODO
+* create a transactions - TODO
 * hosting bonus and taxes - TODO
 * stress tests - TODO
 

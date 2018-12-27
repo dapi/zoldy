@@ -10,7 +10,7 @@ class ScoreWorker
   include AutoLogger
 
   # Don't waste cpu time and don't calculate score more then needed
-  MAX_VALUE = Zold::Score::STRENGTH + 1
+  MAX_VALUE = Zold::Score::STRENGTH * 2
 
   sidekiq_options(
     retry: true,

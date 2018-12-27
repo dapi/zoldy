@@ -54,7 +54,7 @@ class WalletTransaction
   end
 
   def dump
-    [id, time.date.utc.iso8601, amount, prefix, bnf, details, signature].join(LINE_SPLITTER).freeze
+    [id, time.utc.iso8601, amount, prefix, bnf, details, signature].join(LINE_SPLITTER).freeze
   end
 
   def zents

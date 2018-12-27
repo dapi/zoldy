@@ -15,6 +15,10 @@ class Wallet
     raise "Wrong Wallet ID (#{id}) format (#{Protocol::WALLET_ID_FORMAT})" unless Protocol::WALLET_ID_FORMAT =~ id
   end
 
+  def self.generate_id
+    HexNumber.new rand(2**32..2**64 - 1)
+  end
+
   def self.load(body)
     lines = body.split(LINE_SEPARATOR)
     Wallet.new(
@@ -28,18 +32,20 @@ class Wallet
   end
 
   def initialize( # rubocop:disable Metrics/ParameterLists
-    network:,
-    protocol:,
     id:,
     public_key:,
     transactions: [],
-    body: nil
+    body: nil,
+    network: nil,
+    protocol: nil,
+    private_key: nil
   )
     Wallet.validate_id! id
     @id = id
-    @network = network
-    @protocol = protocol
+    @network = network || Settings.network
+    @protocol = protocol || Protocol::VERSION
     @public_key = public_key
+    @private_key = private_key
     @transactions = transactions
     @body = body
   end
@@ -84,12 +90,18 @@ class Wallet
 
   private
 
+  attr_reader :private_key
+
   def transaction_signature_body(txn)
     [id, txn.id, txn.time.utc.iso8601, txn.amount.to_i, txn.prefix, txn.bnf, txn.details].join(' ')
   end
 
   def public_rsa
     OpenSSL::PKey::RSA.new ['-----BEGIN PUBLIC KEY-----', public_key.strip, '-----END PUBLIC KEY-----'].join("\n")
+  end
+
+  def private_rsa
+    OpenSSL::PKey::RSA.new private_key
   end
 
   def build_body
