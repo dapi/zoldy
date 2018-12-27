@@ -2,7 +2,7 @@
 
 # frozen_string_literal: true
 
-# Ping all remote nodes
+# Runs every minute and perform async ping all remote nodes
 #
 class ReconnectWorker
   include Sidekiq::Worker

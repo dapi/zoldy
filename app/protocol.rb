@@ -24,7 +24,7 @@ class Protocol
   def touch_remote_by_score_header(remote)
     return if remote.node_alias == Settings.node_alias
 
-    Zoldy.app.remotes_store.touch remote
+    Zoldy.app.remotes_store.add remote
   end
 
   # @param [Hash] of HTTP request headers
