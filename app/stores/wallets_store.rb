@@ -41,7 +41,7 @@ class WalletsStore < FileSystemStore
 
   def find!(id)
     Wallet.load IO.read(build_best_wallet_dir(id).join('body'))
-  rescue Errno::ENOEN
+  rescue Errno::ENOENT
     raise WalletNotFound
   end
 
