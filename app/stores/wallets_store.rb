@@ -12,6 +12,7 @@ require 'digest'
 class WalletsStore < FileSystemStore
   include WalletsStorePaths
 
+  ROOT_ID = '0000000000000000'
   WalletNotFound = Class.new StandardError
 
   def save_copy!(wallet, score = nil)
@@ -49,6 +50,10 @@ class WalletsStore < FileSystemStore
     find! id
   rescue WalletNotFound
     nil
+  end
+
+  def root
+    find ROOT_ID
   end
 
   def count

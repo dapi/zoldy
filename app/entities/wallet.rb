@@ -53,6 +53,8 @@ class Wallet
   end
 
   def digest
+    # Which is better?
+    # OpenSSL::Digest::SHA256.new(body).hexdigest
     @digest ||= Digest::MD5.hexdigest(body).freeze
   end
 
@@ -64,7 +66,31 @@ class Wallet
     transactions.map(&:zents).inject(&:+)
   end
 
+  def transaction_valid?(txn)
+    raise "Can't validate positive transactions #{txn.id} #{txn.amount} > 0" if txn.amount.positive?
+
+    public_rsa.verify(
+      OpenSSL::Digest::SHA256.new,
+      Base64.decode64(txn.signature),
+      transaction_signature_body(txn)
+    )
+  end
+
+  def transaction_signature(txn)
+    Base64.encode64(
+      private_rsa.sign(OpenSSL::Digest::SHA256.new, transaction_signature_body(txn))
+    ).delete("\n")
+  end
+
   private
+
+  def transaction_signature_body(txn)
+    [id, txn.id, txn.time.utc.iso8601, txn.amount.to_i, txn.prefix, txn.bnf, txn.details].join(' ')
+  end
+
+  def public_rsa
+    OpenSSL::PKey::RSA.new ['-----BEGIN PUBLIC KEY-----', public_key.strip, '-----END PUBLIC KEY-----'].join("\n")
+  end
 
   def build_body
     (

@@ -9,6 +9,7 @@ require 'active_support'
 require 'active_support/dependencies'
 require 'semver'
 require 'lib/http_client'
+require 'lib/hex_number'
 
 ActiveSupport::Dependencies.mechanism = :require
 ActiveSupport::Dependencies.autoload_paths += %w[

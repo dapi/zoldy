@@ -22,9 +22,9 @@ class WalletTransaction
   def self.load(body) # rubocop:disable Metrics/MethodLength
     id, time, amount, prefix, bnf, details, signature = body.split LINE_SPLITTER
     WalletTransaction.new(
-      id: id,
-      time: time,
-      amount: amount,
+      id: HexNumber.parse(id),
+      time: Time.parse(time),
+      amount: HexNumber.parse(amount),
       prefix: prefix,
       bnf: bnf,
       details: details,
@@ -54,11 +54,11 @@ class WalletTransaction
   end
 
   def dump
-    [id, time, amount, prefix, bnf, details, signature].join(LINE_SPLITTER).freeze
+    [id, time.date.utc.iso8601, amount, prefix, bnf, details, signature].join(LINE_SPLITTER).freeze
   end
 
   def zents
-    amount.to_i(16)
+    amount
   end
 
   def zolds

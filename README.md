@@ -43,7 +43,8 @@ There are a lot of design patterns and `gems` and few pricipes used to get code 
 * current node emitting and remote nodes discovery - DONE
 * wallets receiving - DONE
 * pushing wallets to remote nodes - DONE
-* wallet creation - TODO
+* wallets patching and merging - TODO
+* create wallet - TODO
 * hosting bonus and taxes - TODO
 * stress tests - TODO
 
