@@ -1,3 +1,8 @@
+AnalyticsWorker:
+  cron: '*/5 * * * *'
+  class: AnalyticsWorker
+  queue: critical
+
 ReconnectWorker:
   cron: '*/1 * * * *'
   class: ReconnectWorker

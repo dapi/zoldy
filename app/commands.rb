@@ -4,10 +4,12 @@
 
 # Top level directives
 #
+require 'csv'
+
 class Commands
   include AutoLogger
 
-  def print_remotes
+  def remotes
     store = Zoldy.app.remotes_store
     rows = store.all.map do |remote|
       [
@@ -19,11 +21,13 @@ class Commands
         store.last_error(remote).to_s.truncate(40)
       ]
     end
-    table = Terminal::Table.new(
-      headings: ['Node', 'Score', 'Alive?', 'Touched', 'Errors in last hour', 'Last error'],
-      rows: rows
-    )
-    puts table
+    rows
+    # puts rows.to_csv
+    #table = Terminal::Table.new(
+      #headings: ['Node', 'Score', 'Alive?', 'Touched', 'Errors in last hour', 'Last error'],
+      #rows: rows
+    #)
+    #puts table
   end
 
   def create_wallet!(public_key: nil, private_key: nil)
