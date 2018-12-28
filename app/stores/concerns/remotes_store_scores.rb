@@ -30,6 +30,9 @@ module RemotesStoreScores
   def get_score(node_alias)
     node_alias = node_alias.node_alias if node_alias.is_a? Remote
     Zold::Score.load File.read(build_score_dir(node_alias))
+  rescue RuntimeError => err
+    Zoldy.logger.error "Invalid score for #{node_alias}: #{err}"
+    nil
   rescue Errno::ENOENT
     nil
   end

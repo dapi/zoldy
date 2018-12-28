@@ -2,10 +2,10 @@
 
 # Copyright (c) 2018 Danil Pismenny <danil@brandymint.ru>
 
-# Top level directives
-#
 require 'csv'
 
+# Top level directives
+#
 class Commands
   include AutoLogger
 
@@ -23,11 +23,11 @@ class Commands
     end
     rows
     # puts rows.to_csv
-    #table = Terminal::Table.new(
-      #headings: ['Node', 'Score', 'Alive?', 'Touched', 'Errors in last hour', 'Last error'],
-      #rows: rows
-    #)
-    #puts table
+    # table = Terminal::Table.new(
+    # headings: ['Node', 'Score', 'Alive?', 'Touched', 'Errors in last hour', 'Last error'],
+    # rows: rows
+    # )
+    # puts table
   end
 
   def create_wallet!(public_key: nil, private_key: nil)

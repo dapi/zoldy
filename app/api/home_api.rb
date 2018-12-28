@@ -10,7 +10,7 @@ class HomeAPI < Grape::API
   formatter :json, PrettyJSONFormatter
 
   desc 'ping node'
-  get '/' do
+  get '/' do # rubocop:disable Metrics/BlockLength
     present(
       version: Zoldy.version,
       repo: Settings.repo,
