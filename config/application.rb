@@ -34,7 +34,7 @@ module Zoldy
   VERSION = SemVer.find
 
   def self.version
-    'Z' + VERSION.format('%M.%m.%p%s') # rubocop:disable Style/FormatStringToken
+    VERSION.format('%M.%m.%p%s') # rubocop:disable Style/FormatStringToken
   end
 
   def self.env

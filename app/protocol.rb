@@ -44,6 +44,7 @@ class Protocol
     headers[PROTOCOL_HEADER] = VERSION.to_s
     headers[VERSION_HEADER]  = Zoldy.version
     headers[NETWORK_HEADER]  = Settings.network
+    headers[REPO_HEADER]     = Settings.repo
     headers[SCORE_HEADER]    = Zoldy.app.scores_store.best.try(:reduced, reduce).to_s
     headers
   end

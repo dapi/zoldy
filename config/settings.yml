@@ -2,6 +2,7 @@
 defaults: &defaults
   home: https://www.zold.io
   network: zold
+  repo: dapi/zoldy
 
   host: <%= ENV['ZOLD_HOST'] || `hostname -f` %>
   port: <%= ENV['ZOLD_POST'] || 4096 %>

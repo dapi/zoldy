@@ -13,6 +13,7 @@ class HomeAPI < Grape::API
   get '/' do
     present(
       version: Zoldy.version,
+      repo: Settings.repo,
       alias: Settings.node_alias,
       network: Settings.network,
       protocol: Protocol::VERSION,
