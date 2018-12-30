@@ -9,9 +9,10 @@ at_exit do
 end
 
 puts Commands.head
+puts
 
 if ARGV.empty?
-  Pry.start
+  Commands.run ['help']
 else
   Commands.run ARGV
 end

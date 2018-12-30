@@ -41,7 +41,7 @@ There are a lot of design patterns and `gems` and few pricipes used to get code 
 
 List of all console commands
 
-> ./bin/console show_commands
+> ./bin/zoldy show_commands
 
 # Roadmap
 
