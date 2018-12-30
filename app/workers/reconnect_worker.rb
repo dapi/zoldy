@@ -12,7 +12,7 @@ class ReconnectWorker
 
   def perform
     Zoldy.app.remotes_store.each do |remote|
-      PingWorker.perform_async remote.node_alias
+      ::PingWorker.perform_async remote.node_alias
     end.count
   end
 end

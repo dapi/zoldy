@@ -9,8 +9,14 @@ class AnalyticsWorker
   include AutoLogger
 
   def perform
-    dir = Zoldy.app.stores_dir.join('analytics').join('remotes')
-    FileUtils.mkdir_p dir
-    File.write dir.join(Time.now.utc.iso8601), Commands::ShowRemotes.new.remotes.to_csv
+    File.write dir.join(Time.now.utc.iso8601 + '.csv'), Commands::ShowRemotes.new.remotes.map(&:to_csv).join
+  end
+
+  private
+
+  def dir
+    d = Zoldy.app.stores_dir.join('analytics').join('remotes')
+    FileUtils.mkdir_p d
+    d
   end
 end

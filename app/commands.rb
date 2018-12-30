@@ -5,7 +5,7 @@
 # Console commands executor
 #
 module Commands
-  LIST = [ShowStatus, ShowRemotes, CreateWallet].freeze
+  LIST = [ShowStatus, ShowRemotes, CreateWallet, ShowAnalytics].freeze
 
   def self.head
     "Zoldy #{Zoldy::VERSION}, #{Zoldy.env}"

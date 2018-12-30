@@ -15,8 +15,6 @@ class PingWorker
   # TODO: Clean old errors
   #
   def perform(node_alias)
-    return if node_alias == Settings.node_alias
-
     # TODO: perform async
     Zoldy.app.remotes_store.purge_aged_errors node_alias
     fetch_and_update_score node_alias
