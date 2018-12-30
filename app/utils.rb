@@ -5,6 +5,12 @@
 # Some development utils
 #
 class Utils
+  def add_default_remotes
+    Settings.default_remotes.each do |node_alias|
+      Zoldy.app.remotes_store.add node_alias
+    end
+  end
+
   def checker
     Zoldy.app.remotes_store.all.each do |remote|
       check remote

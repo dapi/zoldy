@@ -19,20 +19,18 @@ module RemotesStoreScores
   end
 
   def nscore
-    Dir[dir.join('*/score')].map { |f| File.read(f).to_i }.inject(&:+)
+    Dir[dir.join('*/score')].map { |f| load_score(f).try(:value) }.compact.inject(&:+)
   end
 
   def update_score(node_alias, score)
     add node_alias
     File.write build_score_dir(node_alias), score.to_s
+    score
   end
 
   def get_score(node_alias)
     node_alias = node_alias.node_alias if node_alias.is_a? Remote
-    Zold::Score.load File.read(build_score_dir(node_alias))
-  rescue RuntimeError => err
-    Zoldy.logger.error "Invalid score for #{node_alias}: #{err}"
-    nil
+    load_score build_score_dir(node_alias)
   rescue Errno::ENOENT
     nil
   end
@@ -41,5 +39,12 @@ module RemotesStoreScores
 
   def build_score_dir(node_alias)
     build_remote_dir(node_alias).join('score')
+  end
+
+  def load_score(file)
+    Zold::Score.load File.read(file)
+  rescue RuntimeError => err
+    Zoldy.logger.error "Invalid score for #{file}: #{err}"
+    nil
   end
 end

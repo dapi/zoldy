@@ -11,6 +11,6 @@ class AnalyticsWorker
   def perform
     dir = Zoldy.app.stores_dir.join('analytics').join('remotes')
     FileUtils.mkdir_p dir
-    File.write dir.join(Time.now.utc.iso8601), Commands.new.remotes.to_csv
+    File.write dir.join(Time.now.utc.iso8601), Commands::ShowRemotes.new.remotes.to_csv
   end
 end

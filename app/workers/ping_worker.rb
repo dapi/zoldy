@@ -25,13 +25,19 @@ class PingWorker
   private
 
   def fetch_and_update_score(node_alias)
+    Zoldy.app.remotes_store.update_score node_alias, fetch_score(node_alias)
+  rescue StandardError => err
+    raise err if Zoldy.env.test?
+
+    add_error node_alias, err
+    nil
+  end
+
+  def fetch_score(node_alias)
     score = nil
     bm = Benchmark.measure { score = ZoldClient.new(node_alias).score }
     logger.info "Successful ping #{node_alias} / #{score.value} with #{bm_format bm.real}"
-    Zoldy.app.remotes_store.update_score score
-  rescue StandardError => err
-    add_error node_alias, err
-    nil
+    score
   end
 
   def add_error(node_alias, err)

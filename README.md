@@ -37,7 +37,13 @@ There are a lot of design patterns and `gems` and few pricipes used to get code 
 * `guard` for best practices with realtime testing
 * Respect to `SRP` (Single Responsibilty) and `CQRS` (Command Or Query Separation) principes of software development
 
-# What is done and what to do?
+# Console commands
+
+List of all console commands
+
+> ./bin/console show_commands
+
+# Roadmap
 
 * score generation - DONE
 * current node emitting and remote nodes discovery - DONE
