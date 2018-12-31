@@ -10,6 +10,7 @@ class Application
   def initialize
     @started_at = Time.now
     wallets_store
+    private_wallets_store
     remotes_store
     scores_store
   end
@@ -20,6 +21,10 @@ class Application
 
   def mine_node
     @mine_node ||= Remote.parse Settings.node_alias
+  end
+
+  def private_wallets_store
+    @private_wallets_store ||= ::PrivateWalletsStore.new(dir: stores_dir.join('private_wallets'))
   end
 
   def wallets_store

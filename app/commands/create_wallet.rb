@@ -11,7 +11,7 @@ module Commands
       private_key ||= Zoldy.app.private_key
 
       wallet = create_wallet public_key: public_key, private_key: private_key
-      print_formatted [wallet.id]
+      print_formatted [['Wallet ID', wallet.id]]
     end
 
     private
@@ -22,6 +22,7 @@ module Commands
         public_key: public_key,
         private_key: private_key
       )
+      Zoldy.app.private_wallets_store.add wallet
       Zoldy.app.wallets_store.save_copy! wallet, Zoldy.app.scores_store.best
       WalletPusher.perform_async wallet.id
       wallet

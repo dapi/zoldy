@@ -10,6 +10,7 @@ class Wallet
   LINE_SEPARATOR = "\n"
 
   attr_reader :id, :network, :protocol, :public_key, :transactions
+  attr_reader :private_key
 
   def self.validate_id!(id)
     raise "Wrong Wallet ID (#{id}) format (#{Protocol::WALLET_ID_FORMAT})" unless Protocol::WALLET_ID_FORMAT =~ id
@@ -89,8 +90,6 @@ class Wallet
   end
 
   private
-
-  attr_reader :private_key
 
   def transaction_signature_body(txn)
     [id, txn.id, txn.time.utc.iso8601, txn.amount.to_i, txn.prefix, txn.bnf, txn.details].join(' ')
