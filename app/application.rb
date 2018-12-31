@@ -44,7 +44,9 @@ class Application
   end
 
   def public_key
-    @public_key ||= `ssh-keygen -f #{File.expand_path('~/.ssh/id_rsa.pub')} -e -m pem`
+    buffer = `ssh-keygen -f #{File.expand_path('~/.ssh/id_rsa.pub')} -e -m PKCS8`
+    buffer = buffer.split("\n")
+    buffer.slice(1, buffer.count - 2).join
   end
 
   def private_key

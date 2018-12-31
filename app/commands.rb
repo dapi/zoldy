@@ -7,7 +7,11 @@
 module Commands
   UnknownCommand = Class.new StandardError
 
-  LIST = [ShowStatus, ShowRemotes, CreateWallet, ShowAnalytics, ShowCommands, Help, Console].freeze
+  LIST = [
+    ShowStatus, ShowRemotes, CreateWallet, ShowWallet, ShowPrivateWallets,
+    ShowAnalytics, ShowCommands, ShowTransactions,
+    Help, Console
+  ].freeze
 
   def self.head
     "Zoldy #{Zoldy::VERSION}, #{Zoldy.env}"
@@ -29,7 +33,7 @@ module Commands
   #
   def self.from_command_to_class(command)
     command_class = ['Commands', command.camelize].join('::')
-    raise UnknownCommandcommand unless LIST.map(&:to_s).include? command_class
+    raise UnknownCommand, command unless LIST.map(&:to_s).include? command_class
 
     command_class.constantize
   end

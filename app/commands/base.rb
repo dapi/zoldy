@@ -24,11 +24,15 @@ module Commands
 
     attr_reader :format
 
+    def output
+      STDOUT
+    end
+
     def print_formatted(rows, headings: [])
       if format == :table
-        puts Terminal::Table.new(rows: rows, headings: headings)
+        output.puts Terminal::Table.new(rows: rows, headings: headings)
       else
-        puts rows.to_csv
+        output.puts rows.to_csv
       end
     end
   end

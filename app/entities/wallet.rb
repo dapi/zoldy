@@ -10,7 +10,7 @@ class Wallet
   LINE_SEPARATOR = "\n"
 
   attr_reader :id, :network, :protocol, :public_key, :transactions
-  attr_reader :private_key
+  attr_accessor :private_key
 
   def self.validate_id!(id)
     raise "Wrong Wallet ID (#{id}) format (#{Protocol::WALLET_ID_FORMAT})" unless Protocol::WALLET_ID_FORMAT =~ id
@@ -70,7 +70,11 @@ class Wallet
   end
 
   def zents
-    transactions.map(&:zents).inject(&:+)
+    transactions.map(&:zents).inject(&:+) || 0
+  end
+
+  def zolds
+    zents.to_f / WalletTransaction::ZENTS_IN_ZOLD
   end
 
   def transaction_valid?(txn)
@@ -81,6 +85,17 @@ class Wallet
       Base64.decode64(txn.signature),
       transaction_signature_body(txn)
     )
+  end
+
+  def valid_private_key?
+    return unless private_key.present?
+
+    content = 'TEST'
+    sha = OpenSSL::Digest::SHA256.new
+    sign = private_rsa.sign sha, content
+    public_rsa.verify sha, sign, content
+  rescue OpenSSL::PKey::RSAError
+    false
   end
 
   def transaction_signature(txn)

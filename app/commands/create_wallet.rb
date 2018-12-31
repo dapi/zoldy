@@ -7,24 +7,32 @@ module Commands
   #
   class CreateWallet < Base
     def perform(public_key: nil, private_key: nil)
-      public_key ||= Zoldy.app.public_key
-      private_key ||= Zoldy.app.private_key
-
       wallet = create_wallet public_key: public_key, private_key: private_key
       print_formatted [['Wallet ID', wallet.id]]
     end
 
-    private
+    def create_wallet(public_key: nil, private_key: nil) # rubocop:disable Metrics/AbcSize
+      public_key ||= Zoldy.app.public_key
+      private_key ||= Zoldy.app.private_key
 
-    def create_wallet(public_key:, private_key:)
-      wallet = Wallet.new(
-        id: Wallet.generate_id.to_s, # TODO: check new id existence in remote nodes
-        public_key: public_key,
-        private_key: private_key
-      )
+      wallet = build_wallet public_key: public_key, private_key: private_key
+
       Zoldy.app.private_wallets_store.add wallet
       Zoldy.app.wallets_store.save_copy! wallet, Zoldy.app.scores_store.best
       WalletPusher.perform_async wallet.id
+      wallet
+    end
+
+    private
+
+    def build_wallet(private_key:, public_key:)
+      wallet = Wallet.new(
+        id: Wallet.generate_id.to_s,
+        public_key: public_key,
+        private_key: private_key
+      )
+      raise 'created wallet is invalid' unless wallet.valid_private_key?
+
       wallet
     end
   end

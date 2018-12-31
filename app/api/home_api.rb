@@ -31,7 +31,7 @@ class HomeAPI < Grape::API
       entrance: {
         history_size: 0, # Hstr is the amount of recently processed PUSH requests;
         speed: 0, # Spd is the average amount of time in seconds the node spends per each PUSH request processing
-        queue: Sidekiq::Stats.new.enqueued,
+        queue: Sidekiq::Stats.new.enqueued
       },
       date: Time.now.utc.iso8601,
       hours_alive: (Zoldy.app.uptime / (60 * 60)).round(2),

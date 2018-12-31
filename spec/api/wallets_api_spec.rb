@@ -16,7 +16,6 @@ describe WalletsAPI do
   let(:score) { build(:score).next }
 
   before do
-    Zoldy.app.wallets_store.clear!
     header Protocol::SCORE_HEADER, score.to_s
     header Protocol::NETWORK_HEADER, Settings.network
     header Protocol::PROTOCOL_HEADER, Protocol::VERSION

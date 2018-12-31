@@ -18,7 +18,13 @@ RSpec.configure do |config|
   end
 
   config.before do
+    Zoldy.app.wallets_store.clear!
+    Zoldy.app.private_wallets_store.clear!
     Sidekiq::Testing.fake!
+  end
+
+  config.before command: true do
+    allow(subject).to receive(:output).and_return File.new('/dev/null', 'w')
   end
 
   # rspec-expectations config goes here. You can use an alternate

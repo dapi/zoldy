@@ -12,7 +12,7 @@ module Commands
 
     private
 
-    def status # rubocop:disable Metrics/AbcSize
+    def status # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       [
         ['Current node', Settings.node_alias],
         ['Network', Settings.network],
@@ -22,7 +22,7 @@ module Commands
         ['Invoice', Settings.invoice],
         ['Using score', inspect_score(Zoldy.app.scores_store.best)],
         ['Generating score', inspect_score(Zoldy.app.scores_store.last)],
-        ['Sidekiq proccessing, queue, retry', sidekiq_stats],
+        ['Sidekiq proccessing, queue, retry', sidekiq_stats]
       ]
     end
 

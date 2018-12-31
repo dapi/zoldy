@@ -58,7 +58,7 @@ class WalletTransaction
   end
 
   def zents
-    amount
+    amount.to_i
   end
 
   def zolds
