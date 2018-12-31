@@ -18,15 +18,24 @@ module Commands
         ['Network', Settings.network],
         ['Wallets', Zoldy.app.wallets_store.count],
         ['Score strengh', Zold::Score::STRENGTH],
-        ['Remotes (live/total)', inspect_remotes],
-        ['Best score', inspect_score(Zoldy.app.scores_store.best)],
-        ['Current/last score', inspect_score(Zoldy.app.scores_store.last)],
-        ['Sidekiq queue', Sidekiq::Queue.all.map(&:size).inject(&:+)]
+        ['Network nodes (live/total)', inspect_remotes],
+        ['Invoice', Settings.invoice],
+        ['Using score', inspect_score(Zoldy.app.scores_store.best)],
+        ['Generating score', inspect_score(Zoldy.app.scores_store.last)],
+        ['Sidekiq proccessing, queue, retry', sidekiq_stats],
       ]
     end
 
     def inspect_remotes
       [Zoldy.app.remotes_store.alive.count, Zoldy.app.remotes_store.count].join('/')
+    end
+
+    def sidekiq_stats
+      [
+        Sidekiq::Stats.new.processes_size,
+        Sidekiq::Stats.new.enqueued,
+        Sidekiq::Stats.new.retry_size
+      ].join(', ')
     end
 
     def inspect_score(score)
