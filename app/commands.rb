@@ -10,7 +10,7 @@ module Commands
   LIST = [
     ShowStatus, ShowRemotes, CreateWallet, ShowWallet, ShowPrivateWallets,
     ShowAnalytics, ShowCommands, ShowTransactions,
-    Help, Console
+    Help, Console, Run
   ].freeze
 
   def self.head
