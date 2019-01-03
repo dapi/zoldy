@@ -37,7 +37,10 @@ class ZoldClient
   def fetch_wallet(wallet_id)
     response = get '/wallet/' + wallet_id.to_s
     validate_response! response, content_type: Protocol::DATA_CONTENT_TYPE
-    Wallet.load JSON.parse(response.body)['body']
+    body = JSON.parse(response.body)['body']
+    raise Error, 'No body' if body.nil?
+
+    Wallet.load body
   end
 
   def fetch_wallet_and_score(wallet_id)

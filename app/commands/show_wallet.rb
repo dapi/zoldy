@@ -30,7 +30,8 @@ module Commands
         ['ID', wallet.id],
         ['Has private key?', wallet.valid_private_key?],
         ['Transactions', wallet.transactions.count],
-        ['Amount', wallet.zolds]
+        ['Amount', wallet.zolds],
+        ['Balance (hex)', wallet.amount]
       ], show_total: false
     end
 

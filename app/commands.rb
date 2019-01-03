@@ -9,7 +9,7 @@ module Commands
 
   COMMANDS = [
     ShowStatus, ShowRemotes, CreateWallet, ShowWallet, ShowWallets,
-    ShowAnalytics, ShowCommands, ShowTransactions, PingRemote,
+    ShowAnalytics, ShowCommands, ShowTransactions, FetchWallet, PingRemote,
     Help, Console, Run
   ].freeze
 
