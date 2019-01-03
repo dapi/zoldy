@@ -1,10 +1,12 @@
+# TODO move settings to Workers
+#
 AnalyticsWorker:
   cron: '*/5 * * * *'
   class: AnalyticsWorker
   queue: critical
 
 ReconnectWorker:
-  cron: '*/1 * * * *'
+  # NOTE Shecduled by SidekiqCronSetuper
   class: ReconnectWorker
   queue: critical
 

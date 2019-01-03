@@ -5,11 +5,9 @@
 # Methods to work with saved scores
 #
 module RemotesStoreScores
-  SCORE_ALIVE_PERIOD = 15.minutes
-
   def alive?(node_alias)
     time = touched_at node_alias
-    time.present? && time > Time.now - SCORE_ALIVE_PERIOD
+    time.present? && time > Time.now - Settings.score_alive_period.minutes
   end
 
   def touched_at(node_alias)

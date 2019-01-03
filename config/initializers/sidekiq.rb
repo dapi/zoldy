@@ -4,6 +4,8 @@
 
 require 'sidekiq'
 
+Sidekiq.options[:poll_interval] = 15
+
 Sidekiq.configure_server do |config|
   config.redis = Settings.sidekiq_redis.symbolize_keys
   if defined? Bugsnag
@@ -14,12 +16,11 @@ Sidekiq.configure_server do |config|
     end
   end
 
-  Sidekiq::Cron::Job.destroy_all!
+  # Clean unique sidekiq digests
+  #
   SidekiqUniqueJobs::Digests.all.each { |digest| SidekiqUniqueJobs::Digests.del digest: digest }
 
-  crontab_file = File.expand_path('../crontab.yml', __dir__)
-  result = Sidekiq::Cron::Job.load_from_hash YAML.load_file crontab_file
-  puts "Load sidekiq crontab: #{result.presence || 'Success'}"
+  SidekiqCronSetuper.setup config_file: File.expand_path('../crontab.yml', __dir__)
 end
 
 Sidekiq.configure_client do |config|

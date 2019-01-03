@@ -10,15 +10,20 @@ module Commands
   # > ./bin/console show_remotes
   #
   class ShowRemotes < Base
-    def perform
+    # Prints remotes list
+    #
+    # @param vitality [String] remote nodes vitality (any, alive, dead)
+    # @return [String] the contents of remotes nodes data
+    def perform(alive_only: true)
+      puts 'Pings every minute'
       print_formatted(
-        remotes,
+        remotes(alive_only),
         headings: ['Node', 'Score', 'Alive?', 'Touched', 'Errors in last hour', 'Last error']
       )
     end
 
-    def remotes # rubocop:disable Metrics/AbcSize
-      store.all.map do |remote|
+    def remotes(alive_only) # rubocop:disable Metrics/AbcSize
+      store.send(alive_only ? :alive : :all).map do |remote|
         [
           remote.to_s,
           store.get_score(remote).try(:value) || '?',

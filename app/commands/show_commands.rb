@@ -20,7 +20,7 @@ module Commands
     private
 
     def commands
-      Commands::LIST.map do |command_class|
+      Commands::COMMANDS.map do |command_class|
         [
           Commands.from_class_to_command(command_class),
           ''
