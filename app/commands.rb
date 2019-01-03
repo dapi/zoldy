@@ -9,7 +9,7 @@ module Commands
 
   COMMANDS = [
     ShowStatus, ShowRemotes, CreateWallet, ShowWallet, ShowPrivateWallets,
-    ShowAnalytics, ShowCommands, ShowTransactions,
+    ShowAnalytics, ShowCommands, ShowTransactions, PingRemote,
     Help, Console, Run
   ].freeze
 
@@ -18,6 +18,7 @@ module Commands
     h: Help,
     r: Run,
     w: ShowWallet,
+    p: PingRemote
   }.freeze
 
   def self.head
@@ -40,13 +41,11 @@ module Commands
   #
   def self.from_command_to_class(command)
     command_class = ['Commands', command.camelize].join('::')
-    if COMMANDS.map(&:to_s).include? command_class
-      return command_class.constantize
-    elsif command.length == 1
-      return ALIASES[command.downcase.to_sym] || raise(UnknownCommand, command)
-    else
-      raise UnknownCommand, command
-    end
+    return command_class.constantize if COMMANDS.map(&:to_s).include? command_class
+
+    return ALIASES[command.downcase.to_sym] || raise(UnknownCommand, command) if command.length == 1
+
+    raise UnknownCommand, command
   end
 
   def self.from_class_to_command(command_class)

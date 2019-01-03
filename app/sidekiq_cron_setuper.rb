@@ -1,10 +1,15 @@
-class SidekiqCronSetuper
+# frozen_string_literal: true
 
-  def self.setup(config_file: )
+# Copyright (c) 2018 Danil Pismenny <danil@brandymint.ru>
+
+# Reads config/cron.yml and configure sidekiq scheduling.
+#
+class SidekiqCronSetuper
+  def self.setup(config_file:)
     new(config_file: config_file).setup
   end
 
-  def initialize(config_file: )
+  def initialize(config_file:)
     @config_file = config_file
   end
 

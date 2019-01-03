@@ -31,6 +31,7 @@ module Commands
     def print_formatted(rows, headings: [])
       if format == :table
         output.puts Terminal::Table.new(rows: rows, headings: headings)
+        output.puts "Total #{rows.count} records"
       else
         output.puts rows.to_csv
       end

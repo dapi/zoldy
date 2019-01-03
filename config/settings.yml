@@ -11,7 +11,7 @@ defaults: &defaults
   remote_ping_interval: 1
 
   # minutes
-  score_alive_period: 2 # Must be more than remote_ping_interval
+  score_alive_period: 5 # Must be more than remote_ping_interval
 
   secret_key_base: <%= ENV['SECRET_KEY_BASE'] %>
 
