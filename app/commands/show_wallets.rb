@@ -5,7 +5,7 @@
 module Commands
   # Show private wallets list
   #
-  class ShowPrivateWallets < Base
+  class ShowWallets < Base
     def perform
       print_formatted wallets, headings: ['ID', 'Amount', 'Transactions', 'Has private key?']
     end

@@ -8,7 +8,7 @@ module Commands
   UnknownCommand = Class.new StandardError
 
   COMMANDS = [
-    ShowStatus, ShowRemotes, CreateWallet, ShowWallet, ShowPrivateWallets,
+    ShowStatus, ShowRemotes, CreateWallet, ShowWallet, ShowWallets,
     ShowAnalytics, ShowCommands, ShowTransactions, PingRemote,
     Help, Console, Run
   ].freeze

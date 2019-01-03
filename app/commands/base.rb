@@ -28,10 +28,10 @@ module Commands
       STDOUT
     end
 
-    def print_formatted(rows, headings: [])
+    def print_formatted(rows, headings: [], show_total: true)
       if format == :table
         output.puts Terminal::Table.new(rows: rows, headings: headings)
-        output.puts "Total #{rows.count} records"
+        output.puts "Total #{rows.count} records" if show_total
       else
         output.puts rows.to_csv
       end

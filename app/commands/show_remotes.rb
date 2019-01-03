@@ -22,7 +22,7 @@ module Commands
       )
     end
 
-    def build_remotes(alive_only) # rubocop:disable Metrics/AbcSize
+    def build_remotes(alive_only = false) # rubocop:disable Metrics/AbcSize
       store.send(alive_only ? :alive : :all).map do |remote|
         [
           remote.to_s,

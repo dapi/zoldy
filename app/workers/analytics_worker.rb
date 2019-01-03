@@ -9,7 +9,7 @@ class AnalyticsWorker
   include AutoLogger
 
   def perform
-    File.write dir.join(Time.now.utc.iso8601 + '.csv'), Commands::ShowRemotes.new.remotes.map(&:to_csv).join
+    File.write dir.join(Time.now.utc.iso8601 + '.csv'), Commands::ShowRemotes.new.build_remotes.map(&:to_csv).join
   end
 
   private
